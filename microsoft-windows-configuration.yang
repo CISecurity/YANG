@@ -1,0 +1,367 @@
+
+module microsoft-windows-configuration {
+	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
+	prefix ccc;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description "Initial Version; Describing configuration information that can be collected from Microsoft Windows systems";
+	}
+
+
+	//
+	// Types
+	//
+
+	typedef registry_hive {
+		type enumeration {
+			description "The Windows Registry Hives";
+			enum HKEY_CLASSES_ROOT;
+			enum HKEY_CURRENT_USER;
+			enum HKEY_LOCAL_MACHINE;
+			enum HKEY_USERS;
+			enum HKEY_CURRENT_CONFIG;
+		}
+	}
+
+	typedef registry_type {
+		type enumeration {
+			description "The Windows Registry datatype of a key";
+			enum reg_binary;
+			enum reg_dword;
+			enum reg_dword_big_endian;
+			enum reg_expand_sz;
+			enum reg_link;
+			enum reg_multi_sz;
+			enum reg_none;
+			enum reg_qword;
+			enum reg_sz;
+			enum reg_resource_list;
+			enum reg_full_resource_descriptor;
+			enum reg_resource_requirements_list;
+		}
+	}
+
+	// Audit policy values (AUDIT_NONE|SUCCESS|FAILURE|SUCCESS_FAILURE)
+	typedef audit_policy_value {
+		type enumeration {
+			description "Audit event policy values";
+			enum AUDIT_NONE;
+			enum AUDIT_SUCCESS;
+			enum AUDIT_FAILURE;
+			enum AUDIT_SUCCESS_FAILURE;
+	}
+
+
+	//
+	// Groupings
+	//
+
+	grouping file-identifier {
+		description "A key for identifying a Windows file";
+
+		choice identification {
+			case fp {
+				leaf filepath {
+					description "";
+					type string;
+				}
+			}
+		
+			case pfn {
+				leaf path {
+					description "";
+					type string;
+				}
+
+				leaf filename {
+					description "";
+					type string;
+				}
+			}
+
+	}
+
+	grouping registry-key-identifier {
+		leaf hive {
+			type registry_hive;
+		}
+	}
+
+	grouping trustee {
+		description "";
+
+		leaf trustee_sid {
+			description "";
+			type string;
+		}
+		leaf trustee_name {
+			description "";
+			type string;
+		}
+		leaf trustee_domain {
+			description "";
+			type string;
+		}
+	}
+
+	grouping group {
+		description "";
+
+		leaf group_sid {
+			description "";
+			type string;
+		}
+		leaf group_name {
+			description "";
+			type string;
+		}
+	}
+
+	grouping record_field {
+		description "";
+
+		leaf name {}
+		leaf value {}
+	}
+
+	grouping record {
+		description "";
+
+		list fields {
+			description "";
+			key "name";
+			uses record_field;
+		} 
+	}
+
+
+	//
+	// System Characteristics Elements
+	//
+
+	container active_directory {}
+
+	// Audit Event Policy
+	container audit_event_policies {
+		list audit_event_policy {
+			key "category";
+
+			leaf category {
+				type enumeration {
+					description "Audit event policy category values";
+					enum account_logon;
+					enum account_management;
+					enum detailed_tracking;
+					enum directory_service_access;
+					enum logon;
+					enum object_access;
+					enum policy_change;
+					enum privilege_use;
+					enum system;
+				}
+			}
+
+			leaf policy_value {
+				type audit_policy_value;
+			}
+		}
+	}
+
+	// Audit Event Policy Subcategories
+	container audit_event_policy_subcategories {
+		list audit_event_policy_subcategory {
+			key "subcategory";
+
+			leaf subcategory {
+				type enumeration {
+					description "Audit event policy sub-category values";
+					// TODO - Fill In
+					enum credential_validation;
+				}
+			}
+
+			leaf policy_value {
+				type audit_policy_value;
+			}
+		}
+	}
+
+	container dnscache {}
+	container file {
+		description "";
+
+		uses file-identifier;
+	}
+	container file_audited_permissions {
+		description "";
+
+		uses file-identifier;
+	}
+	container file_effective_rights {
+		description "";
+
+		uses file-identifier;
+	}
+	container group_sid {
+		description "";
+
+		leaf group_sid {
+			description "";
+			type string;
+		}
+
+		leaf-list user_sid {
+			description "";
+			type string;
+		}
+
+		leaf-list subgroup_sid {
+			description "";
+			type string;
+		}
+	}
+
+	container interface {}
+	container junction {}
+	container license {}
+
+	// Account Lockout Policy
+	container lockout_policy {
+		description "";
+
+		leaf force_logoff {
+			description "";
+			type uint16;
+		}
+		leaf lockout_duration {
+			description "";
+			type uint16;
+		}
+		leaf lockout_observation_window {
+			description "";
+			type uint16;
+		}
+		leaf lockout_threshold {
+			description "";
+			type uint16;
+		}
+	}
+
+	// Password Policy
+	container password_policy {
+		description "";
+
+		leaf max_password_age {
+			description "";
+			type uint16;
+		}
+		leaf min_password_age {
+			description "";
+			type uint16;
+		}
+		leaf min_password_length {
+			description "";
+			type uint16;
+		}
+		leaf password_history_length {
+			description "";
+			type uint16;
+		}
+		leaf password_complexity {
+			description "";
+			type boolean;
+		}
+		leaf reversible_encryption {
+			description "";
+			type boolean;
+		}
+		leaf anonymous_name_lookup {
+			description "";
+			type boolean;
+		}
+	}
+
+	container peheader {}
+	container port {}
+	container process {}
+
+	container registry_key {
+		description "";
+
+		// hive, key, name, type, (leaflist) value, last_write_time, expanded_value, windows_view
+	}
+
+	container registry_key_audited_permissions {}
+	container registry_key_effective_rights {}
+	container service {}
+	container service_effective_rights {}
+	container shared_resource {}
+	container shared_resource_audited_permissions {}
+	container shared_resource_effective_rights {}
+	container sid {
+		description "";
+
+		uses trustee;
+	}
+
+	container system_metric {}
+	container user_access_control {}
+
+	// Users
+	container user {
+		description "";
+
+		leaf user_sid {
+			description "";
+			type string;
+		}
+		leaf user_name {
+			description "";
+			type string;
+		}
+		leaf enabled {
+			description "";
+			type boolean;
+		}
+		leaf last_logon {
+			description "";
+			type uint32;
+		}
+		list group_membership {
+			description "";
+			key "group_sid";
+			uses group;
+		}
+	}
+
+	// User Rights Assignment
+	container user_rights_assignment {
+		description "";
+
+		leaf user_right {
+			type enumeration {
+				description "";
+				enum ; // fill in
+			}
+		}
+
+		list trustees {
+			description "The list of trustees assigned the user right.";
+
+			key "trustee_sid";
+			uses trustee;
+		}
+	}
+
+	container volume {}
+	container wmi {}
+}
