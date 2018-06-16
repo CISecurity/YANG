@@ -13,7 +13,8 @@ module microsoft-windows-configuration {
 	contact yang@cisecurity.org;
 	description "";
 	revision 2018-06-06 {
-		description "Initial Version; Describing configuration information that can be collected from Microsoft Windows systems";
+		description 
+			"Initial Version; Describing configuration information that can be collected from Microsoft Windows systems";
 	}
 
 
@@ -21,7 +22,7 @@ module microsoft-windows-configuration {
 	// Types
 	//
 
-	typedef registry_hive {
+	typedef registry-hive {
 		type enumeration {
 			description "The Windows Registry Hives";
 			enum HKEY_CLASSES_ROOT;
@@ -32,7 +33,7 @@ module microsoft-windows-configuration {
 		}
 	}
 
-	typedef registry_type {
+	typedef registry-type {
 		type enumeration {
 			description "The Windows Registry datatype of a key";
 			enum reg_binary;
@@ -51,7 +52,7 @@ module microsoft-windows-configuration {
 	}
 
 	// Audit policy values (AUDIT_NONE|SUCCESS|FAILURE|SUCCESS_FAILURE)
-	typedef audit_policy_value {
+	typedef audit-policy-value {
 		type enumeration {
 			description "Audit event policy values";
 			enum AUDIT_NONE;
@@ -91,23 +92,38 @@ module microsoft-windows-configuration {
 	}
 
 	grouping registry-key-identifier {
+		description 
+			"The identification of a specific location in the Windows registry.";
+
 		leaf hive {
-			type registry_hive;
+			description "";
+			type registry-hive;
+		}
+		leaf key {
+			description "";
+			type string;
+		}
+		leaf windows-view {
+			description "";
+			type enumeration {
+				enum 32_bit;
+				enum 64_bit;
+			}
 		}
 	}
 
 	grouping trustee {
-		description "";
+		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
 
-		leaf trustee_sid {
+		leaf trustee-sid {
 			description "";
 			type string;
 		}
-		leaf trustee_name {
+		leaf trustee-name {
 			description "";
 			type string;
 		}
-		leaf trustee_domain {
+		leaf trustee-domain {
 			description "";
 			type string;
 		}
