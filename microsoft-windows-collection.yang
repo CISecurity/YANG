@@ -1,0 +1,64 @@
+module microsoft-windows-collection {
+	namespace "http://cisecurity.org/yang/microsoft-windows-collection";
+	prefix mswin-col;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Describing methods for collecting information that can be collected from Microsoft Windows systems";
+	}
+
+
+	//
+	// Types
+	//
+
+
+	/*
+		<collections>                // list
+			<collection>             // container
+				<type></type>        // string
+				<keys>               // list
+					<key>            // container
+						<name>
+						<datatype>   // Enum
+						<operation>  // Enum
+						<nil>        // boolean
+						<value>
+					</key>
+				</keys>
+
+				<behaviors>          // list
+					<behavior>       // container
+						<name>
+						<datatype>   // Enum
+						<value>
+					</behavior>
+				</behaviors>
+			</collection>
+		</collections>
+
+		<system-characteristics>
+			<item>
+				<type>
+				<unique-identifier>
+				<fields>
+					<field>
+						<name>
+						<datatype>
+						<nil>
+						<value>
+					</field>
+				</fields>
+			</item>
+		</system-characteristics>
+	*/
+}

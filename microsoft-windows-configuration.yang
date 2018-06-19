@@ -1,7 +1,7 @@
 
 module microsoft-windows-configuration {
 	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
-	prefix ccc;
+	prefix mswin-cfg;
 
 	import "ietf-yang-types" {
 		prefix "yang";
