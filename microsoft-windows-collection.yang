@@ -25,6 +25,7 @@ module microsoft-windows-collection {
 	/*
 		<collections>                // list
 			<collection>             // container
+				<namespace></namespace> // Enum
 				<type></type>        // string
 				<keys>               // list
 					<key>            // container
@@ -46,8 +47,17 @@ module microsoft-windows-collection {
 			</collection>
 		</collections>
 
+		<evaluations>
+			<evaluation>
+				<existence-check>
+				<item-check>
+				
+			</evaluation>
+		</evaluations>
+
 		<system-characteristics>
 			<item>
+				<namespace>
 				<type>
 				<unique-identifier>
 				<fields>
