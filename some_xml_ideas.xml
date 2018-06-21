@@ -1,0 +1,47 @@
+<assessment>
+
+	<collection>
+		<namespace></namespace>  // Enum
+		<type></type>        // string
+		<keys>               // list
+			<key>            // container
+				<name>
+				<datatype>   // Enum
+				<operation>  // Enum
+				<nil>        // boolean
+				<value>
+			</key>
+		</keys>
+
+		<behaviors>          // list
+			<behavior>       // container
+				<name>
+				<datatype>   // Enum
+				<value>
+			</behavior>
+		</behaviors>
+
+		<filters>
+			<filter>
+				<action></action> // include/exclude
+
+			</filter>
+		</filters>
+	</collection>
+
+	<evaluation>
+		<existence-check>
+			<item-check>
+			<comparison>
+				<fields>
+					<field>
+						<name>
+						<datatype>
+						<operation>  // Enum, with new value "nil"
+						<value>
+					</field>
+				</fields>
+			</comparison>
+	</evaluation>
+
+</assessment>

@@ -51,7 +51,16 @@ module microsoft-windows-collection {
 			<evaluation>
 				<existence-check>
 				<item-check>
-				
+				<comparison>
+					<fields>
+						<field>
+							<name>
+							<datatype>
+							<operation>  // Enum, with new value "nil"
+							<value>
+						</field>
+					</fields>
+				</comparison>
 			</evaluation>
 		</evaluations>
 
