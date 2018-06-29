@@ -29,19 +29,36 @@
 		</filters>
 	</collection>
 
-	<evaluation>
-		<existence-check>
-			<item-check>
-			<comparison>
+	<characteristics>
+		<items>
+			<item>
+				<type></type>
+				<status></status>
 				<fields>
 					<field>
-						<name>
-						<datatype>
-						<operation>  // Enum, with new value "nil"
-						<value>
+						<name></name>
+						<datatype></datatype>
+						<value></value>
+						<record>?
 					</field>
 				</fields>
-			</comparison>
+			</item>
+		</items>
+	</characteristics>
+
+	<evaluation>
+		<existence-check>
+		<item-check>
+		<comparison>
+			<fields>
+				<field>
+					<name>
+					<datatype>
+					<operation>  // Enum, with new value "isNil"
+					<value>
+				</field>
+			</fields>
+		</comparison>
 	</evaluation>
 
 </assessment>
