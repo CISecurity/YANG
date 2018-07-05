@@ -104,6 +104,14 @@ module microsoft-windows-collection {
 		}
 	}
 
+	grouping entity-boolean-type {
+		uses entity-base-type;
+
+		leaf entity-value {
+			type boolean;
+		}
+	}
+
 	grouping entity-record-field-type {
 		description "";
 

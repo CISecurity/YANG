@@ -29,22 +29,22 @@
 		</filters>
 	</collection>
 
-	<characteristics>
-		<items>
-			<item>
-				<type></type>
-				<status></status>
-				<fields>
-					<field>
-						<name></name>
-						<datatype></datatype>
-						<value></value>
-						<record>?
-					</field>
-				</fields>
-			</item>
-		</items>
-	</characteristics>
+	<system-characteristics>
+		<item>
+			<namespace></namespace>
+			<type></type>
+			<status></status>
+			<unique-identifier></unique-identifier>
+			<fields>
+				<field>
+					<name></name>
+					<datatype></datatype>
+					<value></value>
+					<record>?
+				</field>
+			</fields>
+		</item>
+	</system-characteristics>
 
 	<evaluation>
 		<existence-check>

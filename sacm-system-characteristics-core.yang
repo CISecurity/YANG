@@ -1,0 +1,69 @@
+module sacm-system-characteristics-core {
+	namespace "http://cisecurity.org/yang/sacm-system-characteristics-core";
+	prefix scc;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information";
+	}
+
+	typedef entity-status {
+		description "Defines the valid status messages associated with collection of specific information associated with an item.";
+		type enumeration {
+			enum error {
+				description "A status of 'error' says that there was an error collecting information associated with an 
+				item as a whole or any specific entity. An item would have a status of 'error' if a problem occurred that 
+				prevented the item from being collected.";
+			}
+			enum exists {
+				description "A status of 'exists' says that the item or specific piece of information exists on the system 
+				and has been collected.";
+			}
+			enum does-not-exist {
+				description "A status of 'does not exist' says that the item or specific piece of information does not 
+				exist and therefore has not been collected. This status assumes that an attempt was made to collect the 
+				information, but the information just does not exist.";
+			}
+			enum not-collected {
+				description "A status of 'not collected' says that no attempt was made to collect the item or specific 
+				piece of information so it is unknown what the value is and if it even exists.";
+			}
+	}
+
+	typedef entity-datatype {
+		description "The entity-datatype simple type defines the legal datatypes that are used to describe the values of 
+				     individual entities. A value should be interpreted according to the specified type. This is most important 
+				     during comparisons. For example, is '21' less than '123'? will evaluate to true if the datatypes are 'int', 
+				     but will evaluate to 'false' if the datatypes are 'string'. Another example is applying the 'equals' 
+				     operation to '1.0.0.0' and '1.0'. With datatype 'string' they are not equal, with datatype 'version' 
+				     they are.";
+		type enumeration {
+			enum binary;
+			enum boolean;
+			enum evr_string;
+			enum debian_evr_string;
+			enum fileset_revision;
+			enum float;
+			enum ios_version;
+			enum integer;
+			enum ipv4;
+			enum ipv6;
+			enum string;
+			enum version;
+			enum record;
+	}
+
+	typedef entity-ip-address {
+		description "";
+	}
+	// Add other base types
+}
