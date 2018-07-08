@@ -35,12 +35,24 @@
 			<type></type>
 			<status></status>
 			<unique-identifier></unique-identifier>
-			<fields>
-				<field>
+			<fields> <!-- The list of elements in this item -->
+				<field> <!-- A single element in this item -->
 					<name></name>
 					<datatype></datatype>
 					<value></value>
-					<record>?
+					
+					<records> <!-- A "list of rows from the database" -->
+						<record> <!-- A "single row" from the database -->
+							<record-name></record-name>
+							<record-fields> <!-- A "list of columns in the row" -->
+								<record-field> <!-- A "single column" in the row -->
+									<record-field-name></record-field-name>
+									<record-field-datatype></record-field-datatype>
+									<record-field-value></record-field-value>
+								</record-field>
+							</record-fields>
+						</record>
+					</records>
 				</field>
 			</fields>
 		</item>
@@ -62,3 +74,53 @@
 	</evaluation>
 
 </assessment>
+
+
+
+
+
+
+
+
+<collection>
+	<objects>
+		<object></object>
+	</objects>
+	<filters>
+		<filter></filter>
+	</filters>
+	<variables>
+		<constant-variable></constant-variable>
+		<external-variable></external-variable>
+		<local-variable>
+			[function-groups, literal-component, variable-component, object-component]
+			<arithmetic></arithmetic>
+			<begin></begin>
+			<concat></concat>
+			<end></end>
+			<escape-regex></escape-regex>
+			<split></split>
+			<substring></substring>
+			<time-difference></time-difference>
+			<regex-capture></regex-capture>
+			<unique></unique>
+			<count></count>
+			<glob-to-regex></glob-to-regex>
+		</local-variable>
+	</variables>
+</collection>
+
+
+<evaluation>
+	<states>
+		<state></state>
+	</states>
+	<variables>
+		<constant-variable></constant-variable>
+		<external-variable></external-variable>
+		<local-variable>
+			[function-groups, literal-component, variable-component, object-component]
+		</local-variable>
+	</variables>
+</evaluation>
+

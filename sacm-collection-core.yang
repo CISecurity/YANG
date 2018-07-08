@@ -16,5 +16,5 @@ module sacm-collection-core {
 			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information";
 	}
 
-	
+	// 
 }

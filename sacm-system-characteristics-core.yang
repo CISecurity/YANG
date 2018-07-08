@@ -62,8 +62,5 @@ module sacm-system-characteristics-core {
 			enum record;
 	}
 
-	typedef entity-ip-address {
-		description "";
-	}
-	// Add other base types
+	
 }
