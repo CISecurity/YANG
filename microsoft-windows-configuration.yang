@@ -61,6 +61,18 @@ module microsoft-windows-configuration {
 			enum AUDIT_SUCCESS_FAILURE;
 	}
 
+	typedef windows-view {
+		description "This is used to indicate from which view (32-bit or 64-bit), the associated Item was collected. 
+		A value of '32_bit' indicates the Item was collected from the 32-bit view. A value of '64-bit' indicates the 
+		Item was collected from the 64-bit view. Omitting this entity removes any assertion about which view the Item 
+		was collected from, and therefore it is strongly suggested that this entity be set.";
+
+		type enumeration {
+			enum 32_bit;
+			enum 64_bit;
+		}
+	}
+
 
 	//
 	// Groupings
@@ -88,6 +100,11 @@ module microsoft-windows-configuration {
 					type string;
 				}
 			}
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
 
 	}
 
@@ -105,10 +122,7 @@ module microsoft-windows-configuration {
 		}
 		leaf windows-view {
 			description "";
-			type enumeration {
-				enum 32_bit;
-				enum 64_bit;
-			}
+			type windows-view;
 		}
 	}
 
@@ -142,34 +156,38 @@ module microsoft-windows-configuration {
 		}
 	}
 
-	grouping record_field {
-		description "";
-
-		leaf name {}
-		leaf datatype {}
-		leaf value {}
-	}
-
-	grouping record {
-		description "";
-
-		list fields {
-			description "";
-			key "name";
-			uses record_field;
-		} 
-	}
-
 
 	//
 	// System Characteristics Elements
 	//
 
-	container active_directory {}
+	container active-directory {
+		description "Holds information about specific entries in the Windows Active Directory";
+
+		uses item;
+
+		leaf naming-context {}
+		leaf relative-dn {}
+		leaf attribute {}
+		leaf object-class {}
+		leaf ads-type {}
+		leaf-list value {
+			uses record;
+		}
+	}
 
 	// Audit Event Policy
-	container audit_event_policies {
-		list audit_event_policy {
+	container audit-event-policies {
+		description "Enumerates the different types of events the system should audit. The defined values are found in window's 
+		POLICY_AUDIT_EVENT_TYPE enumeration and accessed through the LsaQueryInformationPolicy when the InformationClass parameters 
+		are set to PolicyAuditEventsInformation. It extends the standard ItemType as defined in the oval-system-characteristics 
+		schema and one should refer to the ItemType description for more information.
+
+		Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		uses item;
+
+		list audit-event-policy {
 			key "category";
 
 			leaf category {
@@ -187,7 +205,7 @@ module microsoft-windows-configuration {
 				}
 			}
 
-			leaf policy_value {
+			leaf policy-value {
 				type audit_policy_value;
 			}
 		}
@@ -195,153 +213,554 @@ module microsoft-windows-configuration {
 
 	// Audit Event Policy Subcategories
 	container audit_event_policy_subcategories {
-		list audit_event_policy_subcategory {
+		description "Holds information about the audit event policy settings on a Windows system. These settings are used 
+		to specify which system and network events are monitored. For example, if the credential_validation element has a 
+		value of AUDIT_FAILURE, it means that the system is configured to log all unsuccessful attempts to validate a user 
+		account on a system. It is important to note that these audit event policy settings are specific to certain versions 
+		of Windows. As a result, the documentation for that version of Windows should be consulted for more information on 
+		each setting. It extends the standard ItemType as defined in the oval-system-characteristics schema and one should 
+		refer to the ItemType description for more information.
+
+		Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		uses item;
+
+		list policy-subcategory {
 			key "subcategory";
 
 			leaf subcategory {
 				type enumeration {
 					description "Audit event policy sub-category values";
 					// TODO - Fill In
-					enum credential_validation;
+					enum credential-validation;
+					enum kerberos-authentication-service;
+					enum kerberos-service-ticket-operations;
+					enum other-account-logon-events
+					enum application-group-management;
+					enum computer-account-management;
+					enum distribution-group-management;
+					enum other-account-management-events;
+					enum security-group-management;
+					enum user-account-management;
+					enum dpapi-activity;
+					enum process-creation;
+					enum process-termination;
+					enum rpc-events;
+					enum directory-service-access;
+					enum directory-service-changes;
+					enum directory-service-replication;
+					enum detailed-directory-service-replication;
+					enum account-lockout;
+					enum ipsec-extended-mode;
+					enum ipsec-main-mode;
+					enum ipsec-quick-mode;
+					enum logoff; 
+					enum logon;
+					enum network-policy-server;
+					enum other-logon-logoff-events;
+					enum special-logon;
+					enum logon-claims;
+					enum application-generated;
+					enum certification-services;
+					enum detailed-file-share;
+					enum file-share;
+					enum file-system;
+					enum filtering-platform-connection;
+					enum filtering-platform-packet-drop;
+					enum handle-manipulation;
+					enum kernel-object;
+					enum other-object-access-events;
+					enum registry;
+					enum sam;
+					enum removable-storage;
+					enum central-access-policy-staging;
+					enum audit-policy-change;
+					enum authentication-policy-change;
+					enum authorization-policy-change;
+					enum filtering-platform-policy-change;
+					enum mpssvc-rule-level-policy-change;
+					enum other-policy-change-events;
+					enum non-sensitive-privilege-use;
+					enum other-privilege-use-events;
+					enum sensitive-privilege-use;
+					enum ipsec-driver;
+					enum other-system-events;
+					enum security-state-change;
+					enum security-system-extension;
+					enum system-integrity;
+					enum group-membership;
+					enum pnp-activity;
+					enum user-device-claims;
+					enum audit-detailedtracking-tokenrightadjusted;
 				}
 			}
 
-			leaf policy_value {
+			leaf policy-value {
 				type audit_policy_value;
 			}
 		}
 	}
 
-	container dnscache {}
-	container file {
-		description "";
+	container cmdlet {
+		description "Represents a PowerShell cmdlet, the parameters supplied to it, and the value it returned.";
 
-		uses file-identifier;
+		uses item;
 	}
-	container file_audited_permissions {
-		description "";
+	container dnscache {
+		description "Stores information retrieved from the DNS cache about a domain name, its time to live, and its 
+		corresponding IP addresses.";
 
+		uses item;
+
+		leaf domain-name {}
+		leaf ttl {}
+		leaf-list ip-address {}
+	}
+	container file {
+		description "This element describes file metadata. The time information can be retrieved by the _stst function. 
+		Development_class and other version information (company, internal name, language, original_filename, product_name, 
+		product_version) can be retrieved using the VerQueryValue function.";
+
+		uses item;
 		uses file-identifier;
+
+		leaf owner {}
+		leaf size {}
+		leaf a-time {}
+		leaf c-time {}
+		leaf m-time {}
+		leaf ms-checksum {}
+		leaf version {}
+		leaf file-type {}
+		leaf-list file-attribute {}
+		leaf development-class {}
+		leaf company {}
+		leaf internal-name {}
+		leaf language {}
+		leaf original-filename {}
+		leaf product-name {}
+		leaf product-version {}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+
+	}
+	container file-audited-permissions {
+		description "This item stores the audited access rights of a file that a system access control list (SACL) structure 
+		grants to a specified trustee. The trustee's audited access rights are determined checking all access control entries 
+		(ACEs) in the SACL. For help with this test see the GetAuditedPermissionsFromAcl() API.";
+
+		uses item;
+		uses file-identifier;
+		uses trustee;
+
+		leaf standard-delete {
+			type audit-policy-value;
+		}
+		leaf standard-read-control {
+			type audit-policy-value;
+		}
+		leaf standard-write-dac {
+			type audit-policy-value;
+		}
+		leaf standard-write-owner {
+			type audit-policy-value;
+		}
+		leaf standard-synchronize {
+			type audit-policy-value;
+		}
+		leaf access-system-security {
+			type audit-policy-value;
+		}
+		leaf generic-read {
+			type audit-policy-value;
+		}
+		leaf generic-write {
+			type audit-policy-value;
+		}
+		leaf generic-execute {
+			type audit-policy-value;
+		}
+		leaf generic-all {
+			type audit-policy-value;
+		}
+		leaf file-read-data {
+			type audit-policy-value;
+		}
+		leaf file-write-data {
+			type audit-policy-value;
+		}
+		leaf file-append-data {
+			type audit-policy-value;
+		}
+		leaf file-read-extended-attributes {
+			type audit-policy-value;
+		}
+		leaf file-write-extended-attributes {
+			type audit-policy-value;
+		}
+		leaf file-execute {
+			type audit-policy-value;
+		}
+		leaf file-delete-child {
+			type audit-policy-value;
+		}
+		leaf file-read-attributes {
+			type audit-policy-value;
+		}
+		leaf file-write-attributes {
+			type audit-policy-value;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+
 	}
 	container file_effective_rights {
-		description "";
+		description "This item stores the effective rights of a file that a discretionary access control list (DACL) structure 
+		grants to a specified trustee. The trustee's effective rights are determined checking all access-allowed and access-denied 
+		access control entries (ACEs) in the DACL. For help with this test see the GetEffectiveRightsFromAcl() API.";
 
+		uses item;
 		uses file-identifier;
+		uses trustee;
+
+		leaf standard-delete {
+			type boolean;
+		}
+		leaf standard-read-control {
+			type boolean;
+		}
+		leaf standard-write-dac {
+			type boolean;
+		}
+		leaf standard-write-owner {
+			type boolean;
+		}
+		leaf standard-synchronize {
+			type boolean;
+		}
+		leaf access-system-security {
+			type boolean;
+		}
+		leaf generic-read {
+			type boolean;
+		}
+		leaf generic-write {
+			type boolean;
+		}
+		leaf generic-execute {
+			type boolean;
+		}
+		leaf generic-all {
+			type boolean;
+		}
+		leaf file-read-data {
+			type boolean;
+		}
+		leaf file-write-data {
+			type boolean;
+		}
+		leaf file-append-data {
+			type boolean;
+		}
+		leaf file-read-extended-attributes {
+			type boolean;
+		}
+		leaf file-write-extended-attributes {
+			type boolean;
+		}
+		leaf file-execute {
+			type boolean;
+		}
+		leaf file-delete-child {
+			type boolean;
+		}
+		leaf file-read-attributes {
+			type boolean;
+		}
+		leaf file-write-attributes {
+			type boolean;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
 	}
-	container group_sid {
-		description "";
 
-		leaf group_sid {
+	container group-sid {
+		description "The Windows group-sid allows the different users and subgroups, that directly belong to specific groups 
+		(identified by SID), to be collected. The collected subgroups will not be resolved to find indirect user or subgroup 
+		members. If the subgroups need to be resolved, it should be done using the sid_sid_object. Note that the user and subgroup 
+		elements can appear an unlimited number of times. If a user is not found in the specified group, a single user element 
+		should exist with a status of 'does not exist'. If there is an error determining the users of a group, a single user element 
+		should exist with a status of 'error'. If a subgroup is not found in the specified group, a single subgroup element should 
+		exist with a status of 'does not exist'. If there is an error determining the subgroups of a group, a single subgroup element 
+		should exist with a status of 'error'.";
+
+		uses item;
+
+		leaf group-sid {
 			description "";
 			type string;
 		}
 
-		leaf-list user_sid {
+		leaf-list user-sid {
 			description "";
 			type string;
 		}
 
-		leaf-list subgroup_sid {
+		leaf-list subgroup-sid {
 			description "";
 			type string;
 		}
 	}
 
-	container interface {}
-	container junction {}
-	container license {}
+	container interface {
+		description "Enumerate various attributes about the interfaces on a system.";
+
+		uses item;
+
+		leaf name {}
+		leaf index {}
+		leaf type {}
+		leaf hardware-address {}
+		leaf inet-address {}
+		leaf broadcast-address {}
+		leaf netmask {}
+		leaf address-type {}
+	}
+
+	container junction {
+		description "Enumerates attributes of a Windows junction (symbolic link)";
+
+		uses item;
+
+		leaf path {
+			description "Specifies the path to the subject junction";
+			type string;
+		}
+		leaf canonical-path {
+			description "Specifies the canonical path for the target of the Windows junction specified by the path";
+			type string;
+		}
+		leaf windows-view {
+			type windows-view;
+		}
+	}
+
+	container license {
+		description "Stores the different information that can be found in the Windows license registry value";
+
+		uses item;
+
+		leaf name {}
+		leaf type {
+			description "Specifies the type of data stored by the license entry. Valid values are REG_BINARY, REG_DWORD 
+			and REG_SZ. Please refer to the registry-type for more information about the different possible types.";
+
+			type registry-type;
+		}
+		leaf value {
+			description "The value entity holds the actual value of the specified license entry. The representation of the 
+			value as well as the associated datatype attribute depends on type of data stored in the license entry. If the 
+			specified license entry is of type REG_BINARY, then the datatype attribute should be set to 'binary' and the data 
+			represented by the value entity should follow the xsd:hexBinary form. (each binary octet is encoded as two hex digits) 
+			If the registry key is of type REG_DWORD, then the datatype attribute should be set to 'int' and the value entity 
+			should represent the data as an integer. If the specified registry key is of type REG_SZ, then the datatype should 
+			be 'string' and the value entity should be a copy of the string.";
+
+		}
+	}
 
 	// Account Lockout Policy
-	container lockout_policy {
-		description "";
+	container lockout-policy {
+		description "Enumerates various attributes associated with lockout information for users and global groups in the security 
+		database.";
 
-		leaf force_logoff {
-			description "";
+		uses item;
+
+		leaf force-logoff {
+			description "Specifies, in seconds (from a DWORD), the amount of time between the end of the valid logon time and the 
+			time when the user is forced to log off the network. A value of TIMEQ_FOREVER (max DWORD value, 4294967295) indicates 
+			that the user is never forced to log off. A value of zero indicates that the user will be forced to log off immediately 
+			when the valid logon time expires. See the USER_MODALS_INFO_0 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_duration {
-			description "";
+		leaf lockout-duration {
+			description "Specifies, in seconds, how long a locked account remains locked before it is automatically unlocked. See 
+			the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_observation_window {
-			description "";
+		leaf lockout-observation-window {
+			description "Specifies the maximum time, in seconds, that can elapse between any two failed logon attempts before lockout 
+			occurs. See the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_threshold {
-			description "";
+		leaf lockout-threshold {
+			description "Specifies the number of invalid password authentications that can occur before an account is marked "locked out." 
+			See the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
+	}
+
+	// NT User
+	container ntuser {
+		description "Specifies information that can be collected from a particular ntuser.dat file";
+
+		uses item;
+
+		leaf key {}
+		leaf name {}
+		leaf sid {}
+		leaf username {}
+		leaf account-type {}
+		leaf logged-on {}
+		leaf enabled {}
+		leaf date-modified {}
+		leaf days-since-modified {}
+		leaf filepath {}
+		leaf last-write-time {}
+		leaf type {
+			type registry-type;
+		}
+		leaf-list value {}
 	}
 
 	// Password Policy
-	container password_policy {
-		description "";
+	container password-policy {
+		description "Specific policy items associated with passwords. It is important to note that these policies are specific to certain 
+		versions of Windows. As a result, the documentation for that version of Windows should be consulted for more information. Information 
+		is stored in the SAM or Active Directory but is encrypted or hidden so the 'registry' and 'active-directory are of no use. If this 
+		can be figured out, then the password_policy item is not needed.";
 
-		leaf max_password_age {
-			description "";
+		uses item;
+
+		leaf max-password-age {
+			description "Specifies, in seconds (from a DWORD), the maximum allowable password age. A value of TIMEQ_FOREVER (max DWORD value, 4294967295) 
+			indicates that the password never expires. The minimum valid value for this element is ONE_DAY (86400). See the USER_MODALS_INFO_0 structure 
+			returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf min_password_age {
-			description "";
+		leaf min-password-age {
+			description "Specifies the minimum number of seconds that can elapse between the time a password changes and when it can be changed again. 
+			A value of zero indicates that no delay is required between password updates";
 			type uint16;
 		}
-		leaf min_password_length {
-			description "";
+		leaf min-password-length {
+			description "Specifies the minimum allowable password length. Valid values for this element are zero through PWLEN.";
 			type uint16;
 		}
-		leaf password_history_length {
-			description "";
+		leaf password-history-length {
+			description "Specifies the length of password history maintained. A new password cannot match any of the previous usrmod0_password_hist_len 
+			passwords. Valid values for this element are zero through DEF_MAX_PWHIST.";
 			type uint16;
 		}
-		leaf password_complexity {
-			description "";
+		leaf password-complexity {
+			description "A boolean value that signifies whether passwords must meet the complexity requirements put forth by the operating system.";
 			type boolean;
 		}
-		leaf reversible_encryption {
-			description "";
+		leaf reversible-encryption {
+			description "Determines whether or not passwords are stored using reversible encryption.";
 			type boolean;
 		}
-		leaf anonymous_name_lookup {
-			description "";
+		leaf anonymous-name-lookup {
+			description "Determines whether or not an anonymous user may query the local LSA policy";
 			type boolean;
 		}
 	}
 
-	container peheader {}
-	container port {}
-	container process {}
-
-	container registry_key {
+	container peheader {
 		description "";
 
+		uses item;
+	}
+
+	container port {
+		description "";
+
+		uses item;
+	}
+
+	container process {
+		description "";
+
+		uses item;
+	}
+
+	container registry-key {
+		description "";
+
+		uses item;
+	
 		// hive, key, name, type, (leaflist) value, last_write_time, expanded_value, windows_view
 	}
 
-	container registry_key_audited_permissions {}
-	container registry_key_effective_rights {}
-	container service {}
-	container service_effective_rights {}
-	container shared_resource {}
-	container shared_resource_audited_permissions {}
-	container shared_resource_effective_rights {}
+	container registry-key-audited-permissions {
+		description "";
+
+		uses item;
+	}
+	container registry-key-effective-rights {
+		description "";
+
+		uses item;
+	}
+	container service {
+		description "";
+
+		uses item;
+	}
+	container service-effective-rights {
+		description "";
+
+		uses item;
+	}
+	container shared-resource {
+		description "";
+
+		uses item;
+	}
+	container shared-resource-audited-permissions {
+		description "";
+
+		uses item;
+	}
+	container shared-resource-effective-rights {
+		description "";
+
+		uses item;
+	}
 	container sid {
 		description "";
 
 		uses trustee;
 	}
 
-	container system_metric {}
-	container user_access_control {}
+	container system-metric {
+		description "";
+
+		uses item;
+	}
+	container user-access-control {
+		description "";
+
+		uses item;
+	}
 
 	// Users
 	container user {
 		description "";
 
-		leaf user_sid {
+		uses item;
+
+		leaf user-sid {
 			description "";
 			type string;
 		}
-		leaf user_name {
+		leaf user-name {
 			description "";
 			type string;
 		}
@@ -349,11 +768,11 @@ module microsoft-windows-configuration {
 			description "";
 			type boolean;
 		}
-		leaf last_logon {
+		leaf last-logon {
 			description "";
 			type uint32;
 		}
-		list group_membership {
+		list group-membership {
 			description "";
 			key "group_sid";
 			uses group;
@@ -361,10 +780,12 @@ module microsoft-windows-configuration {
 	}
 
 	// User Rights Assignment
-	container user_rights_assignment {
+	container user-rights-assignment {
 		description "";
 
-		leaf user_right {
+		uses item;
+	
+		leaf user-right {
 			type enumeration {
 				description "";
 				enum ; // fill in
@@ -379,6 +800,14 @@ module microsoft-windows-configuration {
 		}
 	}
 
-	container volume {}
-	container wmi {}
+	container volume {
+		description "";
+
+		uses item;
+	}
+	container wmi {
+		description "";
+
+		uses item;
+	}
 }

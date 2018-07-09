@@ -85,6 +85,56 @@ module sacm-core {
 		}
 	}
 
+	typedef item-check {
+		description "Defines acceptable check values, which are used to determine the final result of something based on the 
+		results of individual components. When used to define the relationship between collected characteristics and expected 
+		state, each check value defines how many of the matching objects (items except those with a status of does not exist) 
+		must satisfy the given state for the test to return true. When used to define the relationship between instances of a 
+		given entity, the different check values defines how many instances must be true for the entity to return true. When 
+		used to define the relationship between entities and multiple variable values, each check value defines how many variable 
+		values must be true for the entity to return true.";
+
+		type enumeration {
+			enum all {
+				description "A value of 'all' means that a final result of true is given if all the individual results under consideration are true.";
+			}
+			enum at-least-one {
+				description "A value of 'at-least-one' means that a final result of true is given if at least one of the individual results under consideration is true.";
+			}
+			enum none {
+				description "A value of 'none' means that a final result of true is given if none the individual results under consideration are true.";
+			}
+			enum one {
+				description "A value of 'one' means that a final result of true is given if one and only one of the individual results under consideration are true.";
+			}
+		}
+	}
+
+	typedef existence-check {
+		description "Defines acceptable existence values, which are used to determine a result based on the existence of individual system characteristics items. 
+		The main use for this is for a test regarding the existence of items on the system. Its secondary use is for a state regarding the existence of entities 
+		within corresponding items.";
+
+		type enumeration {
+			enum all-exist {
+				description "When used in the comparison of a system characteristics item element to an expected state, a value of 'all-exist' means that every item 
+				entity for an object defined by the description exists on the system. When used in the context of a test's check-existence element, this value is 
+				equivalent to 'at-least-one-exists' because non-existent items have no impact upon evaluation.";
+			}
+			enum any-exist {
+				description "A value of 'any-exist' means that zero or more objects defined by the description exist on the system.";
+			}
+			enum at-least-one-exists {
+				description "A value of 'at-least-one-exists' means that at least one object defined by the description exists on the system.";
+			}
+			enum none-exist {
+				description "A value of 'none-exist' means that none of the objects defined by the description exist on the system.";
+			}
+			enum only-one-exists {
+				description "A value of 'only-one-exists' means that only one object defined by the description exists on the system.";
+			}
+		}
+	}
 
 	//
 	// Groupings
