@@ -1,6 +1,6 @@
 module sacm-system-characteristics-core {
 	namespace "http://cisecurity.org/yang/sacm-system-characteristics-core";
-	prefix scc;
+	prefix sacm-sc;
 
 	import "ietf-yang-types" {
 		prefix "yang";
@@ -13,7 +13,8 @@ module sacm-system-characteristics-core {
 	description "";
 	revision 2018-06-06 {
 		description 
-			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information";
+			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information.
+			NOTE: Loosely based on OVAL System Characteristics Schema";
 	}
 
 	typedef entity-status {
@@ -37,30 +38,6 @@ module sacm-system-characteristics-core {
 				description "A status of 'not collected' says that no attempt was made to collect the item or specific 
 				piece of information so it is unknown what the value is and if it even exists.";
 			}
+		}
 	}
-
-	typedef entity-datatype {
-		description "The entity-datatype simple type defines the legal datatypes that are used to describe the values of 
-				     individual entities. A value should be interpreted according to the specified type. This is most important 
-				     during comparisons. For example, is '21' less than '123'? will evaluate to true if the datatypes are 'int', 
-				     but will evaluate to 'false' if the datatypes are 'string'. Another example is applying the 'equals' 
-				     operation to '1.0.0.0' and '1.0'. With datatype 'string' they are not equal, with datatype 'version' 
-				     they are.";
-		type enumeration {
-			enum binary;
-			enum boolean;
-			enum evr_string;
-			enum debian_evr_string;
-			enum fileset_revision;
-			enum float;
-			enum ios_version;
-			enum integer;
-			enum ipv4;
-			enum ipv6;
-			enum string;
-			enum version;
-			enum record;
-	}
-
-	
 }

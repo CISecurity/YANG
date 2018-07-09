@@ -1,6 +1,6 @@
 module sacm-collection-core {
 	namespace "http://cisecurity.org/yang/sacm-collection-core";
-	prefix scc;
+	prefix sacm-def;
 
 	import "ietf-yang-types" {
 		prefix "yang";
@@ -13,7 +13,8 @@ module sacm-collection-core {
 	description "";
 	revision 2018-06-06 {
 		description 
-			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information";
+			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information
+			NOTE: Loosely maps to OVAL Definitions Schema";
 	}
 
 	// 

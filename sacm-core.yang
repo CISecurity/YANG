@@ -1,0 +1,149 @@
+module sacm-core {
+	namespace "http://cisecurity.org/yang/sacm-core";
+	prefix sacm-core;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Types, Groupings, and any other constructs common to SACM.  
+			NOTE: Loosely maps to OVAL Common";
+	}
+
+	typedef entity-datatype {
+		description "The entity-datatype simple type defines the legal datatypes that are used to describe the values of 
+				     individual entities. A value should be interpreted according to the specified type. This is most important 
+				     during comparisons. For example, is '21' less than '123'? will evaluate to true if the datatypes are 'int', 
+				     but will evaluate to 'false' if the datatypes are 'string'. Another example is applying the 'equals' 
+				     operation to '1.0.0.0' and '1.0'. With datatype 'string' they are not equal, with datatype 'version' 
+				     they are.";
+		type enumeration {
+			enum binary;
+			enum boolean;
+			enum evr-string;
+			enum fileset-revision;
+			enum float;
+			enum integer;
+			enum ipv4;
+			enum ipv6;
+			enum string;
+			enum version;
+			enum record;
+			enum debian-evr-string;
+			enum cisco-ios-version;
+	}
+
+	typedef entity-operation {
+		description "Defines acceptable operations. Each operation defines how to compare entities against their actual values.";
+		type enumeration {
+			enum equals;
+			enum not-equal;
+			enum case-insensitive-equals;
+			enum case-insensitive-not-equal;
+			enum greater-than;
+			enum greater-than-or-equal-to;
+			enum less-than;
+			enum less-than-or-equal-to;
+			enum bitwise-and;
+			enum bitwise-or;
+			enum pattern-match;
+			enum subset-of;
+			enum superset-of;
+	}
+
+	typedef entity-logical-operator {
+		description "Operators describing the logical combination of results.  Each operator defines how to 
+		evaluate multiple arguments.";
+
+		type enumeration {
+			enum AND {
+				description "The AND operator produces a true result if every argument is true. If one or more 
+				arguments are false, the result of the AND is false. If one or more of the arguments are unknown, 
+				and if none of the arguments are false, then the AND operator produces a result of unknown.";
+			}
+			enum OR {
+				description "The OR operator produces a true result if one or more arguments is true. If every 
+				argument is false, the result of the OR is false. If one or more of the arguments are unknown and 
+				if none of arguments are true, then the OR operator produces a result of unknown.";
+			}
+			enum XOR {
+				description "XOR is defined to be true if an odd number of its arguments are true, and false otherwise. 
+				If any of the arguments are unknown, then the XOR operator produces a result of unknown.";
+			}
+			enum ONE {
+				description "The ONE operator produces a true result if one and only one argument is true. If there 
+				are more than argument is true (or if there are no true arguments), the result of the ONE is false. 
+				If one or more of the arguments are unknown, then the ONE operator produces a result of unknown.";
+			}
+		}
+	}
+
+
+	//
+	// Groupings
+	//
+	grouping entity-base-type {
+		leaf name {
+			type string;
+		}
+		leaf datatype {
+			type entity-datatype;
+		}
+		leaf operation {
+			type entity-operation;
+		}
+		leaf nil {
+			type boolean;
+		}
+	}
+
+	grouping entity-int-type {
+		uses entity-base-type;
+
+		leaf entity-value {
+			type int32;
+		}
+	}
+
+	grouping entity-string-type {
+		uses entity-base-type;
+
+		leaf entity-value {
+			type string;
+		}
+	}
+
+	grouping entity-boolean-type {
+		uses entity-base-type;
+
+		leaf entity-value {
+			type boolean;
+		}
+	}
+
+	grouping entity-record-field-type {
+		description "";
+
+		leaf name {}
+		leaf value {}
+	}
+
+	grouping entity-record-type {
+		description "";
+
+		uses entity-base-type;
+
+		list fields {
+			description "";
+			key "name";
+			uses record_field;
+		} 
+	}
+}
