@@ -22,6 +22,123 @@ module microsoft-windows-configuration {
 	// Types
 	//
 
+	typedef ip-address-type {
+		description "Restricts a string value to a specific set of values that describe address types associated with an interface.";
+
+		type enumeration {
+			enum deleted {
+				description "The stated IP address is being deleted. The unsigned short value that this corresponds to is 0x0040";
+			}
+			enum disconnected {
+				description "The stated IP address is on a disconnected interface. The unsigned short value that this corresponds to is 0x0008.";
+			}
+			enum dynamic {
+				description "The stated IP address is a dynamic IP address. The unsigned short value that this corresponds to is 0x0004.";
+			}
+			enum primary {
+				description "The stated IP address is a primary IP address. The unsigned short value that this corresponds to is 0x0001.";
+			}
+			enum transient {
+				description "The stated IP address is a transient IP address. The unsigned short value that this corresponds to is 0x0080";
+			}
+		}
+	}
+
+	typedef active-directory-attribute-type {
+		description "Restricts a string value to a specific set of values that specify the different types of information that an active directory 
+			attribute can represents. For more information look at the ADSTYPEENUM enumeration defined by Microsoft.";
+
+		type enumeration {
+			enum invalid {
+				description "The data type is invalid.";
+			}
+			enum dn-string {
+				description "The string is of Distinguished Name (path) of a directory service object.";
+			}
+			enum case-exact-string {
+				description "The string is of the case-sensitive type.";
+			}
+			enum case-ignore-string {
+				description "The string is of the case-insensitive type.";
+			}
+			enum printable-string {
+				description "The string is displayable on the screen or in print.";
+			}
+			enum numeric-string {
+				description "The string is of a numeric value to be interpreted as text.";
+			}
+			enum boolean {
+				description "The data is of a Boolean value.";
+			}
+			enum integer {
+				description "The data is of an integer value.";
+			}
+			enum octet-string {
+				description "The string is of a byte array.";
+			}
+			enum utc-time {
+				description "The data is of the universal time as expressed in Universal Time Coordinate (UTC).";
+			}
+			enum large-integer {
+				description "The data is of a long integer value.";
+			}
+			enum provider-specific {
+				description "The string is of a provider-specific string.";
+			}
+			enum object-class {
+				description "Not Used";
+			}
+			enum case-ignore-list {
+				description "The data is of a list of case insensitive strings.";
+			}
+			enum octet-list {
+				description "The data is of a list of octet strings.";
+			}
+			enum path {
+				description "The string is of a directory path.";
+			}
+			enum postal-address {
+				description "The string is of the postal address type.";
+			}
+			enum timestamp {
+				description "The data is of a time stamp in seconds.";
+			}
+			enum backlink {
+				description "The string is of a back link.";
+			}
+			enum typed-name {
+				description "The string is of a typed name.";
+			}
+			enum hold {
+				description "The data is of the Hold data structure.";
+			}
+			enum net-address {
+				description "The string is of a net address.";
+			}
+			enum replica-pointer {
+				description "The data is of a replica pointer.";
+			}
+			enum fax-number {
+				description "The string is of a fax number.";
+			}
+			enum email {
+				description "The data is of an e-mail message.";
+			}
+			enum nt-security-descriptor {
+				description "The data is of Windows NT/Windows 2000 Security Descriptor as represented by a byte array.";
+			}
+			enum unknown {
+				description "The data is of an undefined type.";
+			}
+			enum dn-with-binary {
+				description "The data is of ADS_DN_WITH_BINARY used for mapping a distinguished name to a non varying GUID.";
+			}
+			enum dn-with-string {
+				description "The data is of ADS_DN_WITH_STRING used for mapping a distinguished name to a non-varying string value.";
+			}
+		}
+	}
+
 	typedef audit-policy-type {
 		type enumeration {
 			description "Audit event policy values";
@@ -43,81 +160,30 @@ module microsoft-windows-configuration {
 			}
 	}
 
-	typedef file-type {
-		description "Restricts a string value to a specific set of values that describe the different types of files.";
+	typedef drive-type {
+		description "defines the different values that are valid for the drive-type entity of a Windows volume. Note that the Windows API returns a UINT value.";
+
 		type enumeration {
-			enum char {
-				description "The specified file is a character file, typically an LPT device or a console.";
+			enum unknown {
+				description "The unknown type means that drive type cannot be determined. The UINT value that this corresponds to is 0.";
 			}
-			enum disk {
-				description "The specified file is a disk file.";
+			enum no-root-directory {
+				description "The no-root-directory type means that the root path is not valid. The UINT value that this corresponds to is 1.";
 			}
-			enum pipe {
-				description "The specified file is a socket, a named pipe, or an anonymous pipe.";
+			enum removable {
+				description "The removable type means that the drive contains removable media. The UINT value that this corresponds to is 2.";
+			}
+			enum fixed {
+				description "The fixed type means that the drive contains fixed media. The UINT value that this corresponds to is 3.";
 			}
 			enum remote {
-				description "UNUSED";
+				description "The remote type means that the drive is a remote drive (i.e. network drive). The UINT value that this corresponds to is 4.";
 			}
-			enum unknown {
-				description "Either the type of the specified file is unknown, or the function failed.";
+			enum cdrom {
+				description "The cdrom type means that the drive is a CD-ROM drive. The UINT value that this corresponds to is 5.";
 			}
-		}
-	}
-
-	typedef file-attribute-type {
-		description "Restricts a string value to a specific set of values that describe the different Windows file attributes.";
-
-		type enumeration {
-			enum archive {
-				description "A file or directory that is an archive file or directory. Applications typically use this attribute to mark files for backup or removal.";
-			}
-			enum compressed {
-				description "A file or directory that is compressed. For a file, all of the data in the file is compressed. For a directory, compression is the default for newly created files and subdirectories.";
-			}
-			enum device {
-				description "This value is reserved for system use.";
-			}
-			enum directory {
-				description "The handle that identifies a directory.";
-			}
-			enum encrypted {
-				description "A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a directory, encryption is the default for newly created files and subdirectories.";
-			}
-			enum hidden {
-				description "The file or directory is hidden. It is not included in an ordinary directory listing.";
-			}
-			enum integrity-stream {
-				description "The directory or user data stream is configured with integrity (only supported on ReFS volumes). It is not included in an ordinary directory listing. The integrity setting persists with the file if it's renamed. If a file is copied the destination file will have integrity set if either the source file or destination directory have integrity set.  Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not supported until Windows Server 2012.";
-			}
-			enum normal {
-				description "A file that does not have other attributes set. This attribute is valid only when used alone.";
-			}
-			enum not-content-indexed {
-				description "The file or directory is not to be indexed by the content indexing service.";
-			}
-			enum no-scrub-data {
-				description "The user data stream not to be read by the background data integrity scanner (AKA scrubber). When set on a directory it only provides inheritance. This flag is only supported on Storage Spaces and ReFS volumes. It is not included in an ordinary directory listing. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not supported until Windows 8 and Windows Server 2012.";
-			}
-			enum offline {
-				description "The data of a file is not available immediately. This attribute indicates that the file data is physically moved to offline storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications should not arbitrarily change this attribute.";
-			}
-			enum readonly {
-				description "A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is not honored on directories.";
-			}
-			enum reparse-point {
-				description "";
-			}
-			enum sparse-file {
-				description "";
-			}
-			enum system {
-				description "";
-			}
-			enum temporary {
-				description "";
-			}
-			enum virtual {
-				description "";
+			enum ramdisk {
+				description "The ramdisk type means that the drive is a RAM disk. The UINT value that this corresponds to is 6.";
 			}
 		}
 	}
@@ -147,6 +213,102 @@ module microsoft-windows-configuration {
 			}
 			enum token-ring {
 				description "token ring interfaces";
+			}
+		}
+	}
+
+	typedef file-type {
+		description "Restricts a string value to a specific set of values that describe the different types of files.";
+		type enumeration {
+			enum char {
+				description "The specified file is a character file, typically an LPT device or a console.";
+			}
+			enum disk {
+				description "The specified file is a disk file.";
+			}
+			enum pipe {
+				description "The specified file is a socket, a named pipe, or an anonymous pipe.";
+			}
+			enum remote {
+				description "UNUSED";
+			}
+			enum unknown {
+				description "Either the type of the specified file is unknown, or the function failed.";
+			}
+		}
+	}
+
+	typedef file-attribute-type {
+		description "Restricts a string value to a specific set of values that describe the different Windows file attributes.";
+
+		type enumeration {
+			enum archive {
+				description "A file or directory that is an archive file or directory. Applications typically use this attribute 
+					to mark files for backup or removal.";
+			}
+			enum compressed {
+				description "A file or directory that is compressed. For a file, all of the data in the file is compressed. For a 
+					directory, compression is the default for newly created files and subdirectories.";
+			}
+			enum device {
+				description "This value is reserved for system use.";
+			}
+			enum directory {
+				description "The handle that identifies a directory.";
+			}
+			enum encrypted {
+				description "A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a 
+					directory, encryption is the default for newly created files and subdirectories.";
+			}
+			enum hidden {
+				description "The file or directory is hidden. It is not included in an ordinary directory listing.";
+			}
+			enum integrity-stream {
+				description "The directory or user data stream is configured with integrity (only supported on ReFS volumes). It is 
+					not included in an ordinary directory listing. The integrity setting persists with the file if it's renamed. If a 
+					file is copied the destination file will have integrity set if either the source file or destination directory have 
+					integrity set.  
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not supported 
+					until Windows Server 2012.";
+			}
+			enum normal {
+				description "A file that does not have other attributes set. This attribute is valid only when used alone.";
+			}
+			enum not-content-indexed {
+				description "The file or directory is not to be indexed by the content indexing service.";
+			}
+			enum no-scrub-data {
+				description "The user data stream not to be read by the background data integrity scanner (AKA scrubber). When set on a 
+					directory it only provides inheritance. This flag is only supported on Storage Spaces and ReFS volumes. It is not 
+					included in an ordinary directory listing. 
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not 
+					supported until Windows 8 and Windows Server 2012.";
+			}
+			enum offline {
+				description "The data of a file is not available immediately. This attribute indicates that the file data is physically moved to 
+					offline storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications 
+					should not arbitrarily change this attribute.";
+			}
+			enum readonly {
+				description "A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is 
+					not honored on directories.";
+			}
+			enum reparse-point {
+				description "A file or directory that has an associated reparse point, or a file that is a symbolic link.";
+			}
+			enum sparse-file {
+				description "A file that is a sparse file.";
+			}
+			enum system {
+				description "A file or directory that the operating system uses a part of, or uses exclusively.";
+			}
+			enum temporary {
+				description "A file that is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient 
+					cache memory is available, because typically, an application deletes a temporary file after the handle is closed. In that scenario, 
+					the system can entirely avoid writing the data. Otherwise, the data is written after the handle is closed.";
+			}
+			enum virtual {
+				description "This value is reserved for system use.";
 			}
 		}
 	}
@@ -187,8 +349,22 @@ module microsoft-windows-configuration {
 		}
 	}
 
-	typedef pe-target-machine-type {}
-	typedef pe-subsystem-type {}
+	typedef pe-target-machine-type {
+		description "Identifies the valid machine targets that can be specified in the PE file header.";
+
+		type enumeration {
+			//TODO
+		}
+	}
+
+	typedef pe-subsystem-type {
+		description "Identifies the valid subsystem types that can be specified in the PE file header. ";
+
+		type enumeration {
+			//TODO
+		}
+	}
+
 	typedef protocol-type {
 		description "Restricts a string value to a specific set of values that describe the different available protocols";
 		type enumeration {
@@ -222,7 +398,7 @@ module microsoft-windows-configuration {
 			enum HKEY_CURRENT_USER_LOCAL_SETTINGS {
 				description "Registry entries subordinate to this key define preferences of the current user that are local to the machine. 
 					These entries are not included in the per-user registry portion of a roaming user profile. This key is supported starting 
-					with Windows 7 and Windows Server 2008 R2."
+					with Windows 7 and Windows Server 2008 R2.";
 			}
 		}
 	}
@@ -386,7 +562,7 @@ module microsoft-windows-configuration {
 
 	typedef windows-view {
 		description "This is used to indicate from which view (32-bit or 64-bit), the associated Item was collected. 
-		A value of '32_bit' indicates the Item was collected from the 32-bit view. A value of '64-bit' indicates the 
+		A value of '32-bit' indicates the Item was collected from the 32-bit view. A value of '64-bit' indicates the 
 		Item was collected from the 64-bit view. Omitting this entity removes any assertion about which view the Item 
 		was collected from, and therefore it is strongly suggested that this entity be set.";
 
