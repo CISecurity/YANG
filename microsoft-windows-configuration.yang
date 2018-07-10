@@ -25,40 +25,85 @@ module microsoft-windows-configuration {
 	typedef registry-hive {
 		type enumeration {
 			description "The Windows Registry Hives";
-			enum HKEY_CLASSES_ROOT;
-			enum HKEY_CURRENT_USER;
-			enum HKEY_LOCAL_MACHINE;
-			enum HKEY_USERS;
-			enum HKEY_CURRENT_CONFIG;
+			enum HKEY_CLASSES_ROOT {
+				description "";
+			}
+			enum HKEY_CURRENT_USER {
+				description "";
+			}
+			enum HKEY_LOCAL_MACHINE {
+				description "";
+			}
+			enum HKEY_USERS {
+				description "";
+			}
+			enum HKEY_CURRENT_CONFIG {
+				description "";
+			}
 		}
 	}
 
 	typedef registry-type {
 		type enumeration {
 			description "The Windows Registry datatype of a key";
-			enum reg_binary;
-			enum reg_dword;
-			enum reg_dword_big_endian;
-			enum reg_expand_sz;
-			enum reg_link;
-			enum reg_multi_sz;
-			enum reg_none;
-			enum reg_qword;
-			enum reg_sz;
-			enum reg_resource_list;
-			enum reg_full_resource_descriptor;
-			enum reg_resource_requirements_list;
+			enum reg_binary {
+				description "";
+			}
+			enum reg_dword {
+				description "";
+			}
+			enum reg_dword_big_endian {
+				description "";
+			}
+			enum reg_expand_sz {
+				description "";
+			}
+			enum reg_link {
+				description "";
+			}
+			enum reg_multi_sz {
+				description "";
+			}
+			enum reg_none {
+				description "";
+			}
+			enum reg_qword {
+				description "";
+			}
+			enum reg_sz {
+				description "";
+			}
+			enum reg_resource_list {
+				description "";
+			}
+			enum reg_full_resource_descriptor {
+				description "";
+			}
+			enum reg_resource_requirements_list {
+				description "";
+			}
 		}
 	}
 
-	// Audit policy values (AUDIT_NONE|SUCCESS|FAILURE|SUCCESS_FAILURE)
 	typedef audit-policy-value {
 		type enumeration {
 			description "Audit event policy values";
-			enum AUDIT_NONE;
-			enum AUDIT_SUCCESS;
-			enum AUDIT_FAILURE;
-			enum AUDIT_SUCCESS_FAILURE;
+			enum AUDIT_NONE {
+				description "The audit type AUDIT_NONE is used to cancel all auditing options 
+				for the specified events";
+			}
+			enum AUDIT_SUCCESS {
+				description "The audit type AUDIT_SUCCESS is used to perform audits on all successful 
+				occurrences of the specified events when auditing is enabled.";
+			}
+			enum AUDIT_FAILURE {
+				description "The audit type AUDIT_FAILURE is used to perform audits on all unsuccessful 
+				occurrences of specified events when auditing is enabled.";
+			}
+			enum AUDIT_SUCCESS_FAILURE {
+				description "The audit type AUDIT_SUCCESS_FAILURE is used to perform audits on all 
+				successful and unsuccessful occurrences of the specified events when auditing is enabled.";
+			}
 	}
 
 	typedef windows-view {
@@ -73,6 +118,97 @@ module microsoft-windows-configuration {
 		}
 	}
 
+	typedef file-type {
+		description "Restricts a string value to a specific set of values that describe the different types of files.";
+		type enumeration {
+			enum char {
+				description "The specified file is a character file, typically an LPT device or a console.";
+			}
+			enum disk {
+				description "The specified file is a disk file.";
+			}
+			enum pipe {
+				description "The specified file is a socket, a named pipe, or an anonymous pipe.";
+			}
+			enum remote {
+				description "UNUSED";
+			}
+			enum unknown {
+				description "Either the type of the specified file is unknown, or the function failed.";
+			}
+		}
+	}
+
+	typedef file-attribute-type {
+		description "";
+		type enumeration {
+			// TODO
+		}
+	}
+
+	typedef interface-type {
+		description "Restricts a string value to a specific set of values that describe the different 
+		types of interfaces.";
+
+		type enumeration {
+			enum ethernet {
+				description "ethernet interfaces";
+			}
+			enum fddi {
+				description "fiber distributed data interfaces (FDDI)";
+			}
+			enum loopback {
+				description "loopback interfaces";
+			}
+			enum other {
+				description "other interfaces";
+			}
+			enum ppp {
+				description "point-to-point protocol interfaces (PPP)";
+			}
+			enum slip {
+				description "serial line internet protocol interfaces (SLIP)";
+			}
+			enum token-ring {
+				description "token ring interfaces";
+			}
+		}
+	}
+
+	typedef naming-context-type {
+		description "Restricts a string value to a specific set of values: domain, configuration, 
+			and schema. These values describe the different naming context found withing Active Directory";
+		type enumeration {
+			enum domain {
+				description "The domain naming context contains Active Directory objects 
+					present in the specified domain (e.g. users, computers, groups, and other objects).";
+			}
+			enum configuration {
+				description "The configuration naming context contains configuration data that 
+					is required for the Active Directory to operate as a directory service.";
+			}
+			enum schema {
+				description "The schema naming context contains all of the Active Directory 
+					object definitions.";
+			}
+		}
+	}
+
+	typedef nt-user-account-type {
+		description "Restricts a string value to a specific set of values that describe the different 
+			types of accounts. The empty string is also allowed to support empty elements associated 
+			with error conditions.";
+		type enumeration {
+			enum local {
+				description "Local accounts are accounts that were created directly on the machine 
+					being tested and should be in the form of machinename\username";
+			}
+			enum domain {
+				description "Domain accounts are accounts that were created on a domain controller 
+					and should be in the form of domain\username";
+			}
+		}
+	}
 
 	//
 	// Groupings
