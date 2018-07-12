@@ -1,0 +1,186 @@
+submodule msw-audit-policy {
+	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
+	prefix msw-ap;
+
+	belongs-to "sacm-core" {
+		prefix "sacm-core";
+	}
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Describing Audit Policy configuration information that can be collected from Microsoft Windows systems";
+	}
+
+
+	//
+	// Types
+	//
+	typedef audit-policy-type {
+		type enumeration {
+			description "Audit event policy values";
+			enum AUDIT_NONE {
+				description "The audit type AUDIT_NONE is used to cancel all auditing options 
+				for the specified events";
+			}
+			enum AUDIT_SUCCESS {
+				description "The audit type AUDIT_SUCCESS is used to perform audits on all successful 
+				occurrences of the specified events when auditing is enabled.";
+			}
+			enum AUDIT_FAILURE {
+				description "The audit type AUDIT_FAILURE is used to perform audits on all unsuccessful 
+				occurrences of specified events when auditing is enabled.";
+			}
+			enum AUDIT_SUCCESS_FAILURE {
+				description "The audit type AUDIT_SUCCESS_FAILURE is used to perform audits on all 
+				successful and unsuccessful occurrences of the specified events when auditing is enabled.";
+			}
+	}
+
+	//
+	// Groupings
+	//
+	grouping policy-value {
+		description "The audit policy value";
+
+		uses sacm-core:entity-string-type {
+			refine entity-value {
+				type audit-policy-type;
+			}
+		}
+	}
+
+	//
+	// System Characteristics
+	//
+	// Audit Event Policy
+	container audit-event-policy-item {
+		description "Enumerates the different types of events the system should audit. The defined values are found in window's 
+			POLICY_AUDIT_EVENT_TYPE enumeration and accessed through the LsaQueryInformationPolicy when the InformationClass parameters 
+			are set to PolicyAuditEventsInformation. It extends the standard ItemType as defined in the oval-system-characteristics 
+			schema and one should refer to the ItemType description for more information.
+
+			Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		augment /sacm-core:item {
+
+			list audit-event-policy {
+				key "category";
+
+				leaf category {
+					type enumeration {
+						description "Audit event policy category values";
+						enum account_logon;
+						enum account_management;
+						enum detailed_tracking;
+						enum directory_service_access;
+						enum logon;
+						enum object_access;
+						enum policy_change;
+						enum privilege_use;
+						enum system;
+					}
+				}
+
+				uses policy-value;
+			}
+		}
+	}
+
+	// Audit Event Policy Subcategories
+	container audit-event-policy-subcategories-item {
+		description "Holds information about the audit event policy settings on a Windows system. These settings are used 
+			to specify which system and network events are monitored. For example, if the credential_validation element has a 
+			value of AUDIT_FAILURE, it means that the system is configured to log all unsuccessful attempts to validate a user 
+			account on a system. It is important to note that these audit event policy settings are specific to certain versions 
+			of Windows. As a result, the documentation for that version of Windows should be consulted for more information on 
+			each setting. It extends the standard ItemType as defined in the oval-system-characteristics schema and one should 
+			refer to the ItemType description for more information.
+
+			Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		augment /sacm-core:item {
+
+			list policy-subcategory {
+				key "subcategory";
+
+				leaf subcategory {
+					type enumeration {
+						description "Audit event policy sub-category values";
+						// TODO - Fill In
+						enum credential-validation;
+						enum kerberos-authentication-service;
+						enum kerberos-service-ticket-operations;
+						enum other-account-logon-events
+						enum application-group-management;
+						enum computer-account-management;
+						enum distribution-group-management;
+						enum other-account-management-events;
+						enum security-group-management;
+						enum user-account-management;
+						enum dpapi-activity;
+						enum process-creation;
+						enum process-termination;
+						enum rpc-events;
+						enum directory-service-access;
+						enum directory-service-changes;
+						enum directory-service-replication;
+						enum detailed-directory-service-replication;
+						enum account-lockout;
+						enum ipsec-extended-mode;
+						enum ipsec-main-mode;
+						enum ipsec-quick-mode;
+						enum logoff; 
+						enum logon;
+						enum network-policy-server;
+						enum other-logon-logoff-events;
+						enum special-logon;
+						enum logon-claims;
+						enum application-generated;
+						enum certification-services;
+						enum detailed-file-share;
+						enum file-share;
+						enum file-system;
+						enum filtering-platform-connection;
+						enum filtering-platform-packet-drop;
+						enum handle-manipulation;
+						enum kernel-object;
+						enum other-object-access-events;
+						enum registry;
+						enum sam;
+						enum removable-storage;
+						enum central-access-policy-staging;
+						enum audit-policy-change;
+						enum authentication-policy-change;
+						enum authorization-policy-change;
+						enum filtering-platform-policy-change;
+						enum mpssvc-rule-level-policy-change;
+						enum other-policy-change-events;
+						enum non-sensitive-privilege-use;
+						enum other-privilege-use-events;
+						enum sensitive-privilege-use;
+						enum ipsec-driver;
+						enum other-system-events;
+						enum security-state-change;
+						enum security-system-extension;
+						enum system-integrity;
+						enum group-membership;
+						enum pnp-activity;
+						enum user-device-claims;
+						enum audit-detailedtracking-tokenrightadjusted;
+					}
+				}
+
+				uses policy-value;
+			}
+		}
+	}
+}

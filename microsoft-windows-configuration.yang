@@ -725,25 +725,25 @@ module microsoft-windows-configuration {
 		choice identification {
 			case fp {
 				leaf filepath {
-					description "";
+					description "The filepath element specifies the absolute path for a file on the machine. A directory cannot be specified as a filepath.";
 					type string;
 				}
 			}
 		
 			case pfn {
 				leaf path {
-					description "";
+					description "The path element specifies the directory component of the absolute path to a file on the machine.";
 					type string;
 				}
 
 				leaf filename {
-					description "";
+					description "The filename element specifies the name of a file to evaluate.";
 					type string;
 				}
 			}
 		}
 		leaf windows-view {
-			description "";
+			description "The windows view value to which this was targeted. This is used to indicate which view (32-bit or 64-bit), the associated State applies to.";
 			type windows-view;
 		}
 
@@ -754,15 +754,17 @@ module microsoft-windows-configuration {
 			"The identification of a specific location in the Windows registry.";
 
 		leaf hive {
-			description "";
+			description "The hive that the registry key belongs to. This is restricted to a specific set of values: HKEY_CLASSES_ROOT, 
+				HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER, HKEY_CURRENT_USER_LOCAL_SETTINGS, HKEY_LOCAL_MACHINE, and HKEY_USERS.";
 			type registry-hive-type;
 		}
 		leaf key {
-			description "";
+			description "The key element describes a registry key to be collected. Note that the hive portion of the string should not 
+				be included, as this data should be found under the hive element.";
 			type string;
 		}
 		leaf windows-view {
-			description "";
+			description "The windows view value to which this was targeted. This is used to indicate which view (32-bit or 64-bit), the associated State applies to.";
 			type windows-view;
 		}
 	}
@@ -771,15 +773,16 @@ module microsoft-windows-configuration {
 		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
 
 		leaf trustee-sid {
-			description "";
+			description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+				a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
 			type string;
 		}
 		leaf trustee-name {
-			description "";
+			description "The account name associated with the given SID";
 			type string;
 		}
 		leaf trustee-domain {
-			description "";
+			description "The domain on which the SID is found";
 			type string;
 		}
 	}
@@ -788,11 +791,11 @@ module microsoft-windows-configuration {
 		description "";
 
 		leaf group_sid {
-			description "";
+			description "A security identifier (SID) is a unique value of variable length used to identify an organizational group";
 			type string;
 		}
 		leaf group_name {
-			description "";
+			description "The group name associated with the given group SID";
 			type string;
 		}
 	}

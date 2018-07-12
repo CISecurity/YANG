@@ -1,0 +1,266 @@
+
+submodule msw-user-rights-assignment {
+	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
+	prefix msw-ura;
+
+	belongs-to "sacm-core" {
+		prefix "sacm-core";
+	}
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Describing User Rights Assignment configuration information that can be collected from Microsoft Windows systems";
+	}
+
+
+	//
+	// Types
+	//
+	typedef user-right-type {
+		description "Restricts a string value to a specific set of values that describe the different user rights/privileges. ";
+
+		type enumeration {
+			enum se-assign-primary-token {
+				description "This privilege is required to assign the primary token of a process.";
+			}
+			enum se-audit {
+				description "This privilege is required to generate audit-log entries.";
+			}
+			enum se-backup {
+				description "This privilege is required to perform backup operations.";
+			}
+			enum se-change-notify {
+				description "This privilege is required to receive notifications of changes to files or directories.";
+			}
+			enum se-create-global {
+				description "This privilege is required to create named file mapping objects in the global namespace during Terminal Services sessions.";
+			}
+			enum se-create-pagefile {
+				description "This privilege is required to create a paging file.";
+			}
+			enum se-create-permanent {
+				description "This privilege is required to create a permanent object.";
+			}
+			enum se-create-symbolic-link {
+				description "This privilege is required to create a symbolic link.";
+			}
+			enum se-create-token {
+				description "This privilege is required to create a primary token.";
+			}
+			enum se-debug {
+				description "This privilege is required to debug and adjust the memory of a process owned by another account.";
+			}
+			enum se-enable-delegation {
+				description "This privilege is required to mark user and computer accounts as trusted for delegation.";
+			}
+			enum se-impersonate {
+				description "This privilege is required to impersonate.";
+			}
+			enum se-increate-base-priority {
+				description "This privilege is required to increase the base priority of a process.";
+			}
+			enum se-increase-quota {
+				description "This privilege is required to increase the quota assigned to a process.";
+			}
+			enum se-increase-working-set {
+				description "This privilege is required to allocate more memory for applications that run in the context of users.";
+			}
+			enum se-load-driver {
+				description "This privilege is required to load or unload a device driver.";
+			}
+			enum se-lock-memory {
+				description "This privilege is required to lock physical pages in memory.";
+			}
+			enum se-machine-account {
+				description "This privilege is required to create a computer account.";
+			}
+			enum se-manage-volume {
+				description "This privilege is required to enable volume management privileges.";
+			}
+			enum se-profile-single-process {
+				description "This privilege is required to gather profiling information for a single process.";
+			}
+			enum se-relabel {
+				description "This privilege is required to modify the mandatory integrity level of an object.";
+			}
+			enum se-remote-shutdown {
+				description "This privilege is required to shut down a system using a network request.";
+			}
+			enum se-restore {
+				description "This privilege is required to perform restore operations.";
+			}
+			enum se-security {
+				description "This privilege is required to perform a number of security-related functions, such as controlling and viewing audit messages.";
+			}
+			enum se-shutdown {
+				description "This privilege is required to shut down a local system.";
+			}
+			enum se-sync-agent {
+				description "This privilege is required for a domain controller to use the Lightweight Directory Access Protocol directory synchronization services";
+			}
+			enum se-system-environment {
+				description "This privilege is required to modify the nonvolatile RAM of systems that use this type of memory to store configuration information.";
+			}
+			enum se-system-profile {
+				description "This privilege is required to gather profiling information for the entire system.";
+			}
+			enum se-system-time {
+				description "This privilege is required to modify the system time.";
+			}
+			enum se-take-ownership {
+				description "This privilege is required to take ownership of an object without being granted discretionary access.";
+			}
+			enum se-tcb {
+				description "This privilege identifies its holder as part of the trusted computer base.";
+			}
+			enum se-time-zone {
+				description "This privilege is required to adjust the time zone associated with the computer's internal clock.";
+			}
+			enum se-trusted-credman-access {
+				description "This privilege is required to access Credential Manager as a trusted caller.";
+			}
+			enum se-undock {
+				description "This privilege is required to undock a laptop";
+			}
+			enum se-unsolicited-input {
+				description "This privilege is required to read unsolicited input from a terminal device.";
+			}
+			enum se-batch-logon {
+				description "This account right is required for an account to log on using the batch logon type.";
+			}
+			enum se-deny-batch-logon {
+				description "This account right explicitly denies an account the right to log on using the batch logon type.";
+			}
+			enum se-deny-interactive-logon {
+				description "This account right explicitly denies an account the right to log on using the interactive logon type.";
+			}
+			enum se-deny-network-logon {
+				description "This account right explicitly denies an account the right to log on using the network logon type.";
+			}
+			enum se-deny-remote-interactive-logon {
+				description "This account right explicitly denies an account the right to log on remotely using the interactive logon type.";
+			}
+			enum se-deny-service-logon {
+				description "This account right explicitly denies an account the right to log on using the service logon type.";
+			}
+			enum se-interactive-logon {
+				description "This account right is required for an account to log on using the interactive logon type.";
+			}
+			enum se-network-logon {
+				description "This account right is required for an account to log on using the network logon type.";
+			}
+			enum se-remote-interactive-logon {
+				description "This account right is required for an account to log on remotely using the interactive logon type.";
+			}
+			enum se-service-logon {
+				description "This account right is required for an account to log on using the service logon type";
+			}
+		}
+	}
+
+
+	//
+	// Groupings
+	//
+
+	grouping trustee {
+		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
+
+		leaf status {
+			description "The required status element";
+			type sacm-core:entity-status;
+		}
+
+		grouping trustee-sid {
+			description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+				a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
+			uses sacm-core:entity-string-type;
+		}
+		grouping trustee-name {
+			description "The account name associated with the given SID";
+			uses sacm-core:entity-string-type;
+		}
+		grouping trustee-domain {
+			description "The domain on which the SID is found";
+			uses sacm-core:entity-string-type;
+		}
+	}
+
+	grouping user-right {
+		description "he user-right entity holds a string that represents the name of a particular user right/privilege.";
+
+		uses sacm-core:entity-string-type {
+			refine entity-value {
+				type user-right-type;
+			}
+		}
+	}
+
+
+	//
+	// System Characteristics Elements
+	//
+
+	// User Rights Assignment
+	container user-rights-assignment {
+		//
+		// <user-rights-assignment>
+		//   <item>
+		//      <item-id>
+		//      <status>
+		//      <message> 0..n
+		//         <message-level>
+		//         <message-text>
+		//      </message>
+		//
+		//      <user-right>
+		//         <status>
+		//         <datatype>
+		//         <operation>
+		//         <nil>
+		//         <entity-value>
+		//      </user-right>
+		//
+		//      <trustee>
+		//         <trustee-sid>
+		//            <status>
+		//            <datatype>
+		//            <operation>
+		//            <nil>
+		//            <entity-value>
+		//         </trustee-sid>
+		//
+		//         <trustee-name>
+		//            <status>
+		//            <datatype>
+		//            <operation>
+		//            <nil>
+		//            <entity-value>
+		//         </trustee-name>
+		//
+		//         <trustee-domain>
+		//            <status>
+		//            <datatype>
+		//            <operation>
+		//            <nil>
+		//            <entity-value>
+		//         </trustee-domain>
+		//      </trustee>
+		//
+		description "Used to collect the trustees/SIDs that have been granted a specific user right/privilege.";
+
+		augment /sacm-core:item {
+			uses user-right;
+			uses trustee;
+		}
+	}
+}
