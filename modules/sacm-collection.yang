@@ -1,0 +1,51 @@
+module sacm-collection {
+	namespace "http://cisecurity.org/yang/sacm-collection";
+	prefix "sacm-collection";
+
+	//import "ietf-yang-types" {
+	//	prefix "yang";
+	//}
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-14 {
+		description 
+			"Initial Version; Types, Groupings, and any other constructs common to SACM.";
+	}
+
+
+	// Typedefs
+	// Groupings
+	// Containers
+
+}
+
+
+//	<collection>
+//		<namespace></namespace>  // Enum
+//		<type></type>        // string
+//		<keys>               // list
+//			<key>            // container
+//				<name>
+//				<datatype>   // Enum
+//				<operation>  // Enum
+//				<nil>        // boolean
+//				<value>
+//			</key>
+//		</keys>
+//
+//		<behaviors>          // list
+//			<behavior>       // container
+//				<name>
+//				<datatype>   // Enum
+//				<value>
+//			</behavior>
+//		</behaviors>
+//
+//		<filters>
+//			<filter>
+//				<action></action> // include/exclude
+//			</filter>
+//		</filters>
+//	</collection>

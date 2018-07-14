@@ -1,0 +1,22 @@
+module sacm-checklist {
+	namespace "http://cisecurity.org/yang/sacm-checklist";
+	prefix "sacm-checklist";
+
+	//import "ietf-yang-types" {
+	//	prefix "yang";
+	//}
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-14 {
+		description 
+			"Initial Version; Types, Groupings, and any other constructs common to SACM.";
+	}
+
+
+	// Typedefs
+	// Groupings
+	// Containers
+
+}
