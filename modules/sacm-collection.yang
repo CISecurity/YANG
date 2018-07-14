@@ -17,35 +17,121 @@ module sacm-collection {
 
 	// Typedefs
 	// Groupings
+	grouping collection-type {
+		description "Describes the unique combination of namespace and collection type, i.e. unix/file or windows/file";
+
+		leaf family {
+			type enumeration {
+				enum 
+			}
+		}
+
+		leaf type {
+			type string;
+		}
+	}
+
+	grouping base-field {
+		description "The required attributes for collection of system characteristics for the specified collection-type";
+
+		leaf name {
+			type string;
+		}
+		leaf datatype {
+			type enumeration {
+				enum STRING;
+				enum INTEGER;
+				enum VERSION;
+				enum BOOLEAN;
+				//more
+			}
+		}
+		leaf operation {
+			type enumeration {
+				enum EQUALS;
+				enum NOT-EQUAL;
+				enum IEQUALS;
+				enum INOT-EQUAL;
+				enum GREATER-THAN;
+				enum GREATER-THAN-OR-EQUAL;
+				enum LESS-THAN;
+				enum LESS-THAN-OR-EQUAL;
+				//more
+			}
+		}
+		leaf value {
+			type string;
+		}
+	}
+
+	grouping collection-fields {
+		description "Fields used for collecting system characteristics";
+
+		container collection-fields {
+			list collection-field {
+				key "name";
+
+				uses base-field;
+			}
+		}
+	}
+
+	grouping filter {
+		description "Describes the methods for filtering collected items based on expected field characteristics";
+
+		container filter-fields {
+			list filter-field {
+				key "name";
+
+				uses base-field;
+			}
+		}
+	}
+
+	grouping set {
+		description "Combinatorial operation on the collection of multiple collection objects";
+
+		leaf set-combination {
+			type enumeration {
+				enum UNION;
+				enum COMPLEMENT;
+				enum INTERSECTION;
+			}
+		}
+
+		leaf object1 {
+			type int32;
+			// This should refer to an existing /collection/collection-id
+		}
+
+		leaf object2 {
+			type int32;
+			// This should refer to an existing /collection/collection-id
+		}
+	}
+
 	// Containers
+	container collections {
+		list collection {
+			key "collection-id";
 
+			leaf collection-id {
+				type int32;
+			}
+
+			uses collection-type;
+
+			choice collection-strategy {
+				case fields {
+					uses collection-fields
+				}
+			
+				case sets {
+					uses set;
+				}
+			}
+
+			uses filter;
+		}
+	}
 }
-
-
-//	<collection>
-//		<namespace></namespace>  // Enum
-//		<type></type>        // string
-//		<keys>               // list
-//			<key>            // container
-//				<name>
-//				<datatype>   // Enum
-//				<operation>  // Enum
-//				<nil>        // boolean
-//				<value>
-//			</key>
-//		</keys>
-//
-//		<behaviors>          // list
-//			<behavior>       // container
-//				<name>
-//				<datatype>   // Enum
-//				<value>
-//			</behavior>
-//		</behaviors>
-//
-//		<filters>
-//			<filter>
-//				<action></action> // include/exclude
-//			</filter>
-//		</filters>
-//	</collection>

@@ -20,3 +20,32 @@ module sacm-checklist {
 	// Containers
 
 }
+
+
+checklist
+	checklist-id
+	checklist-title
+	checklist-description
+	...
+
+
+	checklist-item
+		checklits-item-id
+		checklist-item-title
+		checklist-item-description
+
+		collection
+			object (this is something like "file" or "registry" or "user")
+			object-keys
+				object-key
+
+			// WHAT ABOUT SETs
+
+			behaviors
+				// use presence nodes to enable/disable behaviors?
+				
+			filters
+				filter
+
+		evaluation
+

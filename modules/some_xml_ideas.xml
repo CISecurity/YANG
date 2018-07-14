@@ -1,11 +1,11 @@
 <assessment>
 
 	<collection>
-		<namespace></namespace>  // Enum
+		<namespace>          // Enum
 		<type></type>        // string
 		<keys>               // list
 			<key>            // container
-				<name>
+				<name>       // field-name
 				<datatype>   // Enum
 				<operation>  // Enum
 				<nil>        // boolean
@@ -24,7 +24,15 @@
 		<filters>
 			<filter>
 				<action></action> // include/exclude
-
+				<filter-keys>
+					<filter-key>
+						<name>
+						<datatype>
+						<operation>
+						<nil>
+						<value>
+					</filter-key>
+				</filter-keys>
 			</filter>
 		</filters>
 	</collection>
@@ -74,11 +82,6 @@
 	</evaluation>
 
 </assessment>
-
-
-
-
-
 
 
 
