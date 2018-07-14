@@ -16,112 +16,11 @@ module microsoft-windows-collection {
 			"Initial Version; Describing methods for collecting information that can be collected from Microsoft Windows systems";
 	}
 
-	typedef entity-datatype {
-		description "The enumeration of valid datatypes";
-		type enumeration {
-			enum binary;
-			enum boolean;
-			enum evr_string;
-			enum debian_evr_string;
-			enum fileset_revision;
-			enum float;
-			enum ios_version;
-			enum integer;
-			enum ipv4;
-			enum ipv6;
-			enum string;
-			enum version;
-			enum record;
-	}
+	
 
-	typedef entity-operation {
-		description "The enumeration of valid operations";
-		type enumeration {
-			enum equals;
-			enum not-equal;
-			enum case-insensitive-equals;
-			enum case-insensitive-not-equal;
-			enum greater-than;
-			enum greater-than-or-equal-to;
-			enum less-than;
-			enum less-than-or-equal-to;
-			enum bitwise-and;
-			enum bitwise-or;
-			enum pattern-match;
-			enum subset-of;
-			enum superset-of;
-	}
+	
 
-	typedef entity-logical-operator {
-		description "Operators describing the logical combination of results";
-		type enumeration {
-			enum AND {
-				description "";
-			}
-			enum OR {
-				description "";
-			}
-			enum XOR {
-				description "";
-			}
-			enum ONE {
-				description "";
-			}
-		}
-	}
-
-	//
-	// Groupings
-	//
-	grouping entity-base-type {
-		leaf name {
-			type string;
-		}
-		leaf datatype {
-			type entity-datatype;
-		}
-		leaf operation {
-			type entity-operation;
-		}
-		leaf nil {
-			type boolean;
-		}
-	}
-
-	grouping entity-int-type {
-		uses entity-base-type;
-
-		leaf entity-value {
-			type int32;
-		}
-	}
-
-	grouping entity-string-type {
-		uses entity-base-type;
-
-		leaf entity-value {
-			type string;
-		}
-	}
-
-	grouping entity-record-field-type {
-		description "";
-
-		leaf name {}
-		leaf value {}
-	}
-
-	grouping entity-record-type {
-		description "";
-
-		uses entity-base-type;
-
-		list fields {
-			description "";
-			key "name";
-			uses record_field;
-		} 
-	}
+	
 
 	//
 	// Types

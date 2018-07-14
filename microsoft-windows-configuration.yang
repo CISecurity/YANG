@@ -22,43 +22,696 @@ module microsoft-windows-configuration {
 	// Types
 	//
 
-	typedef registry-hive {
+	typedef ip-address-type {
+		description "Restricts a string value to a specific set of values that describe address types associated with an interface.";
+
+		type enumeration {
+			enum deleted {
+				description "The stated IP address is being deleted. The unsigned short value that this corresponds to is 0x0040";
+			}
+			enum disconnected {
+				description "The stated IP address is on a disconnected interface. The unsigned short value that this corresponds to is 0x0008.";
+			}
+			enum dynamic {
+				description "The stated IP address is a dynamic IP address. The unsigned short value that this corresponds to is 0x0004.";
+			}
+			enum primary {
+				description "The stated IP address is a primary IP address. The unsigned short value that this corresponds to is 0x0001.";
+			}
+			enum transient {
+				description "The stated IP address is a transient IP address. The unsigned short value that this corresponds to is 0x0080";
+			}
+		}
+	}
+
+	typedef active-directory-attribute-type {
+		description "Restricts a string value to a specific set of values that specify the different types of information that an active directory 
+			attribute can represents. For more information look at the ADSTYPEENUM enumeration defined by Microsoft.";
+
+		type enumeration {
+			enum invalid {
+				description "The data type is invalid.";
+			}
+			enum dn-string {
+				description "The string is of Distinguished Name (path) of a directory service object.";
+			}
+			enum case-exact-string {
+				description "The string is of the case-sensitive type.";
+			}
+			enum case-ignore-string {
+				description "The string is of the case-insensitive type.";
+			}
+			enum printable-string {
+				description "The string is displayable on the screen or in print.";
+			}
+			enum numeric-string {
+				description "The string is of a numeric value to be interpreted as text.";
+			}
+			enum boolean {
+				description "The data is of a Boolean value.";
+			}
+			enum integer {
+				description "The data is of an integer value.";
+			}
+			enum octet-string {
+				description "The string is of a byte array.";
+			}
+			enum utc-time {
+				description "The data is of the universal time as expressed in Universal Time Coordinate (UTC).";
+			}
+			enum large-integer {
+				description "The data is of a long integer value.";
+			}
+			enum provider-specific {
+				description "The string is of a provider-specific string.";
+			}
+			enum object-class {
+				description "Not Used";
+			}
+			enum case-ignore-list {
+				description "The data is of a list of case insensitive strings.";
+			}
+			enum octet-list {
+				description "The data is of a list of octet strings.";
+			}
+			enum path {
+				description "The string is of a directory path.";
+			}
+			enum postal-address {
+				description "The string is of the postal address type.";
+			}
+			enum timestamp {
+				description "The data is of a time stamp in seconds.";
+			}
+			enum backlink {
+				description "The string is of a back link.";
+			}
+			enum typed-name {
+				description "The string is of a typed name.";
+			}
+			enum hold {
+				description "The data is of the Hold data structure.";
+			}
+			enum net-address {
+				description "The string is of a net address.";
+			}
+			enum replica-pointer {
+				description "The data is of a replica pointer.";
+			}
+			enum fax-number {
+				description "The string is of a fax number.";
+			}
+			enum email {
+				description "The data is of an e-mail message.";
+			}
+			enum nt-security-descriptor {
+				description "The data is of Windows NT/Windows 2000 Security Descriptor as represented by a byte array.";
+			}
+			enum unknown {
+				description "The data is of an undefined type.";
+			}
+			enum dn-with-binary {
+				description "The data is of ADS_DN_WITH_BINARY used for mapping a distinguished name to a non varying GUID.";
+			}
+			enum dn-with-string {
+				description "The data is of ADS_DN_WITH_STRING used for mapping a distinguished name to a non-varying string value.";
+			}
+		}
+	}
+
+	typedef audit-policy-type {
+		type enumeration {
+			description "Audit event policy values";
+			enum AUDIT_NONE {
+				description "The audit type AUDIT_NONE is used to cancel all auditing options 
+				for the specified events";
+			}
+			enum AUDIT_SUCCESS {
+				description "The audit type AUDIT_SUCCESS is used to perform audits on all successful 
+				occurrences of the specified events when auditing is enabled.";
+			}
+			enum AUDIT_FAILURE {
+				description "The audit type AUDIT_FAILURE is used to perform audits on all unsuccessful 
+				occurrences of specified events when auditing is enabled.";
+			}
+			enum AUDIT_SUCCESS_FAILURE {
+				description "The audit type AUDIT_SUCCESS_FAILURE is used to perform audits on all 
+				successful and unsuccessful occurrences of the specified events when auditing is enabled.";
+			}
+	}
+
+	typedef drive-type {
+		description "defines the different values that are valid for the drive-type entity of a Windows volume. Note that the Windows API returns a UINT value.";
+
+		type enumeration {
+			enum unknown {
+				description "The unknown type means that drive type cannot be determined. The UINT value that this corresponds to is 0.";
+			}
+			enum no-root-directory {
+				description "The no-root-directory type means that the root path is not valid. The UINT value that this corresponds to is 1.";
+			}
+			enum removable {
+				description "The removable type means that the drive contains removable media. The UINT value that this corresponds to is 2.";
+			}
+			enum fixed {
+				description "The fixed type means that the drive contains fixed media. The UINT value that this corresponds to is 3.";
+			}
+			enum remote {
+				description "The remote type means that the drive is a remote drive (i.e. network drive). The UINT value that this corresponds to is 4.";
+			}
+			enum cdrom {
+				description "The cdrom type means that the drive is a CD-ROM drive. The UINT value that this corresponds to is 5.";
+			}
+			enum ramdisk {
+				description "The ramdisk type means that the drive is a RAM disk. The UINT value that this corresponds to is 6.";
+			}
+		}
+	}
+
+	typedef interface-type {
+		description "Restricts a string value to a specific set of values that describe the different 
+		types of interfaces.";
+
+		type enumeration {
+			enum ethernet {
+				description "ethernet interfaces";
+			}
+			enum fddi {
+				description "fiber distributed data interfaces (FDDI)";
+			}
+			enum loopback {
+				description "loopback interfaces";
+			}
+			enum other {
+				description "other interfaces";
+			}
+			enum ppp {
+				description "point-to-point protocol interfaces (PPP)";
+			}
+			enum slip {
+				description "serial line internet protocol interfaces (SLIP)";
+			}
+			enum token-ring {
+				description "token ring interfaces";
+			}
+		}
+	}
+
+	typedef file-type {
+		description "Restricts a string value to a specific set of values that describe the different types of files.";
+		type enumeration {
+			enum char {
+				description "The specified file is a character file, typically an LPT device or a console.";
+			}
+			enum disk {
+				description "The specified file is a disk file.";
+			}
+			enum pipe {
+				description "The specified file is a socket, a named pipe, or an anonymous pipe.";
+			}
+			enum remote {
+				description "UNUSED";
+			}
+			enum unknown {
+				description "Either the type of the specified file is unknown, or the function failed.";
+			}
+		}
+	}
+
+	typedef file-attribute-type {
+		description "Restricts a string value to a specific set of values that describe the different Windows file attributes.";
+
+		type enumeration {
+			enum archive {
+				description "A file or directory that is an archive file or directory. Applications typically use this attribute 
+					to mark files for backup or removal.";
+			}
+			enum compressed {
+				description "A file or directory that is compressed. For a file, all of the data in the file is compressed. For a 
+					directory, compression is the default for newly created files and subdirectories.";
+			}
+			enum device {
+				description "This value is reserved for system use.";
+			}
+			enum directory {
+				description "The handle that identifies a directory.";
+			}
+			enum encrypted {
+				description "A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a 
+					directory, encryption is the default for newly created files and subdirectories.";
+			}
+			enum hidden {
+				description "The file or directory is hidden. It is not included in an ordinary directory listing.";
+			}
+			enum integrity-stream {
+				description "The directory or user data stream is configured with integrity (only supported on ReFS volumes). It is 
+					not included in an ordinary directory listing. The integrity setting persists with the file if it's renamed. If a 
+					file is copied the destination file will have integrity set if either the source file or destination directory have 
+					integrity set.  
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not supported 
+					until Windows Server 2012.";
+			}
+			enum normal {
+				description "A file that does not have other attributes set. This attribute is valid only when used alone.";
+			}
+			enum not-content-indexed {
+				description "The file or directory is not to be indexed by the content indexing service.";
+			}
+			enum no-scrub-data {
+				description "The user data stream not to be read by the background data integrity scanner (AKA scrubber). When set on a 
+					directory it only provides inheritance. This flag is only supported on Storage Spaces and ReFS volumes. It is not 
+					included in an ordinary directory listing. 
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not 
+					supported until Windows 8 and Windows Server 2012.";
+			}
+			enum offline {
+				description "The data of a file is not available immediately. This attribute indicates that the file data is physically moved to 
+					offline storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications 
+					should not arbitrarily change this attribute.";
+			}
+			enum readonly {
+				description "A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is 
+					not honored on directories.";
+			}
+			enum reparse-point {
+				description "A file or directory that has an associated reparse point, or a file that is a symbolic link.";
+			}
+			enum sparse-file {
+				description "A file that is a sparse file.";
+			}
+			enum system {
+				description "A file or directory that the operating system uses a part of, or uses exclusively.";
+			}
+			enum temporary {
+				description "A file that is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient 
+					cache memory is available, because typically, an application deletes a temporary file after the handle is closed. In that scenario, 
+					the system can entirely avoid writing the data. Otherwise, the data is written after the handle is closed.";
+			}
+			enum virtual {
+				description "This value is reserved for system use.";
+			}
+		}
+	}
+
+	typedef naming-context-type {
+		description "Restricts a string value to a specific set of values: domain, configuration, 
+			and schema. These values describe the different naming context found withing Active Directory";
+
+		type enumeration {
+			enum domain {
+				description "The domain naming context contains Active Directory objects 
+					present in the specified domain (e.g. users, computers, groups, and other objects).";
+			}
+			enum configuration {
+				description "The configuration naming context contains configuration data that 
+					is required for the Active Directory to operate as a directory service.";
+			}
+			enum schema {
+				description "The schema naming context contains all of the Active Directory 
+					object definitions.";
+			}
+		}
+	}
+
+	typedef nt-user-account-type {
+		description "Restricts a string value to a specific set of values that describe the different 
+			types of accounts. The empty string is also allowed to support empty elements associated 
+			with error conditions.";
+		type enumeration {
+			enum local {
+				description "Local accounts are accounts that were created directly on the machine 
+					being tested and should be in the form of machinename\username";
+			}
+			enum domain {
+				description "Domain accounts are accounts that were created on a domain controller 
+					and should be in the form of domain\username";
+			}
+		}
+	}
+
+	typedef pe-target-machine-type {
+		description "Identifies the valid machine targets that can be specified in the PE file header.";
+
+		type enumeration {
+			//TODO
+		}
+	}
+
+	typedef pe-subsystem-type {
+		description "Identifies the valid subsystem types that can be specified in the PE file header. ";
+
+		type enumeration {
+			//TODO
+		}
+	}
+
+	typedef protocol-type {
+		description "Restricts a string value to a specific set of values that describe the different available protocols";
+		type enumeration {
+			enum tcp {
+				description "The port uses the Transmission Control Protocol (TCP).";
+			}
+			enum udp {
+				description "The port uses the User Datagram Protocol (UDP)";
+			}
+	}
+
+	typedef registry-hive-type {
 		type enumeration {
 			description "The Windows Registry Hives";
-			enum HKEY_CLASSES_ROOT;
-			enum HKEY_CURRENT_USER;
-			enum HKEY_LOCAL_MACHINE;
-			enum HKEY_USERS;
-			enum HKEY_CURRENT_CONFIG;
+			enum HKEY_CLASSES_ROOT {
+				description "This registry subtree contains information that associates file types with programs and configuration data 
+					for automation (e.g. COM objects and Visual Basic Programs).";
+			}
+			enum HKEY_CURRENT_USER {
+				description "This registry subtree contains the user profile of the user that is currently logged into the system.";
+			}
+			enum HKEY_LOCAL_MACHINE {
+				description "This registry subtree contains information about the local system";
+			}
+			enum HKEY_USERS {
+				description "This registry subtree contains user-specific data.";
+			}
+			enum HKEY_CURRENT_CONFIG {
+				description "This registry subtree contains configuration data for the current hardware profile.";
+			}
+			enum HKEY_CURRENT_USER_LOCAL_SETTINGS {
+				description "Registry entries subordinate to this key define preferences of the current user that are local to the machine. 
+					These entries are not included in the per-user registry portion of a roaming user profile. This key is supported starting 
+					with Windows 7 and Windows Server 2008 R2.";
+			}
 		}
 	}
 
 	typedef registry-type {
 		type enumeration {
 			description "The Windows Registry datatype of a key";
-			enum reg_binary;
-			enum reg_dword;
-			enum reg_dword_big_endian;
-			enum reg_expand_sz;
-			enum reg_link;
-			enum reg_multi_sz;
-			enum reg_none;
-			enum reg_qword;
-			enum reg_sz;
-			enum reg_resource_list;
-			enum reg_full_resource_descriptor;
-			enum reg_resource_requirements_list;
+			enum reg_binary {
+				description "";
+			}
+			enum reg_dword {
+				description "";
+			}
+			enum reg_dword_big_endian {
+				description "";
+			}
+			enum reg_expand_sz {
+				description "";
+			}
+			enum reg_link {
+				description "";
+			}
+			enum reg_multi_sz {
+				description "";
+			}
+			enum reg_none {
+				description "";
+			}
+			enum reg_qword {
+				description "";
+			}
+			enum reg_sz {
+				description "";
+			}
+			enum reg_resource_list {
+				description "";
+			}
+			enum reg_full_resource_descriptor {
+				description "";
+			}
+			enum reg_resource_requirements_list {
+				description "";
+			}
 		}
 	}
 
-	// Audit policy values (AUDIT_NONE|SUCCESS|FAILURE|SUCCESS_FAILURE)
-	typedef audit-policy-value {
+	typedef service-controls-accepted-type {
+		description "Defines the different values that are valid for the controls_accepted entity of a service";
+
 		type enumeration {
-			description "Audit event policy values";
-			enum AUDIT_NONE;
-			enum AUDIT_SUCCESS;
-			enum AUDIT_FAILURE;
-			enum AUDIT_SUCCESS_FAILURE;
+			enum accept-netbind-change {
+				description "The service is a network component and can accept changes in its binding without being stopped or restarted. The DWORD value that this corresponds to is 0x00000010.";
+			}
+			enum accept-param-change {
+				description "The service can re-read its startup parameters without being stopped or restarted. The DWORD value that this corresponds to is 0x00000008.";
+			}
+			enum accept-pause-continue {
+				description "The service can be paused or continued. The DWORD value that this corresponds to is 0x00000002.";
+			}
+			enum accept-preshutdown {
+				description "The service can receive pre-shutdown notifications. The DWORD value that this corresponds to is 0x00000100.";
+			}
+			enum accept-shutdown {
+				description "The service can receive shutdown notifications. The DWORD value that this corresponds to is 0x00000004.";
+			}
+			enum accept-stop {
+				description "The service can be stopped. The DWORD value that this corresponds to is 0x00000001.";
+			}
+			enum accept-hardware-profile-change {
+				description "The service can receive notifications when the system's hardware profile changes. The DWORD value that this corresponds to is 0x00000020.";
+			}
+			enum accept-power-event {
+				description "The service can receive notifications when the system's power status has changed. The DWORD value that this corresponds to is 0x00000040.";
+			}
+			enum accept-session-change {
+				description "The service can receive notifications when the system's session status has changed. The DWORD value that this corresponds to is 0x00000080.";
+			}
+			enum accept-time-change {
+				description "The service can receive notifications when the system time changes. The DWORD value that this corresponds to is 0x00000200.";
+			}
+			enum accept-trigger-event {
+				description "The service can receive notifications when an event that the service has registered for occurs on the system. The DWORD value that this corresponds to is 0x00000400.";
+			}
+		}
+	}
+
+	typedef service-current-state-type {
+		description "Defines the different values that are valid for the current_state entity of a service";
+
+		type enumeration {
+			enum continue-pending {
+				description "The service has been sent a command to continue, however, the command has not yet been executed. The DWORD value that this corresponds to is 0x00000005.";
+			}
+			enum pause-pending {
+				description "The service has been sent a command to pause, however, the command has not yet been executed. The DWORD value that this corresponds to is 0x00000006.";
+			}
+			enum paused {
+				description "The service is paused. The DWORD value that this corresponds to is 0x00000007.";
+			}
+			enum running {
+				description "The service is running. The DWORD value that this corresponds to is 0x00000004.";
+			}
+			enum start-pending {
+				description "The service has been sent a command to start, however, the command has not yet been executed. The DWORD value that this corresponds to is 0x00000002.";
+			}
+			enum stop-pending {
+				description "The service has been sent a command to stop, however, the command has not yet been executed. The DWORD value that this corresponds to is 0x00000003.";
+			}
+			enum stopped {
+				description "The service is stopped. The DWORD value that this corresponds to is 0x00000001.";
+			}
+		}
+	}
+
+	typedef service-start-type {
+		description "Defines the different values that are valid for the start_type entity of a service";
+
+		type enumeration {
+			enum auto-start {
+				description "the service is started automatically by the Service Control Manager (SCM) during startup. The DWORD value that this corresponds to is 0x00000002.";
+			}
+			enum boot-start {
+				description "the driver service is started by the system loader. The DWORD value that this corresponds to is 0x00000000.";
+			}
+			enum demand-start {
+				description "the service is started by the Service Control Manager (SCM) when StartService() is called. The DWORD value that this corresponds to is 0x00000003.";
+			}
+			enum disabled {
+				description "the service cannot be started. The DWORD value that this corresponds to is 0x00000004.";
+			}
+			enum system-start {
+				description "the service is a device driver started by IoInitSystem(). The DWORD value that this corresponds to is 0x00000001.";
+			}
+		}
+	}
+
+	typedef service-type {
+		description "Defines the different values that are valid for the service_type entity of a service";
+
+		type enumeration {
+			enum file-system-driver {
+				description "the service is a file system driver. The DWORD value that this corresponds to is 0x00000002";
+			}
+			enum kernel-driver {
+				description "the service is a driver. The DWORD value that this corresponds to is 0x00000001";
+			}
+			enum win32-own-process {
+				description "the service runs in its own process. The DWORD value that this corresponds to is 0x00000010";
+			}
+			enum win32-share-process {
+				description "the service runs in a process with other services. The DWORD value that this corresponds to is 0x00000020";
+			}
+			enum interactive-process {
+				description "the service runs in a process with other services. The DWORD value that this corresponds to is 0x00000100";
+			}
+		}
+	}
+	typedef shared-resource-type {}
+	typedef system-metric-index-type {}
+	typedef cmdlet-verb-type {}
+
+	typedef windows-view {
+		description "This is used to indicate from which view (32-bit or 64-bit), the associated Item was collected. 
+		A value of '32-bit' indicates the Item was collected from the 32-bit view. A value of '64-bit' indicates the 
+		Item was collected from the 64-bit view. Omitting this entity removes any assertion about which view the Item 
+		was collected from, and therefore it is strongly suggested that this entity be set.";
+
+		type enumeration {
+			enum 32-bit;
+			enum 64-bit;
+		}
+	}
+
+	typedef user-right-type {
+		description "Restricts a string value to a specific set of values that describe the different user rights/privileges. ";
+
+		type enumeration {
+			enum se-assign-primary-token {
+				description "This privilege is required to assign the primary token of a process.";
+			}
+			enum se-audit {
+				description "This privilege is required to generate audit-log entries.";
+			}
+			enum se-backup {
+				description "This privilege is required to perform backup operations.";
+			}
+			enum se-change-notify {
+				description "This privilege is required to receive notifications of changes to files or directories.";
+			}
+			enum se-create-global {
+				description "This privilege is required to create named file mapping objects in the global namespace during Terminal Services sessions.";
+			}
+			enum se-create-pagefile {
+				description "This privilege is required to create a paging file.";
+			}
+			enum se-create-permanent {
+				description "This privilege is required to create a permanent object.";
+			}
+			enum se-create-symbolic-link {
+				description "This privilege is required to create a symbolic link.";
+			}
+			enum se-create-token {
+				description "This privilege is required to create a primary token.";
+			}
+			enum se-debug {
+				description "This privilege is required to debug and adjust the memory of a process owned by another account.";
+			}
+			enum se-enable-delegation {
+				description "This privilege is required to mark user and computer accounts as trusted for delegation.";
+			}
+			enum se-impersonate {
+				description "This privilege is required to impersonate.";
+			}
+			enum se-increate-base-priority {
+				description "This privilege is required to increase the base priority of a process.";
+			}
+			enum se-increase-quota {
+				description "This privilege is required to increase the quota assigned to a process.";
+			}
+			enum se-increase-working-set {
+				description "This privilege is required to allocate more memory for applications that run in the context of users.";
+			}
+			enum se-load-driver {
+				description "This privilege is required to load or unload a device driver.";
+			}
+			enum se-lock-memory {
+				description "This privilege is required to lock physical pages in memory.";
+			}
+			enum se-machine-account {
+				description "This privilege is required to create a computer account.";
+			}
+			enum se-manage-volume {
+				description "This privilege is required to enable volume management privileges.";
+			}
+			enum se-profile-single-process {
+				description "This privilege is required to gather profiling information for a single process.";
+			}
+			enum se-relabel {
+				description "This privilege is required to modify the mandatory integrity level of an object.";
+			}
+			enum se-remote-shutdown {
+				description "This privilege is required to shut down a system using a network request.";
+			}
+			enum se-restore {
+				description "This privilege is required to perform restore operations.";
+			}
+			enum se-security {
+				description "This privilege is required to perform a number of security-related functions, such as controlling and viewing audit messages.";
+			}
+			enum se-shutdown {
+				description "This privilege is required to shut down a local system.";
+			}
+			enum se-sync-agent {
+				description "This privilege is required for a domain controller to use the Lightweight Directory Access Protocol directory synchronization services";
+			}
+			enum se-system-environment {
+				description "This privilege is required to modify the nonvolatile RAM of systems that use this type of memory to store configuration information.";
+			}
+			enum se-system-profile {
+				description "This privilege is required to gather profiling information for the entire system.";
+			}
+			enum se-system-time {
+				description "This privilege is required to modify the system time.";
+			}
+			enum se-take-ownership {
+				description "This privilege is required to take ownership of an object without being granted discretionary access.";
+			}
+			enum se-tcb {
+				description "This privilege identifies its holder as part of the trusted computer base.";
+			}
+			enum se-time-zone {
+				description "This privilege is required to adjust the time zone associated with the computer's internal clock.";
+			}
+			enum se-trusted-credman-access {
+				description "This privilege is required to access Credential Manager as a trusted caller.";
+			}
+			enum se-undock {
+				description "This privilege is required to undock a laptop";
+			}
+			enum se-unsolicited-input {
+				description "This privilege is required to read unsolicited input from a terminal device.";
+			}
+			enum se-batch-logon {
+				description "This account right is required for an account to log on using the batch logon type.";
+			}
+			enum se-deny-batch-logon {
+				description "This account right explicitly denies an account the right to log on using the batch logon type.";
+			}
+			enum se-deny-interactive-logon {
+				description "This account right explicitly denies an account the right to log on using the interactive logon type.";
+			}
+			enum se-deny-network-logon {
+				description "This account right explicitly denies an account the right to log on using the network logon type.";
+			}
+			enum se-deny-remote-interactive-logon {
+				description "This account right explicitly denies an account the right to log on remotely using the interactive logon type.";
+			}
+			enum se-deny-service-logon {
+				description "This account right explicitly denies an account the right to log on using the service logon type.";
+			}
+			enum se-interactive-logon {
+				description "This account right is required for an account to log on using the interactive logon type.";
+			}
+			enum se-network-logon {
+				description "This account right is required for an account to log on using the network logon type.";
+			}
+			enum se-remote-interactive-logon {
+				description "This account right is required for an account to log on remotely using the interactive logon type.";
+			}
+			enum se-service-logon {
+				description "This account right is required for an account to log on using the service logon type";
+			}
+		}
 	}
 
 
@@ -72,22 +725,27 @@ module microsoft-windows-configuration {
 		choice identification {
 			case fp {
 				leaf filepath {
-					description "";
+					description "The filepath element specifies the absolute path for a file on the machine. A directory cannot be specified as a filepath.";
 					type string;
 				}
 			}
 		
 			case pfn {
 				leaf path {
-					description "";
+					description "The path element specifies the directory component of the absolute path to a file on the machine.";
 					type string;
 				}
 
 				leaf filename {
-					description "";
+					description "The filename element specifies the name of a file to evaluate.";
 					type string;
 				}
 			}
+		}
+		leaf windows-view {
+			description "The windows view value to which this was targeted. This is used to indicate which view (32-bit or 64-bit), the associated State applies to.";
+			type windows-view;
+		}
 
 	}
 
@@ -96,19 +754,18 @@ module microsoft-windows-configuration {
 			"The identification of a specific location in the Windows registry.";
 
 		leaf hive {
-			description "";
-			type registry-hive;
+			description "The hive that the registry key belongs to. This is restricted to a specific set of values: HKEY_CLASSES_ROOT, 
+				HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER, HKEY_CURRENT_USER_LOCAL_SETTINGS, HKEY_LOCAL_MACHINE, and HKEY_USERS.";
+			type registry-hive-type;
 		}
 		leaf key {
-			description "";
+			description "The key element describes a registry key to be collected. Note that the hive portion of the string should not 
+				be included, as this data should be found under the hive element.";
 			type string;
 		}
 		leaf windows-view {
-			description "";
-			type enumeration {
-				enum 32_bit;
-				enum 64_bit;
-			}
+			description "The windows view value to which this was targeted. This is used to indicate which view (32-bit or 64-bit), the associated State applies to.";
+			type windows-view;
 		}
 	}
 
@@ -116,15 +773,16 @@ module microsoft-windows-configuration {
 		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
 
 		leaf trustee-sid {
-			description "";
+			description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+				a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
 			type string;
 		}
 		leaf trustee-name {
-			description "";
+			description "The account name associated with the given SID";
 			type string;
 		}
 		leaf trustee-domain {
-			description "";
+			description "The domain on which the SID is found";
 			type string;
 		}
 	}
@@ -133,30 +791,13 @@ module microsoft-windows-configuration {
 		description "";
 
 		leaf group_sid {
-			description "";
+			description "A security identifier (SID) is a unique value of variable length used to identify an organizational group";
 			type string;
 		}
 		leaf group_name {
-			description "";
+			description "The group name associated with the given group SID";
 			type string;
 		}
-	}
-
-	grouping record_field {
-		description "";
-
-		leaf name {}
-		leaf value {}
-	}
-
-	grouping record {
-		description "";
-
-		list fields {
-			description "";
-			key "name";
-			uses record_field;
-		} 
 	}
 
 
@@ -164,11 +805,33 @@ module microsoft-windows-configuration {
 	// System Characteristics Elements
 	//
 
-	container active_directory {}
+	container active-directory {
+		description "Holds information about specific entries in the Windows Active Directory";
+
+		uses item;
+
+		leaf naming-context {}
+		leaf relative-dn {}
+		leaf attribute {}
+		leaf object-class {}
+		leaf ads-type {}
+		leaf-list value {
+			uses record;
+		}
+	}
 
 	// Audit Event Policy
-	container audit_event_policies {
-		list audit_event_policy {
+	container audit-event-policies {
+		description "Enumerates the different types of events the system should audit. The defined values are found in window's 
+		POLICY_AUDIT_EVENT_TYPE enumeration and accessed through the LsaQueryInformationPolicy when the InformationClass parameters 
+		are set to PolicyAuditEventsInformation. It extends the standard ItemType as defined in the oval-system-characteristics 
+		schema and one should refer to the ItemType description for more information.
+
+		Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		uses item;
+
+		list audit-event-policy {
 			key "category";
 
 			leaf category {
@@ -186,7 +849,7 @@ module microsoft-windows-configuration {
 				}
 			}
 
-			leaf policy_value {
+			leaf policy-value {
 				type audit_policy_value;
 			}
 		}
@@ -194,153 +857,554 @@ module microsoft-windows-configuration {
 
 	// Audit Event Policy Subcategories
 	container audit_event_policy_subcategories {
-		list audit_event_policy_subcategory {
+		description "Holds information about the audit event policy settings on a Windows system. These settings are used 
+		to specify which system and network events are monitored. For example, if the credential_validation element has a 
+		value of AUDIT_FAILURE, it means that the system is configured to log all unsuccessful attempts to validate a user 
+		account on a system. It is important to note that these audit event policy settings are specific to certain versions 
+		of Windows. As a result, the documentation for that version of Windows should be consulted for more information on 
+		each setting. It extends the standard ItemType as defined in the oval-system-characteristics schema and one should 
+		refer to the ItemType description for more information.
+
+		Note that when audinting is disabled each of the entities listed below should be set to 'AUDIT_NONE'.";
+
+		uses item;
+
+		list policy-subcategory {
 			key "subcategory";
 
 			leaf subcategory {
 				type enumeration {
 					description "Audit event policy sub-category values";
 					// TODO - Fill In
-					enum credential_validation;
+					enum credential-validation;
+					enum kerberos-authentication-service;
+					enum kerberos-service-ticket-operations;
+					enum other-account-logon-events
+					enum application-group-management;
+					enum computer-account-management;
+					enum distribution-group-management;
+					enum other-account-management-events;
+					enum security-group-management;
+					enum user-account-management;
+					enum dpapi-activity;
+					enum process-creation;
+					enum process-termination;
+					enum rpc-events;
+					enum directory-service-access;
+					enum directory-service-changes;
+					enum directory-service-replication;
+					enum detailed-directory-service-replication;
+					enum account-lockout;
+					enum ipsec-extended-mode;
+					enum ipsec-main-mode;
+					enum ipsec-quick-mode;
+					enum logoff; 
+					enum logon;
+					enum network-policy-server;
+					enum other-logon-logoff-events;
+					enum special-logon;
+					enum logon-claims;
+					enum application-generated;
+					enum certification-services;
+					enum detailed-file-share;
+					enum file-share;
+					enum file-system;
+					enum filtering-platform-connection;
+					enum filtering-platform-packet-drop;
+					enum handle-manipulation;
+					enum kernel-object;
+					enum other-object-access-events;
+					enum registry;
+					enum sam;
+					enum removable-storage;
+					enum central-access-policy-staging;
+					enum audit-policy-change;
+					enum authentication-policy-change;
+					enum authorization-policy-change;
+					enum filtering-platform-policy-change;
+					enum mpssvc-rule-level-policy-change;
+					enum other-policy-change-events;
+					enum non-sensitive-privilege-use;
+					enum other-privilege-use-events;
+					enum sensitive-privilege-use;
+					enum ipsec-driver;
+					enum other-system-events;
+					enum security-state-change;
+					enum security-system-extension;
+					enum system-integrity;
+					enum group-membership;
+					enum pnp-activity;
+					enum user-device-claims;
+					enum audit-detailedtracking-tokenrightadjusted;
 				}
 			}
 
-			leaf policy_value {
+			leaf policy-value {
 				type audit_policy_value;
 			}
 		}
 	}
 
-	container dnscache {}
-	container file {
-		description "";
+	container cmdlet {
+		description "Represents a PowerShell cmdlet, the parameters supplied to it, and the value it returned.";
 
-		uses file-identifier;
+		uses item;
 	}
-	container file_audited_permissions {
-		description "";
+	container dnscache {
+		description "Stores information retrieved from the DNS cache about a domain name, its time to live, and its 
+		corresponding IP addresses.";
 
+		uses item;
+
+		leaf domain-name {}
+		leaf ttl {}
+		leaf-list ip-address {}
+	}
+	container file {
+		description "This element describes file metadata. The time information can be retrieved by the _stst function. 
+		Development_class and other version information (company, internal name, language, original_filename, product_name, 
+		product_version) can be retrieved using the VerQueryValue function.";
+
+		uses item;
 		uses file-identifier;
+
+		leaf owner {}
+		leaf size {}
+		leaf a-time {}
+		leaf c-time {}
+		leaf m-time {}
+		leaf ms-checksum {}
+		leaf version {}
+		leaf file-type {}
+		leaf-list file-attribute {}
+		leaf development-class {}
+		leaf company {}
+		leaf internal-name {}
+		leaf language {}
+		leaf original-filename {}
+		leaf product-name {}
+		leaf product-version {}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+
+	}
+	container file-audited-permissions {
+		description "This item stores the audited access rights of a file that a system access control list (SACL) structure 
+		grants to a specified trustee. The trustee's audited access rights are determined checking all access control entries 
+		(ACEs) in the SACL. For help with this test see the GetAuditedPermissionsFromAcl() API.";
+
+		uses item;
+		uses file-identifier;
+		uses trustee;
+
+		leaf standard-delete {
+			type audit-policy-type;
+		}
+		leaf standard-read-control {
+			type audit-policy-type;
+		}
+		leaf standard-write-dac {
+			type audit-policy-type;
+		}
+		leaf standard-write-owner {
+			type audit-policy-type;
+		}
+		leaf standard-synchronize {
+			type audit-policy-type;
+		}
+		leaf access-system-security {
+			type audit-policy-type;
+		}
+		leaf generic-read {
+			type audit-policy-type;
+		}
+		leaf generic-write {
+			type audit-policy-type;
+		}
+		leaf generic-execute {
+			type audit-policy-type;
+		}
+		leaf generic-all {
+			type audit-policy-type;
+		}
+		leaf file-read-data {
+			type audit-policy-type;
+		}
+		leaf file-write-data {
+			type audit-policy-type;
+		}
+		leaf file-append-data {
+			type audit-policy-type;
+		}
+		leaf file-read-extended-attributes {
+			type audit-policy-type;
+		}
+		leaf file-write-extended-attributes {
+			type audit-policy-type;
+		}
+		leaf file-execute {
+			type audit-policy-type;
+		}
+		leaf file-delete-child {
+			type audit-policy-type;
+		}
+		leaf file-read-attributes {
+			type audit-policy-type;
+		}
+		leaf file-write-attributes {
+			type audit-policy-type;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+
 	}
 	container file_effective_rights {
-		description "";
+		description "This item stores the effective rights of a file that a discretionary access control list (DACL) structure 
+		grants to a specified trustee. The trustee's effective rights are determined checking all access-allowed and access-denied 
+		access control entries (ACEs) in the DACL. For help with this test see the GetEffectiveRightsFromAcl() API.";
 
+		uses item;
 		uses file-identifier;
+		uses trustee;
+
+		leaf standard-delete {
+			type boolean;
+		}
+		leaf standard-read-control {
+			type boolean;
+		}
+		leaf standard-write-dac {
+			type boolean;
+		}
+		leaf standard-write-owner {
+			type boolean;
+		}
+		leaf standard-synchronize {
+			type boolean;
+		}
+		leaf access-system-security {
+			type boolean;
+		}
+		leaf generic-read {
+			type boolean;
+		}
+		leaf generic-write {
+			type boolean;
+		}
+		leaf generic-execute {
+			type boolean;
+		}
+		leaf generic-all {
+			type boolean;
+		}
+		leaf file-read-data {
+			type boolean;
+		}
+		leaf file-write-data {
+			type boolean;
+		}
+		leaf file-append-data {
+			type boolean;
+		}
+		leaf file-read-extended-attributes {
+			type boolean;
+		}
+		leaf file-write-extended-attributes {
+			type boolean;
+		}
+		leaf file-execute {
+			type boolean;
+		}
+		leaf file-delete-child {
+			type boolean;
+		}
+		leaf file-read-attributes {
+			type boolean;
+		}
+		leaf file-write-attributes {
+			type boolean;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
 	}
-	container group_sid {
-		description "";
 
-		leaf group_sid {
+	container group-sid {
+		description "The Windows group-sid allows the different users and subgroups, that directly belong to specific groups 
+		(identified by SID), to be collected. The collected subgroups will not be resolved to find indirect user or subgroup 
+		members. If the subgroups need to be resolved, it should be done using the sid_sid_object. Note that the user and subgroup 
+		elements can appear an unlimited number of times. If a user is not found in the specified group, a single user element 
+		should exist with a status of 'does not exist'. If there is an error determining the users of a group, a single user element 
+		should exist with a status of 'error'. If a subgroup is not found in the specified group, a single subgroup element should 
+		exist with a status of 'does not exist'. If there is an error determining the subgroups of a group, a single subgroup element 
+		should exist with a status of 'error'.";
+
+		uses item;
+
+		leaf group-sid {
 			description "";
 			type string;
 		}
 
-		leaf-list user_sid {
+		leaf-list user-sid {
 			description "";
 			type string;
 		}
 
-		leaf-list subgroup_sid {
+		leaf-list subgroup-sid {
 			description "";
 			type string;
 		}
 	}
 
-	container interface {}
-	container junction {}
-	container license {}
+	container interface {
+		description "Enumerate various attributes about the interfaces on a system.";
+
+		uses item;
+
+		leaf name {}
+		leaf index {}
+		leaf type {}
+		leaf hardware-address {}
+		leaf inet-address {}
+		leaf broadcast-address {}
+		leaf netmask {}
+		leaf address-type {}
+	}
+
+	container junction {
+		description "Enumerates attributes of a Windows junction (symbolic link)";
+
+		uses item;
+
+		leaf path {
+			description "Specifies the path to the subject junction";
+			type string;
+		}
+		leaf canonical-path {
+			description "Specifies the canonical path for the target of the Windows junction specified by the path";
+			type string;
+		}
+		leaf windows-view {
+			type windows-view;
+		}
+	}
+
+	container license {
+		description "Stores the different information that can be found in the Windows license registry value";
+
+		uses item;
+
+		leaf name {}
+		leaf type {
+			description "Specifies the type of data stored by the license entry. Valid values are REG_BINARY, REG_DWORD 
+			and REG_SZ. Please refer to the registry-type for more information about the different possible types.";
+
+			type registry-type;
+		}
+		leaf value {
+			description "The value entity holds the actual value of the specified license entry. The representation of the 
+			value as well as the associated datatype attribute depends on type of data stored in the license entry. If the 
+			specified license entry is of type REG_BINARY, then the datatype attribute should be set to 'binary' and the data 
+			represented by the value entity should follow the xsd:hexBinary form. (each binary octet is encoded as two hex digits) 
+			If the registry key is of type REG_DWORD, then the datatype attribute should be set to 'int' and the value entity 
+			should represent the data as an integer. If the specified registry key is of type REG_SZ, then the datatype should 
+			be 'string' and the value entity should be a copy of the string.";
+
+		}
+	}
 
 	// Account Lockout Policy
-	container lockout_policy {
-		description "";
+	container lockout-policy {
+		description "Enumerates various attributes associated with lockout information for users and global groups in the security 
+		database.";
 
-		leaf force_logoff {
-			description "";
+		uses item;
+
+		leaf force-logoff {
+			description "Specifies, in seconds (from a DWORD), the amount of time between the end of the valid logon time and the 
+			time when the user is forced to log off the network. A value of TIMEQ_FOREVER (max DWORD value, 4294967295) indicates 
+			that the user is never forced to log off. A value of zero indicates that the user will be forced to log off immediately 
+			when the valid logon time expires. See the USER_MODALS_INFO_0 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_duration {
-			description "";
+		leaf lockout-duration {
+			description "Specifies, in seconds, how long a locked account remains locked before it is automatically unlocked. See 
+			the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_observation_window {
-			description "";
+		leaf lockout-observation-window {
+			description "Specifies the maximum time, in seconds, that can elapse between any two failed logon attempts before lockout 
+			occurs. See the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf lockout_threshold {
-			description "";
+		leaf lockout-threshold {
+			description "Specifies the number of invalid password authentications that can occur before an account is marked "locked out." 
+			See the USER_MODALS_INFO_3 structure returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
+	}
+
+	// NT User
+	container ntuser {
+		description "Specifies information that can be collected from a particular ntuser.dat file";
+
+		uses item;
+
+		leaf key {}
+		leaf name {}
+		leaf sid {}
+		leaf username {}
+		leaf account-type {}
+		leaf logged-on {}
+		leaf enabled {}
+		leaf date-modified {}
+		leaf days-since-modified {}
+		leaf filepath {}
+		leaf last-write-time {}
+		leaf type {
+			type registry-type;
+		}
+		leaf-list value {}
 	}
 
 	// Password Policy
-	container password_policy {
-		description "";
+	container password-policy {
+		description "Specific policy items associated with passwords. It is important to note that these policies are specific to certain 
+		versions of Windows. As a result, the documentation for that version of Windows should be consulted for more information. Information 
+		is stored in the SAM or Active Directory but is encrypted or hidden so the 'registry' and 'active-directory are of no use. If this 
+		can be figured out, then the password_policy item is not needed.";
 
-		leaf max_password_age {
-			description "";
+		uses item;
+
+		leaf max-password-age {
+			description "Specifies, in seconds (from a DWORD), the maximum allowable password age. A value of TIMEQ_FOREVER (max DWORD value, 4294967295) 
+			indicates that the password never expires. The minimum valid value for this element is ONE_DAY (86400). See the USER_MODALS_INFO_0 structure 
+			returned by a call to NetUserModalsGet().";
 			type uint16;
 		}
-		leaf min_password_age {
-			description "";
+		leaf min-password-age {
+			description "Specifies the minimum number of seconds that can elapse between the time a password changes and when it can be changed again. 
+			A value of zero indicates that no delay is required between password updates";
 			type uint16;
 		}
-		leaf min_password_length {
-			description "";
+		leaf min-password-length {
+			description "Specifies the minimum allowable password length. Valid values for this element are zero through PWLEN.";
 			type uint16;
 		}
-		leaf password_history_length {
-			description "";
+		leaf password-history-length {
+			description "Specifies the length of password history maintained. A new password cannot match any of the previous usrmod0_password_hist_len 
+			passwords. Valid values for this element are zero through DEF_MAX_PWHIST.";
 			type uint16;
 		}
-		leaf password_complexity {
-			description "";
+		leaf password-complexity {
+			description "A boolean value that signifies whether passwords must meet the complexity requirements put forth by the operating system.";
 			type boolean;
 		}
-		leaf reversible_encryption {
-			description "";
+		leaf reversible-encryption {
+			description "Determines whether or not passwords are stored using reversible encryption.";
 			type boolean;
 		}
-		leaf anonymous_name_lookup {
-			description "";
+		leaf anonymous-name-lookup {
+			description "Determines whether or not an anonymous user may query the local LSA policy";
 			type boolean;
 		}
 	}
 
-	container peheader {}
-	container port {}
-	container process {}
-
-	container registry_key {
+	container peheader {
 		description "";
 
+		uses item;
+	}
+
+	container port {
+		description "";
+
+		uses item;
+	}
+
+	container process {
+		description "";
+
+		uses item;
+	}
+
+	container registry-key {
+		description "";
+
+		uses item;
+	
 		// hive, key, name, type, (leaflist) value, last_write_time, expanded_value, windows_view
 	}
 
-	container registry_key_audited_permissions {}
-	container registry_key_effective_rights {}
-	container service {}
-	container service_effective_rights {}
-	container shared_resource {}
-	container shared_resource_audited_permissions {}
-	container shared_resource_effective_rights {}
+	container registry-key-audited-permissions {
+		description "";
+
+		uses item;
+	}
+	container registry-key-effective-rights {
+		description "";
+
+		uses item;
+	}
+	container service {
+		description "";
+
+		uses item;
+	}
+	container service-effective-rights {
+		description "";
+
+		uses item;
+	}
+	container shared-resource {
+		description "";
+
+		uses item;
+	}
+	container shared-resource-audited-permissions {
+		description "";
+
+		uses item;
+	}
+	container shared-resource-effective-rights {
+		description "";
+
+		uses item;
+	}
 	container sid {
 		description "";
 
 		uses trustee;
 	}
 
-	container system_metric {}
-	container user_access_control {}
+	container system-metric {
+		description "";
+
+		uses item;
+	}
+	container user-access-control {
+		description "";
+
+		uses item;
+	}
 
 	// Users
 	container user {
 		description "";
 
-		leaf user_sid {
+		uses item;
+
+		leaf user-sid {
 			description "";
 			type string;
 		}
-		leaf user_name {
+		leaf user-name {
 			description "";
 			type string;
 		}
@@ -348,11 +1412,11 @@ module microsoft-windows-configuration {
 			description "";
 			type boolean;
 		}
-		leaf last_logon {
+		leaf last-logon {
 			description "";
 			type uint32;
 		}
-		list group_membership {
+		list group-membership {
 			description "";
 			key "group_sid";
 			uses group;
@@ -360,10 +1424,12 @@ module microsoft-windows-configuration {
 	}
 
 	// User Rights Assignment
-	container user_rights_assignment {
+	container user-rights-assignment {
 		description "";
 
-		leaf user_right {
+		uses item;
+	
+		leaf user-right {
 			type enumeration {
 				description "";
 				enum ; // fill in
@@ -378,6 +1444,14 @@ module microsoft-windows-configuration {
 		}
 	}
 
-	container volume {}
-	container wmi {}
+	container volume {
+		description "";
+
+		uses item;
+	}
+	container wmi {
+		description "";
+
+		uses item;
+	}
 }

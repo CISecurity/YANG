@@ -1,0 +1,21 @@
+module sacm-collection-core {
+	namespace "http://cisecurity.org/yang/sacm-collection-core";
+	prefix sacm-def;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information
+			NOTE: Loosely maps to OVAL Definitions Schema";
+	}
+
+	// 
+}

@@ -1,0 +1,120 @@
+module sacm-system-characteristics-core {
+	namespace "http://cisecurity.org/yang/sacm-system-characteristics-core";
+	prefix sacm-sc;
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Core collection types, groupings, and elements for collection of SACM-relevant information.
+			NOTE: Loosely based on OVAL System Characteristics Schema";
+	}
+
+	typedef entity-status {
+		description "Defines the valid status messages associated with collection of specific information associated with an item.";
+		type enumeration {
+			enum error {
+				description "A status of 'error' says that there was an error collecting information associated with an 
+				item as a whole or any specific entity. An item would have a status of 'error' if a problem occurred that 
+				prevented the item from being collected.";
+			}
+			enum exists {
+				description "A status of 'exists' says that the item or specific piece of information exists on the system 
+				and has been collected.";
+			}
+			enum does-not-exist {
+				description "A status of 'does not exist' says that the item or specific piece of information does not 
+				exist and therefore has not been collected. This status assumes that an attempt was made to collect the 
+				information, but the information just does not exist.";
+			}
+			enum not-collected {
+				description "A status of 'not collected' says that no attempt was made to collect the item or specific 
+				piece of information so it is unknown what the value is and if it even exists.";
+			}
+		}
+	}
+
+	typedef message-level {
+		description "Defines the different levels associated with a message. There is no specific criteria about which messages get assigned which level. This is completely 
+		arbitrary and up to the content producer to decide what is an error message and what is a debug message.";
+
+		type enumeration {
+			enum debug {
+				description "Debug messages should only be displayed by a tool when run in some sort of verbose mode.";
+			}
+			enum error {
+				description "Error messages should be recorded when there was an error that did not allow the collection of specific data.";
+			}
+			enum fatal {
+				description "A fatal message should be recorded when an error causes the failure of more than just a single piece of data.";
+			}
+			enum info {
+				description "Info messages are used to pass useful information about the data collection to a user.";
+			}
+			enum warning {
+				description "A warning message reports something that might not correct but information was still collected.";
+			}
+		}
+	}
+
+
+	//
+	// Groupings
+	//
+	grouping item {
+		description "";
+
+		leaf item-id {
+			type int32;
+		}
+
+		leaf status {
+			type entity-status;
+		}
+
+		leaf-list message {
+			uses message;
+		}
+	}
+
+	grouping message {
+		description "Defines the structure for which messages are relayed from the data collection engine. Each message is a text string that has 
+		an associated level attribute identifying the type of message being sent. These messages could be error messages, warning messages, debug 
+		messages, etc. How the messages are used by tools and whether or not they are displayed to the user is up to the specific implementation.";
+
+		leaf message-level {
+			type message-level;
+		}
+
+		leaf message-text {
+			type string;
+		}
+	}
+
+	grouping record_field {
+		description "Defines an element with simple content that represents a named field in a record that may contain any number of named fields.";
+
+		leaf name {}
+		leaf datatype {}
+		leaf value {}
+	}
+
+	grouping record {
+		description "Defines an entity that consists of a number of named fields. This structure is used for representing a record from a database query 
+		and other similar structures where multiple related fields must be collected at once. Note that for all entities of this type, the only allowed 
+		datatype is 'record'.";
+
+		list fields {
+			description "";
+			key "name";
+			uses record_field;
+		} 
+	}
+}
