@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collections>
+    <collection>
+        <collection-id>1</collection-id>
+        <collection-type>
+            <family></family>
+            <type></type>
+        </collection-type>
+        
+        <collection-fields>
+            <collection-field>
+                <name></name>
+                <datatype></datatype>
+                <operation></operation>
+                <value></value>
+            </collection-field>
+        </collection-fields>
+        
+        <!-- 0..n -->
+        <filter></filter>
+        <filter></filter>
+        <filter></filter>
+    </collection>
+    
+    
+    <collection>
+        <collection-id>2</collection-id>
+        <collection-type>
+            <family></family>
+            <type></type>
+        </collection-type>
+        
+        <collection-fields>
+            <collection-field>
+                <name></name>
+                <datatype></datatype>
+                <operation></operation>
+                <value></value>
+            </collection-field>
+        </collection-fields>
+        
+        <!-- 0..n -->
+        <!--<filter></filter>-->
+    </collection>
+    
+    <collection>
+        <collection-id>3</collection-id>
+        <collection-type>
+            <family></family>
+            <type></type>
+        </collection-type>
+        
+        <set>
+            <set-combination>
+                <!-- UNION, COMPLEMENT, INTERSECTION -->
+            </set-combination>
+            <object1>1</object1>
+            <object2>2</object2>
+        </set>
+        
+        <!-- 0..n -->
+        <filter>
+            <filter-fields>
+                <filter-field>
+                    <name></name>
+                    <datatype></datatype>
+                    <operation></operation>
+                    <value></value>
+                </filter-field>
+            </filter-fields>
+        </filter>
+    </collection>
+</collections>
+
