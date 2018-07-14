@@ -27,4 +27,4 @@ The [meeting notes](https://datatracker.ietf.org/meeting/97/materials/minutes-97
 * **Can we decouple collection from evaluation in ECL?** It appears that ECL has these things coupled.
 * **How disruptive would it be to SCAP if we revived ECL efforts?** Hopefully this would be something we could release for inclusion in SCAP 2.0
 * **Would we be able to add some control-flow to ECL?** Or, would it be better to have control flow at a layer of abstraction above ECL?
-* **How did CIS-CAT handle evaluation of `SQL-query` without connection information?** The OVAL independent system characteristics have connection-specific information (some of which probably should't be included).
+* **How did CIS-CAT handle evaluation of `SQL-query` without connection information?** The OVAL independent system characteristics have connection-specific information (some of which probably should't be included). (WKM) CIS-CAT had a naming convention in the content identifying an interactive value named `jdbc.url`.  The presence of this value informed CIS-CAT to (a) ask the user to enter the value and (b) configure that database connection prior to evaluation.
