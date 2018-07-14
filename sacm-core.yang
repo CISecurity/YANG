@@ -1,15 +1,15 @@
 module sacm-core {
 	namespace "http://cisecurity.org/yang/sacm-core";
-	prefix sacm-core;
+	prefix "sacm-core";
 
-	import "ietf-yang-types" {
-		prefix "yang";
-	}
+	//import "ietf-yang-types" {
+	//	prefix "yang";
+	//}
 
 	// include submodules
-	include msw-user-rights-assignment;
-	include msw-audit-policy;
-	include msw-lockout-password-policy;
+	//include user-rights-assignment;
+	//include msw-audit-policy;
+	//include msw-lockout-password-policy;
 
 	organization "Center for Internet Security";
 	contact yang@cisecurity.org;
@@ -41,6 +41,7 @@ module sacm-core {
 			enum record;
 			enum debian-evr-string;
 			enum cisco-ios-version;
+		}
 	}
 
 	typedef entity-operation {
@@ -59,6 +60,7 @@ module sacm-core {
 			enum pattern-match;
 			enum subset-of;
 			enum superset-of;
+		}
 	}
 
 	typedef entity-logical-operator {
@@ -190,7 +192,7 @@ module sacm-core {
 	// Groupings
 	//
 	grouping entity-base-type {
-		leaf status {
+		leaf entity-status {
 			description "The determined collection status of the enclosing element";
 			type entity-status;
 		}
@@ -234,8 +236,12 @@ module sacm-core {
 	grouping entity-record-field-type {
 		description "";
 
-		leaf name {}
-		leaf value {}
+		leaf name {
+			type string;
+		}
+		leaf value {
+			type string;
+		}
 	}
 
 	grouping entity-record-type {
@@ -246,7 +252,7 @@ module sacm-core {
 		list fields {
 			description "";
 			key "name";
-			uses record_field;
+			uses entity-record-field-type;
 		} 
 	}
 
@@ -254,6 +260,10 @@ module sacm-core {
 		description "Defines the structure for which messages are relayed from the data collection engine. Each message is a text string that has 
 		an associated level attribute identifying the type of message being sent. These messages could be error messages, warning messages, debug 
 		messages, etc. How the messages are used by tools and whether or not they are displayed to the user is up to the specific implementation.";
+
+		leaf message-index {
+			type int32;
+		}
 
 		leaf message-level {
 			type message-level;
@@ -274,7 +284,7 @@ module sacm-core {
 			type int32;
 		}
 
-		leaf status {
+		leaf item-status {
 			description "The required status attribute holds information regarding the success of the data collection. For example, if an item 
 				exists on the system then the status would reflect this with a value of 'exists'. If an error occurs which is not associated with 
 				any item entities, or if an error occurs that is associated with an item entity matching an associated object entity, then the 
@@ -284,9 +294,11 @@ module sacm-core {
 			type entity-status;
 		}
 
-		leaf-list message {
+		list message {
 			description "The abstract item element specifies an optional message element that is used to pass things like error messages during 
 				data collection to a tool that will utilize the information.";
+
+			key "message-index";
 			uses message;
 		}
 	}

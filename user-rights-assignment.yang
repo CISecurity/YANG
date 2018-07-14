@@ -1,15 +1,16 @@
 
-submodule msw-user-rights-assignment {
+module user-rights-assignment {
+
 	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
 	prefix msw-ura;
 
-	belongs-to "sacm-core" {
+	import "sacm-core" {
 		prefix "sacm-core";
 	}
 
-	import "ietf-yang-types" {
-		prefix "yang";
-	}
+	//import "ietf-yang-types" {
+	//	prefix "yang";
+	//}
 
 	// Do any other modules need inclusion?
 
@@ -171,96 +172,53 @@ submodule msw-user-rights-assignment {
 	//
 	// Groupings
 	//
+	grouping entity-user-right-type {
+		uses sacm-core:entity-base-type;
 
-	grouping trustee {
-		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
-
-		leaf status {
-			description "The required status element";
-			type sacm-core:entity-status;
-		}
-
-		grouping trustee-sid {
-			description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
-				a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
-			uses sacm-core:entity-string-type;
-		}
-		grouping trustee-name {
-			description "The account name associated with the given SID";
-			uses sacm-core:entity-string-type;
-		}
-		grouping trustee-domain {
-			description "The domain on which the SID is found";
-			uses sacm-core:entity-string-type;
+		leaf entity-value {
+			type user-right-type;
 		}
 	}
 
-	grouping user-right {
-		description "he user-right entity holds a string that represents the name of a particular user right/privilege.";
-
-		uses sacm-core:entity-string-type {
-			refine entity-value {
-				type user-right-type;
-			}
-		}
-	}
-
-
+	
 	//
 	// System Characteristics Elements
 	//
 
 	// User Rights Assignment
 	container user-rights-assignment {
-		//
-		// <user-rights-assignment>
-		//   <item>
-		//      <item-id>
-		//      <status>
-		//      <message> 0..n
-		//         <message-level>
-		//         <message-text>
-		//      </message>
-		//
-		//      <user-right>
-		//         <status>
-		//         <datatype>
-		//         <operation>
-		//         <nil>
-		//         <entity-value>
-		//      </user-right>
-		//
-		//      <trustee>
-		//         <trustee-sid>
-		//            <status>
-		//            <datatype>
-		//            <operation>
-		//            <nil>
-		//            <entity-value>
-		//         </trustee-sid>
-		//
-		//         <trustee-name>
-		//            <status>
-		//            <datatype>
-		//            <operation>
-		//            <nil>
-		//            <entity-value>
-		//         </trustee-name>
-		//
-		//         <trustee-domain>
-		//            <status>
-		//            <datatype>
-		//            <operation>
-		//            <nil>
-		//            <entity-value>
-		//         </trustee-domain>
-		//      </trustee>
-		//
 		description "Used to collect the trustees/SIDs that have been granted a specific user right/privilege.";
+	
+		uses sacm-core:item;
+		
+		container user-right {
+			description "The user-right entity holds a string that represents the name of a particular user right/privilege.";
 
-		augment /sacm-core:item {
-			uses user-right;
-			uses trustee;
+			uses entity-user-right-type;
 		}
+		
+		container trustee {
+			description "The identification of a trustee on the sytem, uniquely identified by the SID.";
+
+			leaf trustee-status {
+				description "The required status element";
+				type "sacm-core:entity-status";
+			}
+
+			container trustee-sid {
+				description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+					a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
+				uses sacm-core:entity-string-type;
+			}
+			container trustee-name {
+				description "The account name associated with the given SID";
+				uses sacm-core:entity-string-type;
+			}
+			container trustee-domain {
+				description "The domain on which the SID is found";
+				uses sacm-core:entity-string-type;
+			}
+	}
+	
 	}
 }
