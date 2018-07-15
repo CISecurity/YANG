@@ -11,12 +11,16 @@ module sacm-collection {
 	description "";
 	revision 2018-07-14 {
 		description 
-			"Initial Version; Types, Groupings, and any other constructs common to SACM.";
+			"Initial Version; Types, Groupings, and any other constructs common to the collection of SACM-relevant attributes.";
 	}
 
 
 	// Typedefs
 	typedef family-type {
+		description "The family describes a unique set of operating system families which are applicable 
+		for collection.  This is by no means an exhaustive list, and this initial list was adopted from 
+		the OVAL language FamilyEnumeration";
+
 		type enumeration {
 			enum android {
 				description "The android value describes the Android mobile operating system.";
@@ -62,7 +66,7 @@ module sacm-collection {
 
 	// Groupings
 	grouping collection-type {
-		description "Describes the unique combination of namespace and collection type, i.e. unix/file or windows/file";
+		description "Describes the unique combination of family and collection type, i.e. unix/file, windows/file, or macos/plist";
 
 		leaf family {
 			type family-type;
@@ -77,29 +81,33 @@ module sacm-collection {
 		description "The required attributes for collection of system characteristics for the specified collection-type";
 
 		leaf name {
+			description "The name of the attribute to be collected from the target endpoint.";
 			type string;
 		}
 		leaf datatype {
+			description "The datatype of the attribute to be collected.  This value can help to inform the comparisons required when
+			collecting required information, so as not to be comparing strings to numbers, or versions to booleans, for example";
 			type sacm-core:entity-datatype;
 		}
 		leaf operation {
+			description "The comparison operation to use when collecting the required information from the target endpoint.";
 			type sacm-core:entity-operation;
 		}
 		leaf value {
+			description "The value to be collected from the target endpoint, such as a filename, registry hive, or interface name.";
 			type string;
 		}
 	}
 
 	grouping collection-fields {
-		description "Fields used for collecting system characteristics";
+		description "Collection fields represent a wrapping container for the list of fields to use in the collection of information from the target endpoint.
+		For example, to collect a specific registry location, 3 fields must be provides (hive, key, name).";
 
-		//container collection-fields {
-			list collection-field {
-				key "name";
+		list collection-field {
+			key "name";
 
-				uses base-field;
-			}
-		//}
+			uses base-field;
+		}
 	}
 
 	grouping filter {
@@ -115,23 +123,35 @@ module sacm-collection {
 	}
 
 	grouping set {
-		description "Combinatorial operation on the collection of multiple collection objects";
+		description "A 'set' describes the logical combination of collected information from a pair of collection components, based on the combinatorial operation.";
 
 		leaf set-combination {
 			type enumeration {
-				enum UNION;
-				enum COMPLEMENT;
-				enum INTERSECTION;
+				enum UNION {
+					description "The union of two collections is a unique set that contains everything that belongs to either of the original sets. 
+					If A and B are sets, then the union of A and B contains all the elements of A and all elements of B, with the duplicates removed.";
+				}
+				enum COMPLEMENT {
+					description "The complement operator is defined as a relative complement. The resulting unique set contains everything that belongs 
+					to the first declared set that is not part of the second declared set. If A and B are sets (with A being the first declared set), then 
+					the relative complement is the set of elements in A, but not in B, with the duplicates removed.";
+				}
+				enum INTERSECTION {
+					description "The intersection of two sets is a unique set that contains everything that belongs to both sets in the collection, but 
+					nothing else. If A and B are sets, then the intersection of A and B contains all the elements of A that also belong to B, but no other 
+					elements, with the duplicates removed.";
+				}
 			}
 		}
 
-		leaf object1 {
-			type leafref {
-				path "/collections/collection/collection-id";
-			}
-		}
-
-		leaf object2 {
+		leaf-list collection-ref {
+			description "The collection-ref element(s) describes a reference to another collection within the current instance document.  Items collected
+			for the referenced collections are then logically combined using the set-combination to determine the resultant set of items.  If only a 
+			single reference is specified, the set-combination is ignored and all items from the collection reference are retained.";
+			
+			max-elements 2;
+			min-elements 1;
+			
 			type leafref {
 				path "/collections/collection/collection-id";
 			}
@@ -140,18 +160,29 @@ module sacm-collection {
 
 	// Containers
 	container collections {
+		description "The collections element serves as the 'root' element of SACM collection.  The collections element contains 1..n 
+		collection nodes which describe specific collections of target endpoint information.  Each collection is keyed by the 
+		collection-id value, which is carried throught to collected information, in order to identify which items are collected from 
+		which collection elements.";
+
 		list collection {
 			key "collection-id";
 
 			leaf collection-id {
+				description "The unique identifier for the collection of endpoint information.";
 				type int32;
 			}
 
 			container collection-type {
+				description "The unique combination of family and specific type, to identify WHAT type of collection is being performed.";
 				uses collection-type;
 			}
 
 			choice collection-strategy {
+				description "The collection-strategy defines the methods of collection being utilized for this object.  Content can be 
+				defined using either a collection of fields, defining how to collect specific items, or define a combination of collected items
+				based on sets of data.";
+
 				case fields {
 					container collection-fields {
 						uses collection-fields;
@@ -166,6 +197,25 @@ module sacm-collection {
 			}
 
 			container filter {
+				description "A filter defines a collection tactic by which specific items are either included or excluded from the final list of 
+				items based on any of the item's attributes.  The filter defines a list of fields which are matched to all items retrieved during 
+				collection.  Based on the matching of these fields with each collected items, and combined with the filter action yields the 
+				resultant set of collected items";
+
+				leaf filter-action {
+					description "The filter action describes which set of items make up the resultant set of collected items.";
+					type enumeration {
+						enum INCLUDE {
+							description "The INCLUDE action informs collectors to include in the resultant set of items only those items
+							which match all criteria defined in the filter fields";
+						}
+						enum EXCLUDE {
+							description "The EXCLUDE action informs collectors to include in the resultant set of items only those items
+							which DO NOT match all criteria defined in the filter fields";
+						}
+					}
+				}
+
 				uses filter;
 			}
 		}

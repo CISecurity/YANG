@@ -16,13 +16,7 @@
                     <value>C:\_Development\Projects\Miscellaneous\YAML\cis-benchmark.template</value>
                 </collection-field>
             </collection-fields>
-            
-            <!-- 0..n
-            <filter></filter>
-            <filter></filter>
-            <filter></filter>-->
         </collection>
-        
         
         <collection>
             <collection-id>2</collection-id>
@@ -36,38 +30,9 @@
                     <name>filepath</name>
                     <datatype>string</datatype>
                     <operation>equals</operation>
-                    <value>C:\Temp\temp2.txt</value>
+                    <value>C:\_Development\Projects\Miscellaneous\YAML\create-benchmark-rules.yaml</value>
                 </collection-field>
             </collection-fields>
-            
-            <!-- 0..n -->
-            <!--<filter></filter>-->
-        </collection>
-        
-        <collection>
-            <collection-id>3</collection-id>
-            <collection-type>
-                <family>windows</family>
-                <type>FILE</type>
-            </collection-type>
-            
-            <set>
-                <set-combination>UNION</set-combination>
-                <object1>1</object1>
-                <object2>2</object2>
-            </set>
-            
-            <!-- 0..n -->
-            <filter>
-                <filter-fields>
-                    <filter-field>
-                        <name>owner</name>
-                        <datatype>string</datatype>
-                        <operation>equals</operation>
-                        <value>Administrator</value>
-                    </filter-field>
-                </filter-fields>
-            </filter>
         </collection>
     </collections>
 </ns:data>
