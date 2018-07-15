@@ -218,7 +218,6 @@ module user-rights-assignment {
 				description "The domain on which the SID is found";
 				uses sacm-core:entity-string-type;
 			}
-	}
-	
+		}
 	}
 }

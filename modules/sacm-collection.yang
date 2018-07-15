@@ -22,7 +22,12 @@ module sacm-collection {
 
 		leaf family {
 			type enumeration {
-				enum 
+				enum WINDOWS;
+				enum LINUX;
+				enum UNIX;
+				enum CISCO-IOS;
+				enum CISCO-ASA;
+				enum MACOSX;
 			}
 		}
 
@@ -67,13 +72,13 @@ module sacm-collection {
 	grouping collection-fields {
 		description "Fields used for collecting system characteristics";
 
-		container collection-fields {
+		//container collection-fields {
 			list collection-field {
 				key "name";
 
 				uses base-field;
 			}
-		}
+		//}
 	}
 
 	grouping filter {
@@ -100,13 +105,15 @@ module sacm-collection {
 		}
 
 		leaf object1 {
-			type int32;
-			// This should refer to an existing /collection/collection-id
+			type leafref {
+				path "/collections/collection/collection-id";
+			}
 		}
 
 		leaf object2 {
-			type int32;
-			// This should refer to an existing /collection/collection-id
+			type leafref {
+				path "/collections/collection/collection-id";
+			}
 		}
 	}
 
@@ -119,19 +126,27 @@ module sacm-collection {
 				type int32;
 			}
 
-			uses collection-type;
+			container collection-type {
+				uses collection-type;
+			}
 
 			choice collection-strategy {
 				case fields {
-					uses collection-fields
+					container collection-fields {
+						uses collection-fields;
+					}
 				}
 			
 				case sets {
-					uses set;
+					container set {
+						uses set;
+					}
 				}
 			}
 
-			uses filter;
+			container filter {
+				uses filter;
+			}
 		}
 	}
 }

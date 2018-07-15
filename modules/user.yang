@@ -1,0 +1,63 @@
+module user {
+	namespace "http://cisecurity.org/yang/user";
+	prefix u;
+
+	import "sacm-core" {
+		prefix "sacm-core";
+	}
+
+//	import "ietf-yang-types" {
+//		prefix "yang";
+//	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-14 {
+		description 
+			"Initial Version";
+	}
+
+	// Users
+	container user {
+		description "";
+
+		uses sacm-core:item;
+
+		container user-sid {
+			description "";
+			uses sacm-core:entity-string-type;
+		}
+		container user-name {
+			description "";
+			uses sacm-core:entity-string-type;
+		}
+		container enabled {
+			description "";
+			uses sacm-core:entity-boolean-type;
+		}
+		container last-logon {
+			description "";
+			uses sacm-core:entity-int-type;
+		}
+		list group-membership {
+			description "";
+			key "group-membership-index";
+
+			leaf group-membership-index {
+				type int32;
+			}
+			container group-sid {
+				description "A security identifier (SID) is a unique value of variable length used to identify an organizational group";
+				uses sacm-core:entity-string-type;
+			}
+
+			container group-name {
+				description "The group name associated with the given group SID";
+				uses sacm-core:entity-string-type;
+			}
+		}
+	}
+}

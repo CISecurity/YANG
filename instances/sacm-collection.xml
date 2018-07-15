@@ -3,39 +3,39 @@
     <collection>
         <collection-id>1</collection-id>
         <collection-type>
-            <family></family>
-            <type></type>
+            <family>WINDOWS</family>
+            <type>FILE</type>
         </collection-type>
         
         <collection-fields>
             <collection-field>
-                <name></name>
-                <datatype></datatype>
-                <operation></operation>
-                <value></value>
+                <name>filepath</name>
+                <datatype>STRING</datatype>
+                <operation>EQUALS</operation>
+                <value>C:\Temp\temp.txt</value>
             </collection-field>
         </collection-fields>
         
-        <!-- 0..n -->
+        <!-- 0..n
         <filter></filter>
         <filter></filter>
-        <filter></filter>
+        <filter></filter>-->
     </collection>
     
     
     <collection>
         <collection-id>2</collection-id>
         <collection-type>
-            <family></family>
-            <type></type>
+            <family>WINDOWS</family>
+            <type>FILE</type>
         </collection-type>
         
         <collection-fields>
             <collection-field>
-                <name></name>
-                <datatype></datatype>
-                <operation></operation>
-                <value></value>
+                <name>filepath</name>
+                <datatype>STRING</datatype>
+                <operation>EQUALS</operation>
+                <value>C:\Temp\temp2.txt</value>
             </collection-field>
         </collection-fields>
         
@@ -46,13 +46,13 @@
     <collection>
         <collection-id>3</collection-id>
         <collection-type>
-            <family></family>
-            <type></type>
+            <family>WINDOWS</family>
+            <type>FILE</type>
         </collection-type>
         
         <set>
             <set-combination>
-                <!-- UNION, COMPLEMENT, INTERSECTION -->
+                UNION
             </set-combination>
             <object1>1</object1>
             <object2>2</object2>
@@ -62,10 +62,10 @@
         <filter>
             <filter-fields>
                 <filter-field>
-                    <name></name>
-                    <datatype></datatype>
-                    <operation></operation>
-                    <value></value>
+                    <name>owner</name>
+                    <datatype>STRING</datatype>
+                    <operation>EQUALS</operation>
+                    <value>Administrator</value>
                 </filter-field>
             </filter-fields>
         </filter>

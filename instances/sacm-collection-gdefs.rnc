@@ -1,0 +1,52 @@
+namespace nma = "urn:ietf:params:xml:ns:netmod:dsdl-annotations:1"
+namespace sacm-collection = "http://cisecurity.org/yang/sacm-collection"
+
+sacm-collection___set =
+  element set-combination { "UNION" | "COMPLEMENT" | "INTERSECTION" }?
+  & element object1 { xsd:int }?
+  & element object2 { xsd:int }?
+sacm-collection___filter =
+  element filter-fields {
+    element filter-field {
+      element name { xsd:string },
+      (element datatype {
+         "STRING" | "INTEGER" | "VERSION" | "BOOLEAN"
+       }?
+       & element operation {
+           "EQUALS"
+           | "NOT-EQUAL"
+           | "IEQUALS"
+           | "INOT-EQUAL"
+           | "GREATER-THAN"
+           | "GREATER-THAN-OR-EQUAL"
+           | "LESS-THAN"
+           | "LESS-THAN-OR-EQUAL"
+         }?
+       & element value { xsd:string }?)
+    }*
+  }?
+sacm-collection___collection-type =
+  element family {
+    "WINDOWS" | "LINUX" | "UNIX" | "CISCO-IOS" | "CISCO-ASA" | "MACOSX"
+  }?
+  & element type { xsd:string }?
+sacm-collection___collection-fields =
+  element collection-fields {
+    element collection-field {
+      element name { xsd:string },
+      (element datatype {
+         "STRING" | "INTEGER" | "VERSION" | "BOOLEAN"
+       }?
+       & element operation {
+           "EQUALS"
+           | "NOT-EQUAL"
+           | "IEQUALS"
+           | "INOT-EQUAL"
+           | "GREATER-THAN"
+           | "GREATER-THAN-OR-EQUAL"
+           | "LESS-THAN"
+           | "LESS-THAN-OR-EQUAL"
+         }?
+       & element value { xsd:string }?)
+    }*
+  }?

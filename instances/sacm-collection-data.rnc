@@ -1,0 +1,21 @@
+default namespace = "urn:ietf:params:xml:ns:netconf:base:1.0"
+namespace nma = "urn:ietf:params:xml:ns:netmod:dsdl-annotations:1"
+namespace sacm-collection = "http://cisecurity.org/yang/sacm-collection"
+
+include "relaxng-lib.rnc"
+start =
+  element data {
+    grammar {
+      include "sacm-collection-gdefs.rnc" inherit = sacm-collection
+      start =
+        element sacm-collection:collections {
+          element sacm-collection:collection {
+            element sacm-collection:collection-id { xsd:int },
+            (sacm-collection___collection-type
+             & (sacm-collection___collection-fields
+                | sacm-collection___set)?
+             & sacm-collection___filter)
+          }*
+        }?
+    }
+  }

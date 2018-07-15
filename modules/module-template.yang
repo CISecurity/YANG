@@ -1,0 +1,22 @@
+module [module-name] {
+	namespace "http://cisecurity.org/yang/[modeule-name]";
+	prefix win;
+
+	import "sacm-core" {
+		prefix "sacm-core";
+	}
+
+//	import "ietf-yang-types" {
+//		prefix "yang";
+//	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-14 {
+		description 
+			"Initial Version";
+	}
+}

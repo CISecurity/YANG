@@ -1,0 +1,25 @@
+module windows {
+	namespace "http://cisecurity.org/yang/microsoft-windows-configuration";
+	prefix win;
+
+	import "sacm-core" {
+		prefix "sacm-core";
+	}
+	import "lockout-password-policy" {
+		prefix "msw-lpp";
+	}
+
+//	import "ietf-yang-types" {
+//		prefix "yang";
+//	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-06-06 {
+		description 
+			"Initial Version; Describing Audit Policy configuration information that can be collected from Microsoft Windows systems";
+	}
+}

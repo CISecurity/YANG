@@ -1,0 +1,433 @@
+module file {
+	namespace "http://cisecurity.org/yang/file";
+	prefix f;
+
+	import "sacm-core" {
+		prefix "sacm-core";
+	}
+
+//	import "ietf-yang-types" {
+//		prefix "yang";
+//	}
+
+	// Do any other modules need inclusion?
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-14 {
+		description 
+			"Initial Version";
+	}
+
+	typedef file-type {
+		description "Restricts a string value to a specific set of values that describe the different types of files.";
+		type enumeration {
+			enum char {
+				description "The specified file is a character file, typically an LPT device or a console.";
+			}
+			enum disk {
+				description "The specified file is a disk file.";
+			}
+			enum pipe {
+				description "The specified file is a socket, a named pipe, or an anonymous pipe.";
+			}
+			enum remote {
+				description "UNUSED";
+			}
+			enum unknown {
+				description "Either the type of the specified file is unknown, or the function failed.";
+			}
+		}
+	}
+
+	typedef file-attribute-type {
+		description "Restricts a string value to a specific set of values that describe the different Windows file attributes.";
+
+		type enumeration {
+			enum archive {
+				description "A file or directory that is an archive file or directory. Applications typically use this attribute 
+					to mark files for backup or removal.";
+			}
+			enum compressed {
+				description "A file or directory that is compressed. For a file, all of the data in the file is compressed. For a 
+					directory, compression is the default for newly created files and subdirectories.";
+			}
+			enum device {
+				description "This value is reserved for system use.";
+			}
+			enum directory {
+				description "The handle that identifies a directory.";
+			}
+			enum encrypted {
+				description "A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a 
+					directory, encryption is the default for newly created files and subdirectories.";
+			}
+			enum hidden {
+				description "The file or directory is hidden. It is not included in an ordinary directory listing.";
+			}
+			enum integrity-stream {
+				description "The directory or user data stream is configured with integrity (only supported on ReFS volumes). It is 
+					not included in an ordinary directory listing. The integrity setting persists with the file if it's renamed. If a 
+					file is copied the destination file will have integrity set if either the source file or destination directory have 
+					integrity set.  
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not supported 
+					until Windows Server 2012.";
+			}
+			enum normal {
+				description "A file that does not have other attributes set. This attribute is valid only when used alone.";
+			}
+			enum not-content-indexed {
+				description "The file or directory is not to be indexed by the content indexing service.";
+			}
+			enum no-scrub-data {
+				description "The user data stream not to be read by the background data integrity scanner (AKA scrubber). When set on a 
+					directory it only provides inheritance. This flag is only supported on Storage Spaces and ReFS volumes. It is not 
+					included in an ordinary directory listing. 
+					Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is not 
+					supported until Windows 8 and Windows Server 2012.";
+			}
+			enum offline {
+				description "The data of a file is not available immediately. This attribute indicates that the file data is physically moved to 
+					offline storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications 
+					should not arbitrarily change this attribute.";
+			}
+			enum readonly {
+				description "A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is 
+					not honored on directories.";
+			}
+			enum reparse-point {
+				description "A file or directory that has an associated reparse point, or a file that is a symbolic link.";
+			}
+			enum sparse-file {
+				description "A file that is a sparse file.";
+			}
+			enum system {
+				description "A file or directory that the operating system uses a part of, or uses exclusively.";
+			}
+			enum temporary {
+				description "A file that is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient 
+					cache memory is available, because typically, an application deletes a temporary file after the handle is closed. In that scenario, 
+					the system can entirely avoid writing the data. Otherwise, the data is written after the handle is closed.";
+			}
+			enum virtual {
+				description "This value is reserved for system use.";
+			}
+		}
+	}
+
+	typedef windows-view {
+		description "This is used to indicate from which view (32-bit or 64-bit), the associated Item was collected. 
+		A value of '32-bit' indicates the Item was collected from the 32-bit view. A value of '64-bit' indicates the 
+		Item was collected from the 64-bit view. Omitting this entity removes any assertion about which view the Item 
+		was collected from, and therefore it is strongly suggested that this entity be set.";
+
+		type enumeration {
+			enum 32-bit;
+			enum 64-bit;
+		}
+	}
+
+	typedef audit-policy-type {
+		type enumeration {
+			//description "Audit event policy values";
+			enum AUDIT_NONE {
+				description "The audit type AUDIT_NONE is used to cancel all auditing options 
+				for the specified events";
+			}
+			enum AUDIT_SUCCESS {
+				description "The audit type AUDIT_SUCCESS is used to perform audits on all successful 
+				occurrences of the specified events when auditing is enabled.";
+			}
+			enum AUDIT_FAILURE {
+				description "The audit type AUDIT_FAILURE is used to perform audits on all unsuccessful 
+				occurrences of specified events when auditing is enabled.";
+			}
+			enum AUDIT_SUCCESS_FAILURE {
+				description "The audit type AUDIT_SUCCESS_FAILURE is used to perform audits on all 
+				successful and unsuccessful occurrences of the specified events when auditing is enabled.";
+			}
+		}
+	}
+
+
+	grouping entity-file-type {
+		uses sacm-core:entity-base-type;
+
+		leaf entity-value {
+			type file-type;
+		}
+	}
+
+	grouping entity-file-attribute-type {
+		uses sacm-core:entity-base-type;
+
+		leaf entity-value {
+			type file-attribute-type;
+		}
+	}
+
+	grouping entity-audit-policy-type {
+		uses sacm-core:entity-base-type;
+
+		leaf entity-value {
+			type audit-policy-type;
+		}
+	}
+
+	grouping item-file {
+		uses sacm-core:item;
+
+		container filepath {
+			description "The filepath element specifies the absolute path for a file on the machine. A directory cannot be specified as a filepath.";
+			uses sacm-core:entity-string-type;
+		}
+
+		container path {
+			description "The path element specifies the directory component of the absolute path to a file on the machine.";
+			uses sacm-core:entity-string-type;
+		}
+
+		container filename {
+			description "The filename element specifies the name of a file to evaluate.";
+			uses sacm-core:entity-string-type;
+		}
+	}
+
+	grouping item-file-trustee {
+		uses item-file;
+
+		container trustee {
+			description "The identification of a trustee on the sytem, uniquely identified by the SID.";
+
+			leaf trustee-status {
+				description "The required status element";
+				type "sacm-core:entity-status";
+			}
+
+			container trustee-sid {
+				description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+					a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
+				uses sacm-core:entity-string-type;
+			}
+			container trustee-name {
+				description "The account name associated with the given SID";
+				uses sacm-core:entity-string-type;
+			}
+			container trustee-domain {
+				description "The domain on which the SID is found";
+				uses sacm-core:entity-string-type;
+			}
+		}
+	}
+
+	container file {
+		description "This element describes file metadata. The time information can be retrieved by the _stst function. 
+		Development_class and other version information (company, internal name, language, original_filename, product_name, 
+		product_version) can be retrieved using the VerQueryValue function.";
+
+		uses item-file;
+
+		container owner {
+			uses sacm-core:entity-string-type;
+		}
+		container size {
+			uses sacm-core:entity-int-type;
+		}
+		container a-time {
+			uses sacm-core:entity-int-type;
+		}
+		container c-time {
+			uses sacm-core:entity-int-type;
+		}
+		container m-time {
+			uses sacm-core:entity-int-type;
+		}
+		container ms-checksum {
+			uses sacm-core:entity-string-type;
+		}
+		container version {
+			uses sacm-core:entity-string-type;
+		}
+		container file-type {
+			uses entity-file-type;
+		}
+		list file-attribute {
+			key "file-attribute-index";
+
+			leaf file-attribute-index {
+				type int32;
+			}
+			container attribute {
+				uses entity-file-attribute-type;
+			}
+		}
+		container development-class {
+			uses sacm-core:entity-string-type;
+		}
+		container company {
+			uses sacm-core:entity-string-type;
+		}
+		container internal-name {
+			uses sacm-core:entity-string-type;
+		}
+		container language {
+			uses sacm-core:entity-string-type;
+		}
+		container original-filename {
+			uses sacm-core:entity-string-type;
+		}
+		container product-name {
+			uses sacm-core:entity-string-type;
+		}
+		container product-version {
+			uses sacm-core:entity-string-type;
+		}
+
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+	}
+
+	container file-audited-permissions {
+		description "This item stores the audited access rights of a file that a system access control list (SACL) structure 
+		grants to a specified trustee. The trustee's audited access rights are determined checking all access control entries 
+		(ACEs) in the SACL. For help with this test see the GetAuditedPermissionsFromAcl() API.";
+
+		uses item-file-trustee;
+
+		container standard-delete {
+			uses entity-audit-policy-type;
+		}
+		container standard-read-control {
+			uses entity-audit-policy-type;
+		}
+		container standard-write-dac {
+			uses entity-audit-policy-type;
+		}
+		container standard-write-owner {
+			uses entity-audit-policy-type;
+		}
+		container standard-synchronize {
+			uses entity-audit-policy-type;
+		}
+		container access-system-security {
+			uses entity-audit-policy-type;
+		}
+		container generic-read {
+			uses entity-audit-policy-type;
+		}
+		container generic-write {
+			uses entity-audit-policy-type;
+		}
+		container generic-execute {
+			uses entity-audit-policy-type;
+		}
+		container generic-all {
+			uses entity-audit-policy-type;
+		}
+		container file-read-data {
+			uses entity-audit-policy-type;
+		}
+		container file-write-data {
+			uses entity-audit-policy-type;
+		}
+		container file-append-data {
+			uses entity-audit-policy-type;
+		}
+		container file-read-extended-attributes {
+			uses entity-audit-policy-type;
+		}
+		container file-write-extended-attributes {
+			uses entity-audit-policy-type;
+		}
+		container file-execute {
+			uses entity-audit-policy-type;
+		}
+		container file-delete-child {
+			uses entity-audit-policy-type;
+		}
+		container file-read-attributes {
+			uses entity-audit-policy-type;
+		}
+		container file-write-attributes {
+			uses entity-audit-policy-type;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+	}
+
+	container file-effective-rights {
+		description "This item stores the effective rights of a file that a discretionary access control list (DACL) structure 
+		grants to a specified trustee. The trustee's effective rights are determined checking all access-allowed and access-denied 
+		access control entries (ACEs) in the DACL. For help with this test see the GetEffectiveRightsFromAcl() API.";
+
+		uses item-file-trustee;
+
+		container standard-delete {
+			uses sacm-core:entity-boolean-type;
+		}
+		container standard-read-control {
+			uses sacm-core:entity-boolean-type;
+		}
+		container standard-write-dac {
+			uses sacm-core:entity-boolean-type;
+		}
+		container standard-write-owner {
+			uses sacm-core:entity-boolean-type;
+		}
+		container standard-synchronize {
+			uses sacm-core:entity-boolean-type;
+		}
+		container access-system-security {
+			uses sacm-core:entity-boolean-type;
+		}
+		container generic-read {
+			uses sacm-core:entity-boolean-type;
+		}
+		container generic-write {
+			uses sacm-core:entity-boolean-type;
+		}
+		container generic-execute {
+			uses sacm-core:entity-boolean-type;
+		}
+		container generic-all {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-read-data {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-write-data {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-append-data {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-read-extended-attributes {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-write-extended-attributes {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-execute {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-delete-child {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-read-attributes {
+			uses sacm-core:entity-boolean-type;
+		}
+		container file-write-attributes {
+			uses sacm-core:entity-boolean-type;
+		}
+		leaf windows-view {
+			description "";
+			type windows-view;
+		}
+	}
+
+}

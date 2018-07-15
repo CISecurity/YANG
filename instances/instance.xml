@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:data xmlns:ns="urn:ietf:params:xml:ns:netconf:base:1.0"  xmlns="http://cisecurity.org/yang/sacm-collection">
+    <collections>
+        <collection>
+            <collection-id>1</collection-id>
+            <collection-type>
+                <family>WINDOWS</family>
+                <type>FILE</type>
+            </collection-type>
+            
+            <collection-fields>
+                <collection-field>
+                    <name>filepath</name>
+                    <datatype>STRING</datatype>
+                    <operation>EQUALS</operation>
+                    <value>C:\Temp\temp.txt</value>
+                </collection-field>
+            </collection-fields>
+            
+            <!-- 0..n
+            <filter></filter>
+            <filter></filter>
+            <filter></filter>-->
+        </collection>
+        
+        
+        <collection>
+            <collection-id>2</collection-id>
+            <collection-type>
+                <family>WINDOWS</family>
+                <type>FILE</type>
+            </collection-type>
+            
+            <collection-fields>
+                <collection-field>
+                    <name>filepath</name>
+                    <datatype>STRING</datatype>
+                    <operation>EQUALS</operation>
+                    <value>C:\Temp\temp2.txt</value>
+                </collection-field>
+            </collection-fields>
+            
+            <!-- 0..n -->
+            <!--<filter></filter>-->
+        </collection>
+        
+        <collection>
+            <collection-id>3</collection-id>
+            <collection-type>
+                <family>WINDOWS</family>
+                <type>FILE</type>
+            </collection-type>
+            
+            <set>
+                <set-combination>
+                    UNION
+                </set-combination>
+                <object1>1</object1>
+                <object2>2</object2>
+            </set>
+            
+            <!-- 0..n -->
+            <filter>
+                <filter-fields>
+                    <filter-field>
+                        <name>owner</name>
+                        <datatype>STRING</datatype>
+                        <operation>EQUALS</operation>
+                        <value>Administrator</value>
+                    </filter-field>
+                </filter-fields>
+            </filter>
+        </collection>
+    </collections>
+</ns:data>

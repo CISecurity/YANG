@@ -62,8 +62,9 @@ module audit-event-policy {
 	//
 	// System Characteristics
 	//
+
 	// Audit Event Policy
-	container audit-event-policy-item {
+	container audit-event-policy {
 		description "Enumerates the different types of events the system should audit. The defined values are found in window's 
 			POLICY_AUDIT_EVENT_TYPE enumeration and accessed through the LsaQueryInformationPolicy when the InformationClass parameters 
 			are set to PolicyAuditEventsInformation. It extends the standard ItemType as defined in the oval-system-characteristics 
@@ -73,7 +74,7 @@ module audit-event-policy {
 
 		uses sacm-core:item;
 
-		list audit-event-policy {
+		list policy-category {
 			key "category";
 
 			leaf category {
@@ -96,7 +97,7 @@ module audit-event-policy {
 	}
 
 	// Audit Event Policy Subcategories
-	container audit-event-policy-subcategories-item {
+	container audit-event-policy-subcategories {
 		description "Holds information about the audit event policy settings on a Windows system. These settings are used 
 			to specify which system and network events are monitored. For example, if the credential_validation element has a 
 			value of AUDIT_FAILURE, it means that the system is configured to log all unsuccessful attempts to validate a user 
