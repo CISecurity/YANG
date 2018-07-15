@@ -2,9 +2,9 @@ module sacm-collection {
 	namespace "http://cisecurity.org/yang/sacm-collection";
 	prefix "sacm-collection";
 
-	//import "ietf-yang-types" {
-	//	prefix "yang";
-	//}
+	import "sacm-core" {
+		prefix "sacm-core";
+	}
 
 	organization "Center for Internet Security";
 	contact yang@cisecurity.org;
@@ -16,19 +16,56 @@ module sacm-collection {
 
 
 	// Typedefs
+	typedef family-type {
+		type enumeration {
+			enum android {
+				description "The android value describes the Android mobile operating system.";
+			}
+			enum asa {
+				description "The asa value describes the Cisco ASA security devices.";
+			}
+			enum apple_ios {
+				description "The apple_ios value describes the iOS mobile operating system.";
+			}
+			enum catos {
+				description "The catos value describes the Cisco CatOS operating system.";
+			}
+			enum ios {
+				description "The ios value describes the Cisco IOS operating system.";
+			}
+			enum iosxe {
+				description "The iosxe value describes the Cisco IOS XE operating system.";
+			}
+			enum junos {
+				description "The junos value describes the Juniper JunOS operating system.";
+			}
+			enum macos {
+				description "The macos value describes the Mac operating system.";
+			}
+			enum pixos {
+				description "The pixos value describes the Cisco PIX operating system.";
+			}
+			enum undefined {
+				description "The undefined value is to be used when the desired family is not available.";
+			}
+			enum unix {
+				description "The unix value describes the UNIX operating system.";
+			}
+			enum vmware_infrastructure {
+				description "The vmware_infrastructure value describes VMWare Infrastructure.";
+			}
+			enum windows {
+				description "The windows value describes the Microsoft Windows operating system.";
+			}
+		}
+	}
+
 	// Groupings
 	grouping collection-type {
 		description "Describes the unique combination of namespace and collection type, i.e. unix/file or windows/file";
 
 		leaf family {
-			type enumeration {
-				enum WINDOWS;
-				enum LINUX;
-				enum UNIX;
-				enum CISCO-IOS;
-				enum CISCO-ASA;
-				enum MACOSX;
-			}
+			type family-type;
 		}
 
 		leaf type {
@@ -43,26 +80,10 @@ module sacm-collection {
 			type string;
 		}
 		leaf datatype {
-			type enumeration {
-				enum STRING;
-				enum INTEGER;
-				enum VERSION;
-				enum BOOLEAN;
-				//more
-			}
+			type sacm-core:entity-datatype;
 		}
 		leaf operation {
-			type enumeration {
-				enum EQUALS;
-				enum NOT-EQUAL;
-				enum IEQUALS;
-				enum INOT-EQUAL;
-				enum GREATER-THAN;
-				enum GREATER-THAN-OR-EQUAL;
-				enum LESS-THAN;
-				enum LESS-THAN-OR-EQUAL;
-				//more
-			}
+			type sacm-core:entity-operation;
 		}
 		leaf value {
 			type string;

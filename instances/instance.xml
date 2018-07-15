@@ -4,15 +4,15 @@
         <collection>
             <collection-id>1</collection-id>
             <collection-type>
-                <family>WINDOWS</family>
+                <family>windows</family>
                 <type>FILE</type>
             </collection-type>
             
             <collection-fields>
                 <collection-field>
                     <name>filepath</name>
-                    <datatype>STRING</datatype>
-                    <operation>EQUALS</operation>
+                    <datatype>string</datatype>
+                    <operation>equals</operation>
                     <value>C:\Temp\temp.txt</value>
                 </collection-field>
             </collection-fields>
@@ -27,15 +27,15 @@
         <collection>
             <collection-id>2</collection-id>
             <collection-type>
-                <family>WINDOWS</family>
+                <family>windows</family>
                 <type>FILE</type>
             </collection-type>
             
             <collection-fields>
                 <collection-field>
                     <name>filepath</name>
-                    <datatype>STRING</datatype>
-                    <operation>EQUALS</operation>
+                    <datatype>string</datatype>
+                    <operation>equals</operation>
                     <value>C:\Temp\temp2.txt</value>
                 </collection-field>
             </collection-fields>
@@ -47,7 +47,7 @@
         <collection>
             <collection-id>3</collection-id>
             <collection-type>
-                <family>WINDOWS</family>
+                <family>windows</family>
                 <type>FILE</type>
             </collection-type>
             
@@ -64,8 +64,8 @@
                 <filter-fields>
                     <filter-field>
                         <name>owner</name>
-                        <datatype>STRING</datatype>
-                        <operation>EQUALS</operation>
+                        <datatype>string</datatype>
+                        <operation>equals</operation>
                         <value>Administrator</value>
                     </filter-field>
                 </filter-fields>
