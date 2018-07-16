@@ -53,8 +53,8 @@
             
             <set>
                 <set-combination>UNION</set-combination>
-                <object1>1</object1>
-                <object2>2</object2>
+                <collection-ref>1</collection-ref>
+                <collection-ref>2</collection-ref>
             </set>
             
             <!-- 0..n -->
