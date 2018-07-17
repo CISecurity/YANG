@@ -1,0 +1,46 @@
+module: user
+  +--rw user
+     +--rw item-id?            int32
+     +--rw item-status?        entity-status
+     +--rw message* [message-index]
+     |  +--rw message-index    int32
+     |  +--rw message-level?   message-level
+     |  +--rw message-text?    string
+     +--rw user-sid
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    string
+     +--rw user-name
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    string
+     +--rw enabled
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw last-logon
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    int32
+     +--rw group-membership* [group-membership-index]
+        +--rw group-membership-index    int32
+        +--rw group-sid
+        |  +--rw entity-status?   entity-status
+        |  +--rw datatype?        entity-datatype
+        |  +--rw operation?       entity-operation
+        |  +--rw nil?             boolean
+        |  +--rw entity-value?    string
+        +--rw group-name
+           +--rw entity-status?   entity-status
+           +--rw datatype?        entity-datatype
+           +--rw operation?       entity-operation
+           +--rw nil?             boolean
+           +--rw entity-value?    string

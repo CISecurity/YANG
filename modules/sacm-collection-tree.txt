@@ -1,0 +1,27 @@
+module: sacm-collection
+  +--rw collections
+     +--rw collection* [collection-id]
+        +--rw collection-id              int32
+        +--rw collection-type
+        |  +--rw family?   family-type
+        |  +--rw type?     string
+        +--rw (collection-strategy)?
+        |  +--:(fields)
+        |  |  +--rw collection-fields
+        |  |     +--rw collection-field* [name]
+        |  |        +--rw name         string
+        |  |        +--rw datatype?    sacm-core:entity-datatype
+        |  |        +--rw operation?   sacm-core:entity-operation
+        |  |        +--rw value?       string
+        |  +--:(sets)
+        |     +--rw set
+        |        +--rw set-combination?   enumeration
+        |        +--rw collection-ref*    -> /collections/collection/collection-id
+        +--rw filter
+           +--rw filter-action?   enumeration
+           +--rw filter-fields
+              +--rw filter-field* [name]
+                 +--rw name         string
+                 +--rw datatype?    sacm-core:entity-datatype
+                 +--rw operation?   sacm-core:entity-operation
+                 +--rw value?       string

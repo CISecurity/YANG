@@ -1,0 +1,34 @@
+module: user-rights-assignment
+  +--rw user-rights-assignment
+     +--rw item-id?       int32
+     +--rw item-status?   entity-status
+     +--rw message* [message-index]
+     |  +--rw message-index    int32
+     |  +--rw message-level?   message-level
+     |  +--rw message-text?    string
+     +--rw user-right
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    user-right-type
+     +--rw trustee
+        +--rw trustee-status?   sacm-core:entity-status
+        +--rw trustee-sid
+        |  +--rw entity-status?   entity-status
+        |  +--rw datatype?        entity-datatype
+        |  +--rw operation?       entity-operation
+        |  +--rw nil?             boolean
+        |  +--rw entity-value?    string
+        +--rw trustee-name
+        |  +--rw entity-status?   entity-status
+        |  +--rw datatype?        entity-datatype
+        |  +--rw operation?       entity-operation
+        |  +--rw nil?             boolean
+        |  +--rw entity-value?    string
+        +--rw trustee-domain
+           +--rw entity-status?   entity-status
+           +--rw datatype?        entity-datatype
+           +--rw operation?       entity-operation
+           +--rw nil?             boolean
+           +--rw entity-value?    string

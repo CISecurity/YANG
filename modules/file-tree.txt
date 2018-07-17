@@ -1,0 +1,445 @@
+module: file
+  +--rw file
+  |  +--rw item-id?             int32
+  |  +--rw item-status?         entity-status
+  |  +--rw message* [message-index]
+  |  |  +--rw message-index    int32
+  |  |  +--rw message-level?   message-level
+  |  |  +--rw message-text?    string
+  |  +--rw filepath
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw path
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw filename
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw owner
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw size
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    int32
+  |  +--rw a-time
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    int32
+  |  +--rw c-time
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    int32
+  |  +--rw m-time
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    int32
+  |  +--rw ms-checksum
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw version
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw file-type
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    file-type
+  |  +--rw file-attribute* [file-attribute-index]
+  |  |  +--rw file-attribute-index    int32
+  |  |  +--rw attribute
+  |  |     +--rw entity-status?   entity-status
+  |  |     +--rw datatype?        entity-datatype
+  |  |     +--rw operation?       entity-operation
+  |  |     +--rw nil?             boolean
+  |  |     +--rw entity-value?    file-attribute-type
+  |  +--rw development-class
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw company
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw internal-name
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw language
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw original-filename
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw product-name
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw product-version
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw windows-view?        windows-view
+  +--rw file-audited-permissions
+  |  +--rw item-id?                          int32
+  |  +--rw item-status?                      entity-status
+  |  +--rw message* [message-index]
+  |  |  +--rw message-index    int32
+  |  |  +--rw message-level?   message-level
+  |  |  +--rw message-text?    string
+  |  +--rw filepath
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw path
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw filename
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    string
+  |  +--rw trustee
+  |  |  +--rw trustee-status?   sacm-core:entity-status
+  |  |  +--rw trustee-sid
+  |  |  |  +--rw entity-status?   entity-status
+  |  |  |  +--rw datatype?        entity-datatype
+  |  |  |  +--rw operation?       entity-operation
+  |  |  |  +--rw nil?             boolean
+  |  |  |  +--rw entity-value?    string
+  |  |  +--rw trustee-name
+  |  |  |  +--rw entity-status?   entity-status
+  |  |  |  +--rw datatype?        entity-datatype
+  |  |  |  +--rw operation?       entity-operation
+  |  |  |  +--rw nil?             boolean
+  |  |  |  +--rw entity-value?    string
+  |  |  +--rw trustee-domain
+  |  |     +--rw entity-status?   entity-status
+  |  |     +--rw datatype?        entity-datatype
+  |  |     +--rw operation?       entity-operation
+  |  |     +--rw nil?             boolean
+  |  |     +--rw entity-value?    string
+  |  +--rw standard-delete
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw standard-read-control
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw standard-write-dac
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw standard-write-owner
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw standard-synchronize
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw access-system-security
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw generic-read
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw generic-write
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw generic-execute
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw generic-all
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-read-data
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-write-data
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-append-data
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-read-extended-attributes
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-write-extended-attributes
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-execute
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-delete-child
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-read-attributes
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw file-write-attributes
+  |  |  +--rw entity-status?   entity-status
+  |  |  +--rw datatype?        entity-datatype
+  |  |  +--rw operation?       entity-operation
+  |  |  +--rw nil?             boolean
+  |  |  +--rw entity-value?    audit-policy-type
+  |  +--rw windows-view?                     windows-view
+  +--rw file-effective-rights
+     +--rw item-id?                          int32
+     +--rw item-status?                      entity-status
+     +--rw message* [message-index]
+     |  +--rw message-index    int32
+     |  +--rw message-level?   message-level
+     |  +--rw message-text?    string
+     +--rw filepath
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    string
+     +--rw path
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    string
+     +--rw filename
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    string
+     +--rw trustee
+     |  +--rw trustee-status?   sacm-core:entity-status
+     |  +--rw trustee-sid
+     |  |  +--rw entity-status?   entity-status
+     |  |  +--rw datatype?        entity-datatype
+     |  |  +--rw operation?       entity-operation
+     |  |  +--rw nil?             boolean
+     |  |  +--rw entity-value?    string
+     |  +--rw trustee-name
+     |  |  +--rw entity-status?   entity-status
+     |  |  +--rw datatype?        entity-datatype
+     |  |  +--rw operation?       entity-operation
+     |  |  +--rw nil?             boolean
+     |  |  +--rw entity-value?    string
+     |  +--rw trustee-domain
+     |     +--rw entity-status?   entity-status
+     |     +--rw datatype?        entity-datatype
+     |     +--rw operation?       entity-operation
+     |     +--rw nil?             boolean
+     |     +--rw entity-value?    string
+     +--rw standard-delete
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw standard-read-control
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw standard-write-dac
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw standard-write-owner
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw standard-synchronize
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw access-system-security
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw generic-read
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw generic-write
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw generic-execute
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw generic-all
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-read-data
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-write-data
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-append-data
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-read-extended-attributes
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-write-extended-attributes
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-execute
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-delete-child
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-read-attributes
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw file-write-attributes
+     |  +--rw entity-status?   entity-status
+     |  +--rw datatype?        entity-datatype
+     |  +--rw operation?       entity-operation
+     |  +--rw nil?             boolean
+     |  +--rw entity-value?    boolean
+     +--rw windows-view?                     windows-view

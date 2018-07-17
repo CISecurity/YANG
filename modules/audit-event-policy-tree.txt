@@ -1,0 +1,29 @@
+module: audit-event-policy
+  +--rw audit-event-policy
+  |  +--rw item-id?           int32
+  |  +--rw item-status?       entity-status
+  |  +--rw message* [message-index]
+  |  |  +--rw message-index    int32
+  |  |  +--rw message-level?   message-level
+  |  |  +--rw message-text?    string
+  |  +--rw policy-category* [category]
+  |     +--rw category         enumeration
+  |     +--rw entity-status?   entity-status
+  |     +--rw datatype?        entity-datatype
+  |     +--rw operation?       entity-operation
+  |     +--rw nil?             boolean
+  |     +--rw entity-value?    audit-policy-type
+  +--rw audit-event-policy-subcategories
+     +--rw item-id?              int32
+     +--rw item-status?          entity-status
+     +--rw message* [message-index]
+     |  +--rw message-index    int32
+     |  +--rw message-level?   message-level
+     |  +--rw message-text?    string
+     +--rw policy-subcategory* [subcategory]
+        +--rw subcategory      enumeration
+        +--rw entity-status?   entity-status
+        +--rw datatype?        entity-datatype
+        +--rw operation?       entity-operation
+        +--rw nil?             boolean
+        +--rw entity-value?    audit-policy-type
