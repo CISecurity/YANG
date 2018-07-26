@@ -1,0 +1,322 @@
+module sacm-microsoft-window-server-baseline {
+	namespace "http://cisecurity.org/yang/sacm-win-server";
+	prefix "sacm-win-server";
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-24 {
+		description 
+			"Initial Version; Types, Groupings, and any other constructs common to the collection of SACM-relevant attributes.";
+	}
+
+
+	// Types
+	// Groupings
+	grouping trustees {
+		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
+
+		list trustee {
+			key "trustee-sid";
+
+			leaf trustee-sid {
+				description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+					a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
+				type string;
+			}
+			leaf trustee-name {
+				description "The account name associated with the given SID";
+				type string;
+			}
+			leaf trustee-domain {
+				description "The domain on which the SID is found";
+				type string;
+			}
+		}
+	}
+
+	// Containers
+
+	container account-policies {
+		description "";
+
+		container password-policy {
+			description "";
+
+			leaf password-history-length {
+				description "This policy setting determines the number of renewed, unique passwords that have to be 
+					associated with a user account before you can reuse an old password. The value for this policy 
+					setting must be between 0 and 24 passwords. The default value for Windows Vista is 0 passwords, 
+					but the default setting in a domain is 24 passwords. To maintain the effectiveness of this policy 
+					setting, use the Minimum password age setting to prevent users from repeatedly changing their password.";
+
+				type uint32;
+			}
+			leaf maximum-password-age {
+				description "This policy setting defines how long a user can use their password before it expires.  Values 
+					for this policy setting range from 0 to 999 days. If you set the value to 0, the password will never expire.  
+					Because attackers can crack passwords, the more frequently you change the password the less opportunity an 
+					attacker has to use a cracked password. However, the lower this value is set, the higher the potential for an 
+					increase in calls to help desk support due to users having to change their password or forgetting which password 
+					is current.";
+				
+				type uint32;
+			}
+			leaf minimum-password-age {
+				description "This policy setting determines the number of days that you must use a password before you can change it. 
+					The range of values for this policy setting is between 1 and 999 days. (You may also set the value to 0 to allow 
+					immediate password changes.) The default value for this setting is 0 days.";
+				
+				type uint32;
+			}
+			leaf minimum-password-length {
+				description "This policy setting determines the least number of characters that make up a password for a user account. 
+					There are many different theories about how to determine the best password length for an organization, but perhaps 
+					"pass phrase" is a better term than "password." In Microsoft Windows 2000 and newer, pass phrases can be quite long 
+					and can include spaces. Therefore, a phrase such as "I want to drink a $5 milkshake" is a valid pass phrase; it is a 
+					considerably stronger password than an 8 or 10 character string of random numbers and letters, and yet is easier to 
+					remember. Users must be educated about the proper selection and maintenance of passwords, especially with regard to 
+					password length. In enterprise environments, the ideal value for the Minimum password length setting is 14 characters, 
+					however you should adjust this value to meet your organization's business requirements.";
+				
+				type uint32;
+			}
+			leaf password-must-meet-complexity-requirements {
+				description "This policy setting checks all new passwords to ensure that they meet basic requirements for strong passwords.  
+					When this policy is enabled, passwords must meet the following minimum requirements: 
+					- Not contain the user's account name or parts of the user's full name that exceed two consecutive characters
+					- Be at least six characters in length
+					- Contain characters from three of the following four categories:
+						-- English uppercase characters (A through Z)
+						-- English lowercase characters (a through z)
+						-- Base 10 digits (0 through 9)
+						-- Non-alphabetic characters (for example, !, $, #, %)
+						-- A catch-all category of any Unicode character that does not fall under the previous four categories. This fifth 
+						   category can be regionally specific.
+					Each additional character in a password increases its complexity exponentially. For instance, a seven-character, all 
+					lower-case alphabetic password would have 267 (approximately 8 x 109 or 8 billion) possible combinations. At 1,000,000 
+					attempts per second (a capability of many password-cracking utilities), it would only take 133 minutes to crack. A seven-character 
+					alphabetic password with case sensitivity has 527 combinations. A seven-character case-sensitive alphanumeric password without 
+					punctuation has 627 combinations. An eight-character password has 268 (or 2 x 1011) possible combinations. Although this might 
+					seem to be a large number, at 1,000,000 attempts per second it would take only 59 hours to try all possible passwords. Remember, 
+					these times will significantly increase for passwords that use ALT characters and other special keyboard characters such as "!" or "@".
+					Proper use of the password settings can help make it difficult to mount a brute force attack.";
+				
+				type boolean;
+			}
+			leaf store-passwords-using-reversible-encryption {
+				description "This policy setting determines whether the operating system stores passwords in a way that uses reversible encryption, 
+					which provides support for application protocols that require knowledge of the user's password for authentication purposes. 
+					Passwords that are stored with reversible encryption are essentially the same as plaintext versions of the passwords.";
+
+				type boolean;
+			}
+		}
+
+		container account-lockout-policy {
+			description "";
+
+			leaf account-lockout-duration {
+				description "This policy setting determines the length of time that must pass before a locked account is unlocked and a user can try 
+					to log on again. The setting does this by specifying the number of minutes a locked out account will remain unavailable. If the 
+					value for this policy setting is configured to 0, locked out accounts will remain locked out until an administrator manually unlocks 
+					them.  Although it might seem like a good idea to configure the value for this policy setting to a high value, such a configuration 
+					will likely increase the number of calls that the help desk receives to unlock accounts locked by mistake. Users should be aware of 
+					the length of time a lock remains in place, so that they realize they only need to call the help desk if they have an extremely urgent 
+					need to regain access to their computer.";
+
+				type uint32;
+			}
+			leaf account-lockout-threshold {
+				description "This policy setting determines the number of failed logon attempts before the account is locked. Setting this policy to 0 does 
+					not conform to the benchmark as doing so disables the account lockout threshold.";
+				
+				type uint32;
+			}
+			leaf reset-account-lockout-counter-after {
+				description "This policy setting determines the length of time before the Account lockout threshold resets to zero. The default value for 
+					this policy setting is Not Defined. If the Account lockout threshold is defined, this reset time must be less than or equal to the value 
+					for the Account lockout duration setting.  If you leave this policy setting at its default value or configure the value to an interval 
+					that is too long, your environment could be vulnerable to a DoS attack. An attacker could maliciously perform a number of failed logon 
+					attempts on all users in the organization, which will lock out their accounts. If no policy were determined to reset the account lockout, 
+					it would be a manual task for administrators. Conversely, if a reasonable time value is configured for this policy setting, users would be 
+					locked out for a set period until all of the accounts are unlocked automatically.";
+				
+				type uint32;
+			}
+		}
+	}
+
+	container local-policies {
+		description "";
+
+		container audit-policy {}
+		container user-rights-assignment {
+			description "";
+			container access-credential-manager-as-a-trusted-caller {
+				description "";
+				uses trustees;
+			}
+			container access-this-computer-from-the-network {
+				description "";
+				uses trustees;
+			}
+			container act-as-part-of-the-operating-system {
+				description "";
+				uses trustees;
+			}
+			container add-workstations-to-the-domain {
+				description "";
+				uses trustees;
+			}
+			container adjust-memory-quotas-for-a-process {
+				description "";
+				uses trustees;
+			}
+			container allow-log-on-locally {
+				description "";
+				uses trustees;
+			}
+			container allow-log-on-through-remote-desktop-services {
+				description "";
+				uses trustees;
+			}
+			container backup-files-and-directories {
+				description "";
+				uses trustees;
+			}
+			container change-the-system-time {
+				description "";
+				uses trustees;
+			}
+			container change-the-time-zone {
+				description "";
+				uses trustees;
+			}
+			container create-a-pagefile {
+				description "";
+				uses trustees;
+			}
+			container create-a-token-object {
+				description "";
+				uses trustees;
+			}
+			container create-global-objects {
+				description "";
+				uses trustees;
+			}
+			container create-permanent-shared-objects {
+				description "";
+				uses trustees;
+			}
+			container create-symbolic-links {
+				description "";
+				uses trustees;
+			}
+			container debug-programs {
+				description "";
+				uses trustees;
+			}
+			container deny-access-to-this-computer-from-the-network {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-as-a-batch-job {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-as-a-service {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-locally {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-through-remote-desktop-services {
+				description "";
+				uses trustees;
+			}
+			container enable-computer-and-user-accounts-trusted-for-delegation {
+				description "";
+				uses trustees;
+			}
+			container force-shutdown-from-a-remote-system {
+				description "";
+				uses trustees;
+			}
+			container generate-security-audits {
+				description "";
+				uses trustees;
+			}
+			container impersonate-a-client-after-authentication {
+				description "";
+				uses trustees;
+			}
+			container increase-scheduling-priority {
+				description "";
+				uses trustees;
+			}
+			container load-and-unload-device-drivers {
+				description "";
+				uses trustees;
+			}
+			container lock-pages-in-memory {
+				description "";
+				uses trustees;
+			}
+			container log-on-as-a-batch-job {
+				description "";
+				uses trustees;
+			}
+			container manage-auditing-and-security-log {
+				description "";
+				uses trustees;
+			}
+			container modify-an-object-label {
+				description "";
+				uses trustees;
+			}
+			container modify-firmware-environment-values {
+				description "";
+				uses trustees;
+			}
+			container perform-volume-maintenance-tasks {
+				description "";
+				uses trustees;
+			}
+			container profile-single-process {
+				description "";
+				uses trustees;
+			}
+			container profile-system-performance {
+				description "";
+				uses trustees;
+			}
+			container replace-a-process-level-token {
+				description "";
+				uses trustees;
+			}
+			container restore-files-and-directories {
+				description "";
+				uses trustees;
+			}
+			container shutdown-the-system {
+				description "";
+				uses trustees;
+			}
+			container synchronize-directory-service-data {
+				description "";
+				uses trustees;
+			}
+			container take-ownership-of-files-or-other-objects {
+				description "";
+				uses trustees;
+			}
+		}
+	}
+}

@@ -1,0 +1,38 @@
+Distribution Independent Linux Security Baseline
+---------------------------------------------------------------------------
+
+initial-setup
+	filesystem-configuration
+	configure-software-updates
+	filesystem-integrity-checking
+	secure-boot-settings
+	additional-process-hardening
+	mandatory-access-control
+	warning-banners
+	- ensure-updates-patches-additional-security-software-installed
+services
+	inetd-services
+	special-purpose-services
+	service-clients
+network-configuration
+	network-parameters-host-only
+	network-parameters-host-and-router
+	ipv6
+	tcp-wrappers
+	uncommon-network-protocols
+	firewall-configuration
+	- ensure-wireless-interfaces-disabled
+logging-and-auditing
+	configure-system-accounting-auditd
+	configure-logging
+	- ensure-logrotate-configured
+access-authentication-authorization
+	configure-cron
+	ssh-server-configuration
+	configure-pam
+	user-accounts-and-environment
+	- ensure-root-login-restricted-system-console
+	- ensure-access-to-su-command-restricted
+system-maintenance
+	system-file-permissions
+	user-and-group-settings

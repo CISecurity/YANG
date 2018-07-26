@@ -1,0 +1,1085 @@
+module sacm-microsoft-window-server-baseline {
+	namespace "http://cisecurity.org/yang/sacm-win-server";
+	prefix "sacm-win-server";
+
+	import "ietf-yang-types" {
+		prefix "yang";
+	}
+
+	organization "Center for Internet Security";
+	contact yang@cisecurity.org;
+	description "";
+	revision 2018-07-24 {
+		description 
+			"Initial Version; Types, Groupings, and any other constructs common to the collection of SACM-relevant attributes.";
+	}
+
+
+	// Types
+	// Groupings
+	grouping trustees {
+		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
+
+		list trustee {
+			key "trustee-sid";
+
+			leaf trustee-sid {
+				description "A security identifier (SID) is a unique value of variable length used to identify a trustee. Each account has 
+					a unique SID issued by an authority, such as a Windows domain controller, and stored in a security database";
+				type string;
+			}
+			leaf trustee-name {
+				description "The account name associated with the given SID";
+				type string;
+			}
+			leaf trustee-domain {
+				description "The domain on which the SID is found";
+				type string;
+			}
+		}
+	}
+
+	// Containers
+
+	container account-policies {
+		description "";
+
+		container password-policy {
+			description "";
+
+			leaf password-history-length {
+				description "This policy setting determines the number of renewed, unique passwords that have to be 
+					associated with a user account before you can reuse an old password. The value for this policy 
+					setting must be between 0 and 24 passwords. The default value for Windows Vista is 0 passwords, 
+					but the default setting in a domain is 24 passwords. To maintain the effectiveness of this policy 
+					setting, use the Minimum password age setting to prevent users from repeatedly changing their password.";
+
+				type uint32;
+			}
+			leaf maximum-password-age {
+				description "This policy setting defines how long a user can use their password before it expires.  Values 
+					for this policy setting range from 0 to 999 days. If you set the value to 0, the password will never expire.  
+					Because attackers can crack passwords, the more frequently you change the password the less opportunity an 
+					attacker has to use a cracked password. However, the lower this value is set, the higher the potential for an 
+					increase in calls to help desk support due to users having to change their password or forgetting which password 
+					is current.";
+				
+				type uint32;
+			}
+			leaf minimum-password-age {
+				description "This policy setting determines the number of days that you must use a password before you can change it. 
+					The range of values for this policy setting is between 1 and 999 days. (You may also set the value to 0 to allow 
+					immediate password changes.) The default value for this setting is 0 days.";
+				
+				type uint32;
+			}
+			leaf minimum-password-length {
+				description "This policy setting determines the least number of characters that make up a password for a user account. 
+					There are many different theories about how to determine the best password length for an organization, but perhaps 
+					"pass phrase" is a better term than "password." In Microsoft Windows 2000 and newer, pass phrases can be quite long 
+					and can include spaces. Therefore, a phrase such as "I want to drink a $5 milkshake" is a valid pass phrase; it is a 
+					considerably stronger password than an 8 or 10 character string of random numbers and letters, and yet is easier to 
+					remember. Users must be educated about the proper selection and maintenance of passwords, especially with regard to 
+					password length. In enterprise environments, the ideal value for the Minimum password length setting is 14 characters, 
+					however you should adjust this value to meet your organization's business requirements.";
+				
+				type uint32;
+			}
+			leaf password-must-meet-complexity-requirements {
+				description "This policy setting checks all new passwords to ensure that they meet basic requirements for strong passwords.  
+					When this policy is enabled, passwords must meet the following minimum requirements: 
+					- Not contain the user's account name or parts of the user's full name that exceed two consecutive characters
+					- Be at least six characters in length
+					- Contain characters from three of the following four categories:
+						-- English uppercase characters (A through Z)
+						-- English lowercase characters (a through z)
+						-- Base 10 digits (0 through 9)
+						-- Non-alphabetic characters (for example, !, $, #, %)
+						-- A catch-all category of any Unicode character that does not fall under the previous four categories. This fifth 
+						   category can be regionally specific.
+					Each additional character in a password increases its complexity exponentially. For instance, a seven-character, all 
+					lower-case alphabetic password would have 267 (approximately 8 x 109 or 8 billion) possible combinations. At 1,000,000 
+					attempts per second (a capability of many password-cracking utilities), it would only take 133 minutes to crack. A seven-character 
+					alphabetic password with case sensitivity has 527 combinations. A seven-character case-sensitive alphanumeric password without 
+					punctuation has 627 combinations. An eight-character password has 268 (or 2 x 1011) possible combinations. Although this might 
+					seem to be a large number, at 1,000,000 attempts per second it would take only 59 hours to try all possible passwords. Remember, 
+					these times will significantly increase for passwords that use ALT characters and other special keyboard characters such as "!" or "@".
+					Proper use of the password settings can help make it difficult to mount a brute force attack.";
+				
+				type boolean;
+			}
+			leaf store-passwords-using-reversible-encryption {
+				description "This policy setting determines whether the operating system stores passwords in a way that uses reversible encryption, 
+					which provides support for application protocols that require knowledge of the user's password for authentication purposes. 
+					Passwords that are stored with reversible encryption are essentially the same as plaintext versions of the passwords.";
+
+				type boolean;
+			}
+		}
+
+		container account-lockout-policy {
+			description "";
+
+			leaf account-lockout-duration {
+				description "This policy setting determines the length of time that must pass before a locked account is unlocked and a user can try 
+					to log on again. The setting does this by specifying the number of minutes a locked out account will remain unavailable. If the 
+					value for this policy setting is configured to 0, locked out accounts will remain locked out until an administrator manually unlocks 
+					them.  Although it might seem like a good idea to configure the value for this policy setting to a high value, such a configuration 
+					will likely increase the number of calls that the help desk receives to unlock accounts locked by mistake. Users should be aware of 
+					the length of time a lock remains in place, so that they realize they only need to call the help desk if they have an extremely urgent 
+					need to regain access to their computer.";
+
+				type uint32;
+			}
+			leaf account-lockout-threshold {
+				description "This policy setting determines the number of failed logon attempts before the account is locked. Setting this policy to 0 does 
+					not conform to the benchmark as doing so disables the account lockout threshold.";
+				
+				type uint32;
+			}
+			leaf reset-account-lockout-counter-after {
+				description "This policy setting determines the length of time before the Account lockout threshold resets to zero. The default value for 
+					this policy setting is Not Defined. If the Account lockout threshold is defined, this reset time must be less than or equal to the value 
+					for the Account lockout duration setting.  If you leave this policy setting at its default value or configure the value to an interval 
+					that is too long, your environment could be vulnerable to a DoS attack. An attacker could maliciously perform a number of failed logon 
+					attempts on all users in the organization, which will lock out their accounts. If no policy were determined to reset the account lockout, 
+					it would be a manual task for administrators. Conversely, if a reasonable time value is configured for this policy setting, users would be 
+					locked out for a set period until all of the accounts are unlocked automatically.";
+				
+				type uint32;
+			}
+		}
+	}
+
+	container local-policies {
+		description "";
+
+		container audit-policy {}
+		container user-rights-assignment {
+			description "";
+			container access-credential-manager-as-a-trusted-caller {
+				description "";
+				uses trustees;
+			}
+			container access-this-computer-from-the-network {
+				description "";
+				uses trustees;
+			}
+			container act-as-part-of-the-operating-system {
+				description "";
+				uses trustees;
+			}
+			container add-workstations-to-the-domain {
+				description "";
+				uses trustees;
+			}
+			container adjust-memory-quotas-for-a-process {
+				description "";
+				uses trustees;
+			}
+			container allow-log-on-locally {
+				description "";
+				uses trustees;
+			}
+			container allow-log-on-through-remote-desktop-services {
+				description "";
+				uses trustees;
+			}
+			container backup-files-and-directories {
+				description "";
+				uses trustees;
+			}
+			container change-the-system-time {
+				description "";
+				uses trustees;
+			}
+			container change-the-time-zone {
+				description "";
+				uses trustees;
+			}
+			container create-a-pagefile {
+				description "";
+				uses trustees;
+			}
+			container create-a-token-object {
+				description "";
+				uses trustees;
+			}
+			container create-global-objects {
+				description "";
+				uses trustees;
+			}
+			container create-permanent-shared-objects {
+				description "";
+				uses trustees;
+			}
+			container create-symbolic-links {
+				description "";
+				uses trustees;
+			}
+			container debug-programs {
+				description "";
+				uses trustees;
+			}
+			container deny-access-to-this-computer-from-the-network {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-as-a-batch-job {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-as-a-service {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-locally {
+				description "";
+				uses trustees;
+			}
+			container deny-log-on-through-remote-desktop-services {
+				description "";
+				uses trustees;
+			}
+			container enable-computer-and-user-accounts-trusted-for-delegation {
+				description "";
+				uses trustees;
+			}
+			container force-shutdown-from-a-remote-system {
+				description "";
+				uses trustees;
+			}
+			container generate-security-audits {
+				description "";
+				uses trustees;
+			}
+			container impersonate-a-client-after-authentication {
+				description "";
+				uses trustees;
+			}
+			container increase-scheduling-priority {
+				description "";
+				uses trustees;
+			}
+			container load-and-unload-device-drivers {
+				description "";
+				uses trustees;
+			}
+			container lock-pages-in-memory {
+				description "";
+				uses trustees;
+			}
+			container log-on-as-a-batch-job {
+				description "";
+				uses trustees;
+			}
+			container manage-auditing-and-security-log {
+				description "";
+				uses trustees;
+			}
+			container modify-an-object-label {
+				description "";
+				uses trustees;
+			}
+			container modify-firmware-environment-values {
+				description "";
+				uses trustees;
+			}
+			container perform-volume-maintenance-tasks {
+				description "";
+				uses trustees;
+			}
+			container profile-single-process {
+				description "";
+				uses trustees;
+			}
+			container profile-system-performance {
+				description "";
+				uses trustees;
+			}
+			container replace-a-process-level-token {
+				description "";
+				uses trustees;
+			}
+			container restore-files-and-directories {
+				description "";
+				uses trustees;
+			}
+			container shutdown-the-system {
+				description "";
+				uses trustees;
+			}
+			container synchronize-directory-service-data {
+				description "";
+				uses trustees;
+			}
+			container take-ownership-of-files-or-other-objects {
+				description "";
+				uses trustees;
+			}
+		}
+
+		container security-options {
+			description "";
+			container accounts {
+				description "";
+				leaf administrator-account-status
+				leaf block-microsoft-accounts
+				leaf guest-account-status
+				leaf limit-local-account-use-of-blank-passwords
+				leaf rename-administrator-account
+				leaf rename-guest-account
+			}
+			container audit {
+				description "";
+				leaf force-audit-policy-subcategory-settings-to-override-audit-policy-category-settings
+				leaf shutdown-system-immediately-if-unable-to-log-security-audits
+			}
+			container dcom {}
+			container devices {
+				description "";
+				leaf allowed-to-format-and-eject-removable-media
+				leaf prevent-users-from-installing-printer-drivers
+			}
+			container domain-controller {
+				description "";
+				leaf allow-server-operators-to-schedule-tasks
+				leaf ldap-server-signing-requirements
+				leaf refuse-machine-account-password-changes
+			}
+			container domain-member {
+				description "";
+				leaf digitally-encrypt-or-sign-secure-channel-data-always
+				leaf digitally-encrypt-secure-channel-data-when-possible
+				leaf digitally-sign-secure-channel-data-when-possible
+				leaf disable-machine-account-password-changes
+				leaf maximum-machine-account-password-age
+				leaf require-strong-session-key
+			}
+			container interactive-logon {
+				description "";
+				leaf do-not-display-last-username
+				leaf do-not-require-ctrl-alt-del
+				leaf machine-inactivity-limit
+				leaf message-text-for-users-attempting-to-log-on
+				leaf message-title-for-users-attempting-to-log-on
+				leaf number-of-previous-logons-to-cache
+				leaf prompt-user-to-change-password-before-expiration
+				leaf require-domain-controller-authentication-to-unlock-workstation
+				leaf smart-card-removal-behavior
+			}
+			container microsoft-network-client {
+				description "";
+				leaf digitally-sign-communications-always
+				leaf digitally-sign-communications-if-server-agrees
+				leaf send-unencrypted-password-to-third-party-smb-servers
+			}
+			container microsoft-network-server {
+				description "";
+				leaf amount-of-idle-time-required-before-suspending-session
+				leaf digitally-sign-communications-always
+				leaf digitally-sign-communications-if-client-agrees
+				leaf disconnect-clients-when-logon-hours-expire
+				leaf server-spn-target-name-validation-level
+			}
+			container network-access {
+				description "";
+				leaf allow-anonymous-sid-name-translation
+				leaf do-not-allow-anonymous-enumeration-of-sam-accounts
+				leaf do-not-allow-anonymous-enumeration-of-sam-accounts-and-shares
+				leaf do-not-allow-storage-of-passwords-and-credentials-for-network-authentication
+				leaf let-everyone-permissions-apply-to-anonymous-users
+				leaf named-pipes-that-can-be-accessed-anonymously
+				leaf remotely-accessible-registry-paths
+				leaf remotely-accessible-registry-paths-and-subpaths
+				leaf restrict-anonymous-access-to-named-pipes-and-shares
+				leaf restrict-clients-allowed-to-make-remote-calls-to-sam
+				leaf shares-that-can-be-accessed-anonymously
+				leaf sharing-and-security-model-for-local-accounts
+			}
+			container network-security {
+				description "";
+				leaf allow-local-system-to-use-computer-identity-for-ntlm
+				leaf allow-local-system-null-session-fallback
+				leaf allow-pku2u-authentication-requests
+				leaf configure-encryption-types-allowed-for-kerberos
+				leaf do-not-store-lan-manager-hash-value-on-next-password-change
+				leaf force-logoff-when-logon-hours-expire
+				leaf lan-manager-authentication-level
+				leaf ldap-client-signing-requirements
+				leaf minimum-session-security-for-ntlm-ssp-based-clients
+				leaf minimum-session-security-for-ntlm-ssp-based-servers
+			}
+			container recovery-console {}
+			container shutdown {
+				description "";
+				leaf allow-system-shutdown-without-having-to-log-on
+			}
+			container system-cryptograhy {}
+			container system-objects {
+				description "";
+				leaf require-case-insensitivity-for-non-windows-subsystems
+				leaf strengthen-default-permissions-of-internal-system-objects
+			}
+			container system-settings {
+				description "";
+				leaf optional-subsystems
+			}
+			container user-account-control {
+				description "";
+				leaf admin-approval-mode-for-builtin-administrator-account
+				leaf allow-uiaccess-applications-to-prompt-for-elevation-without-secure-desktop
+				leaf elevation-prompt-behavior-for-administrators-admin-approval-mode
+				leaf elevation-prompt-behavior-for-standard-users
+				leaf only-elevate-uiaccess-applications-installed-in-secure-locations
+				leaf run-all-administrators-in-admin-approval-mode
+				leaf switch-to-secure-desktop-when-prompting-for-elevation
+				leaf virtualize-file-and-registry-write-failures-to-per-user-locations
+			}
+		}
+	}
+
+	container event-log {}
+	container restricted-groups {}
+	container system-services {}
+	container registry {}
+	container file-system {}
+	container wired-network-ieee-802-3-policies {}
+	container windows-firewall-with-advanced-security {
+		description "";
+		container domain-profile {
+			description "";
+			leaf firewall-state
+			leaf inbound-connections
+			leaf outbound-connections
+			leaf display-a-notification
+			leaf logging-name
+			leaf logging-size-limit-kb
+			leaf logging-log-dropped-packets
+			leaf logging-log-successfull-connections
+		}
+		container private-profile {
+			description "";
+			leaf firewall-state
+			leaf inbound-connections
+			leaf outbound-connections
+			leaf display-a-notification
+			leaf logging-name
+			leaf logging-size-limit-kb
+			leaf logging-log-dropped-packets
+			leaf logging-log-successfull-connections
+		}
+		container public-profile {
+			description "";
+			leaf firewall-state
+			leaf inbound-connections
+			leaf outbound-connections
+			leaf display-a-notification
+			leaf apply-local-firewall-rules
+			leaf apply-local-connection-security-rules
+			leaf logging-name
+			leaf logging-size-limit-kb
+			leaf logging-log-dropped-packets
+			leaf logging-log-successfull-connections
+		}
+	}
+	container network-list-manager-policies {}
+	container wireless-network-ieee-802-11-policies {}
+	container public-key-policies {}
+	container software-restriction-policies {}
+	container network-access-protection-client-configuration {}
+	container application-control-policies {}
+	container ip-security-policies {}
+
+container advanced-audit-policy-configuration {
+	description "";
+	container account-logon {
+		description "";
+		leaf audit-credential-validation
+	}
+	container account-management {
+		description "";
+		leaf audit-application-group-management
+		leaf audit-computer-account-management
+		leaf audit-distribution-group-management
+		leaf audit-other-account-management-events
+		leaf audit-security-group-management
+		leaf audit-user-account-management
+	}
+	container detailed-tracking {
+		description "";
+		leaf audit-pnp-activity
+		leaf audit-process-creation
+	}
+	container ds-access {
+		description "";
+		leaf audit-directory-service-access
+		leaf audit-directory-service-changes
+	}
+	container logon-logoff {
+		description "";
+		leaf audit-account-lockout
+		leaf audit-group-membership
+		leaf audit-logoff
+		leaf audit-logon
+		leaf audit-other-logon-logoff-events
+		leaf audit-special-logon
+	}
+	container object-access {
+		description "";
+		leaf audit-other-object-access-events
+		leaf audit-removable-storage
+	}
+	container policy-change {
+		description "";
+		leaf audit-policy-change
+		leaf audit-authentication-policy-change
+		leaf audit-authorization-policy-change
+	}
+	container privilege-use {
+		description "";
+		leaf audit-sensitive-privilege-use
+	}
+	container system {
+		description "";
+		leaf audit-ipsec-driver
+		leaf audit-other-system-events
+		leaf audit-security-state-change
+		leaf audit-security-system-extension
+		leaf audit-system-integrity
+	}
+}
+
+container administrative-templates-computer
+	container control-panel
+		container personalization
+			leaf prevent-enabling-lock-screen-camera
+			leaf prevent-enabling-lock-screen-slideshow
+		container regional-and-language-options
+			container handwriting-personalization {}
+			leaf allow-input-personlization
+		leaf allow-online-tips
+	container laps
+		leaf ensure-laps-admpwd-gpo-extension
+		leaf do-not-allow-password-expiration-time-longer-than-required-by-policy
+		leaf enable-local-admin-password-management
+		leaf password-complexity
+		leaf password-length
+		leaf password-age-days
+	container ms-security-guide
+		leaf apply-uac-restrictions-to-local-accounts-on-network-logons
+		leaf configure-smb-v1-client
+		leaf configure-smb-v1-client-driver
+		leaf configure-smb-v1-server
+		leaf enable-structured-exception-handling-overwrite-protection-sehop
+		leaf turn-on-windows-defender-protection-against-potentially-unwanted-applications
+		leaf wdigest-authentication
+	container mss-legacy
+		leaf mss-auto-admin-logon
+		leaf mss-disable-ip-source-routing-ipv6
+		leaf mss-disable-ip-source-routign
+		leaf mss-enable-icmp-redirect
+		leaf mss-keep-alive-time
+		leaf mss-non-name-release-on-demand
+		leaf mss-perform-router-discovery
+		leaf mss-safe-dll-search-mode
+		leaf mss-screen-saver-grace-period
+		leaf mss-tcp-max-data-retransmissions-ipv6
+		leaf mss-tcp-max-data-retransmissions
+		leaf mss-warning-level
+	container network
+		container background-intelligent-transfer-service {}
+		container branch-cache {}
+		container direct-access-client-experience-settings {}
+		container dns-client
+			leaf set-netbios-node-type-to-p-node
+			leaf turn-off-multicast-name-resolution
+		container fonts
+			leaf enable-font-providers
+		container hostpot-authentication {}
+		container lanman-server {}
+		container lanman-workstation
+			leaf enable-insecure-guest-logons
+		container link-layer-topology-discovery
+			leaf turn-on-mapper-io-lltdio-driver
+			leaf turn-on-responder-rspndr-driver
+		container microsoft-peer-to-peer-networking-services
+			container peer-name-resolution-protocol {}
+			leaf turn-off-microsoft-peer-to-peer-networking-services
+		container network-connections
+			container windows-defender-firewall {}
+			leaf prohibit-installation-and-configuration-of-network-bridge-on-dns-domain-network
+			leaf prohibit-use-of-internet-connection-sharing-on-dns-domain-network
+			leaf require-domain-users-to-elevate-when-setting-network-location
+		container network-connectivity-status-indicator {}
+		container network-isolation {}
+		container network-provider
+			leaf hardened-unc-paths-netlogon-sysvol-shares
+		container offline-files {}
+		container qos-packet-scheduler {}
+		container snmp {}
+		container ssl-configuration-settings {}
+		container tcpip-settings
+			container ipv6-transition-technologies {}
+			container parameters
+				leaf disable-ipv6
+		container windows-connect-now
+			leaf configuration-of-wireless-settings-using-windows-connect-now
+			leaf prohibit-access-of-windows-connect-now-wizards
+		container windows-connection-manager
+			leaf minimize-number-of-simultaneous-connections-to-internet-or-windows-domain
+			leaf prohibit-connection-to-non-domain-networks
+	container printers {}
+	container start-menu-and-taskbar {}
+	container system
+		container access-denied-assistance {}
+		container app-v {}
+		container audit-process-creation
+			leaf include-command-line-in-process-creation-events
+		container credentials-delegation
+			leaf remote-host-allows-delegation-of-non-exportable-credentials
+		container device-guard
+			leaf turn-on-virtualization-based-security
+			leaf vbs-platform-security-level
+			leaf vbs-virtualization-based-protection-of-code-integrity
+			leaf vbs-require-uefi-memory-attributes-table
+			leaf vbs-credential-guard-configuration
+		container device-health-attestation-service {}
+		container device-installation
+			container device-installation-restrictions {}
+			leaf allow-remote-access-to-plug-and-play-interface
+		container device-redirection {}
+		container disk-nv-cache {}
+		container disk-quotas {}
+		container display {}
+		container distributed-com {}
+		container driver-instalation {}
+		container early-launch-anti-malware
+			leaf boot-start-driver-initialization-policy
+		container enhanced-storage-access {}
+		container file-classification-infrastructure {}
+		container file-share-shadow-copy-agent {}
+		container file-share-shadow-copy-provider {}
+		container filesystem {}
+		container folder-redirection {}
+		container group-policy {
+			container logging-and-tracing {}
+			leaf registry-policy-processing-do-not-apply-during-periodic-background-processing
+			leaf registry-policy-processing-process-even-if-gpos-have-not-changed
+			leaf continue-experiences-on-this-device
+			leaf turn-off-background-refresh-of-group-policy
+		}
+		container internet-communication-management
+			container internet-communication-settings
+				leaf turn-off-downloading-print-drivers-over-http
+				leaf turn-off-handwriting-personalization-data-sharing
+				leaf turn-off-handwriting-recognition-error-reporting
+				leaf turn-off-internet-connection-wizard-if-url-microsoft-dot-com
+				leaf turn-off-internet-download-for-web-publishing-online-ordering
+				leaf turn-off-internet-file-association-service
+				leaf turn-off-printing-over-http
+				leaf turn-off-registration-if-url-microsoft-dot-com
+				leaf turn-off-search-companion-content-file-updates
+				leaf turn-off-order-prints-picture-task
+				leaf turn-off-publish-to-web-task-files-folders
+				leaf turn-off-windows-messenger-customer-experience-improvement-program
+				leaf turn-off-windows-customer-experience-improvement-program
+				leaf turn-off-windows-error-reporting
+		container iscsi {}
+		container kdc {}
+		container kerberos
+			leaf support-device-authentication-using-certificate
+		container locale-services
+			leaf disallow-copying-user-input-methods-to-system-account-for-sign-in
+		container logon
+			leaf always-use-classic-logon
+			leaf block-user-showing-account-details-on-sign-in
+			leaf do-not-display-network-selection-ui
+			leaf do-not-enumerate-connected-users-on-domain-joined-computers
+			leaf turn-off-app-notifications-on-lock-screen
+			leaf turn-off-picture-password-sign-in
+			leaf turn-on-convenience-pin-sign-in
+		container mitigation-options
+			leaf untrusted-font-blocking
+		container net-logon {}
+		container os-policies {}
+		container performance-control-panel {}
+		container pin-complexity {}
+		container power-management
+			container button-settings {}
+			container energy-saver-settings {}
+			container hard-disk-settings {}
+			container notification-settings {}
+			container power-throttling-settings {}
+			container sleep-settings
+				leaf allow-network-connectivity-connected-standby-battery
+				leaf allow-network-connectivity-connected-standby-plugged-in
+				leaf require-password-when-computer-wakes-battery
+				leaf require-password-when-computer-wakes-plugged-in
+		container recovery {}
+		container remote-assistance
+			leaf configure-offer-remote-assistance
+			leaf configure-solicited-remote-assistance
+		container remote-procedure-call
+			leaf enable-rpc-endpoint-mapper-client-authentication
+			leaf restrict-unauthenticated-rpc-clients
+		container removable-storage-access {}
+		container scripts {}
+		container server-maager {}
+		container shutdown {}
+		container storage-health {}
+		container system-restore {}
+		container troubleshooting-and-diagnostics
+			container application-compatibility-diagnostics {}
+			container corrupted-file-recovery {}
+			container disk-diagnostic {}
+			container fault-tolerant-heap {}
+			container microsoft-support-diagnostic-tool
+				leaf turn-on-msdt-interactive-communication-with-support-provider
+			container msi-corrupted-file-recovery {}
+			container scheduled-maintenance {}
+			container scripted-diagnostics {}
+			container windows-boot-performance-diagnostics {}
+			container windows-memory-leak-diagnosis {}
+			container windows-performance-perf-track
+				leaf enable-disable-perf-track
+		container trusted-platform-module-services {}
+		container user-profiles
+			leaf turn-off-advertising-id
+		container windows-file-protection {}
+		container windows-hot-start {}
+		container windows-time-service
+			container time-providers
+				leaf enable-windows-ntp-client
+				leaf enable-windows-ntp-server
+	container windows-components
+		container active-directory-federation-services {}
+		container activex-installer-service {}
+		container add-features-to-windows-anytime-upgrade {}
+		container app-package-deployment
+			leaf allow-windows-app-to-share-application-data-between-users
+		container app-privacy {}
+		container app-runtime
+			leaf allow-microsoft-accounts-to-be-optional
+		container application-compatibility {}
+		container auto-play-policies
+			leaf disallow-autoplay-for-non-volume-devices
+			leaf auto-run-default-behavior
+			leaf turn-off-auto-play
+		container backup {}
+		container biometrics
+			container facial-features
+				leaf configure-enhanced-anti-spoofing
+		container bitlocker-drive-encryption {}
+		container camera
+			leaf allow-use-of-camera
+		container cloud-content
+			leaf turn-off-microsoft-consumer-experiences
+		container connect
+			leaf require-pin-for-pairing
+		container credential-user-interface
+			leaf do-not-display-password-reveal-button
+			leaf enumerate-administrator-accounts-on-elevation
+		container data-collection-and-preview-builds
+			leaf allow-telemetry
+			leaf configure-authenticated-proxy-connected-user-experience-telemetry
+			leaf disable-pre-release-features-settings
+			leaf do-not-show-feedback-notifications
+			leaf toggle-user-control-over-insider-builds
+		container delivery-optimization {}
+		container desktop-gadgets
+			leaf turn-off-desktop-gadgets
+			leaf turn-off-user-installed-desktop-gadgets
+		container desktop-window-manager {}
+		container device-and-driver-compatibility {}
+		container device-registration-workplace-join {}
+		container digital-locker {}
+		container edge-ui {}
+		container emet
+			leaf installed-emet-version
+			leaf default-action-mitigation-settings
+			leaf default-protections-internet-explorer
+			leaf default-protections-popular-software
+			leaf default-protections-recommended-software
+			leaf system-aslr
+			leaf system-dep
+			leaf system-sehop
+		container event-forwarding {}
+		container event-log-service
+			container application
+				leaf control-event-log-behavior-maximum-log-size
+				leaf maximum-log-file-size-kb
+			container security
+				leaf control-event-log-behavior-maximum-log-size
+				leaf maximum-log-file-size-kb
+			container setup
+				leaf control-event-log-behavior-maximum-log-size
+				leaf maximum-log-file-size-kb
+			container system
+				leaf control-event-log-behavior-maximum-log-size
+				leaf maximum-log-file-size-kb
+		container event-logging {}
+		container event-viewer {}
+		container family-safety-parental-controls {}
+		container file-explorer-windows-explorer
+			container previous-versions {}
+			leaf turn-off-data-execution-prevention
+			leaf turn-off-heap-termination-on-corruption
+			leaf turn-off-shell-protocol-protected-mode
+		container file-history {}
+		container find-my-device {}
+		container game-explorer {}
+		container handwriting {}
+		container home-group {}
+		container import-video {}
+		container internet-explorer {}
+		container internet-information-services {}
+		container location-and-sensors {}
+			container windows-location-provider
+				leaf turn-off-windows-location-provider
+			leaf turn-off-location
+		container maintenance-scheduler {}
+		container maps {}
+		container mdm {}
+		container messaging
+			leaf allow-message-service-cloud-sync
+		container microsoft-account
+			leaf block-all-consumer-microsoft-account-user-authentication
+		container microsoft-edge {}
+		container microsoft-fido-authentication {}
+		container microsoft-secondary-authentication-factor {}
+		container microsoft-user-experience-virtualization {}
+		container net-meeting {}
+		container network-access-protection {}
+		container network-projector {}
+		container one-drive
+			leaf prevent-usage-one-drive-file-storage
+			leaf prevent-usage-one-drive-file-storage-windows-8-1
+		container online-assistance {}
+		container password-syncronization {}
+		container portable-operating-system {}
+		container presentation-settings {}
+		container push-to-install {}
+		container remote-desktop-services {}
+			container rd-licensing {}
+			container remote-desktop-connection-client
+				container remote-fx-usb-device-redirection {}
+				leaf do-not-allow-password-saving
+			container remote-desktop-session-host
+				container application-compatibility {}
+				container connections
+					leaf restrict-remote-desktop-services-single-session
+				container device-and-resource-redirection
+					leaf do-not-allow-com-port-redirection
+					leaf do-not-allow-drive-redirection
+					leaf do-not-allow-lpt-port-redirection
+					leaf do-not-allow-supported-plug-and-play-device-redirection
+				container licensing {}
+				container printer-redirection {}
+				container profiles {}
+				container rd-connection-broker {}
+				container remote-session-environment {}
+				container security
+					leaf always-prompt-for-password-upon-connection
+					leaf require-secure-rpc-communication
+					leaf set-client-connection-encryption-level
+				container session-time-limits
+					leaf set-time-limit-active-idle-remote-desktop-services-sessions
+					leaf set-time-limit-disconnected-sessions
+				container temporary-folders
+					leaf do-not-delete-temp-folders-upon-exit
+					leaf do-not-use-temporary-folders-per-session
+		container rss-feeds
+			leaf prevent-downloading-of-enclosures
+		container search
+			container ocr
+			leaf allow-indexing-of-encrypted-files
+			leaf set-information-shared-in-search
+			leaf allow-cloud-search
+		container security-center {}
+		container server-for-nis {}
+		container shutdown-options {}
+		container smart-card {}
+		container software-protection-platform
+			leaf turn-off-kms-client-online-avs-validation
+		container sound-recorder {}
+		container speech {}
+		container store {}
+		container sync-your-settings {}
+		container tablet-pc {}
+		container task-scheduler {}
+		container text-input {}
+		container windows-calendar {}
+		container windows-color-system {}
+		container windows-customer-experience-improvement-program {}
+		container windows-defender-antivirus
+			container client-interface {}
+			container exclusions {}
+			container maps
+				leaf configure-local-setting-override-for-maps-reporting
+				leaf join-microsoft-maps
+			container mp-engine {}
+			container network-inspection-system {}
+			container quarantine {}
+			container real-time-protection
+				leaf turn-on-behavior-monitoring
+			container remediation {}
+			container reporting
+				leaf configure-watson-events
+			container scan
+				leaf scan-removable-drives
+				leaf turn-on-email-scanning
+			container signature-updates {}
+			container threats {}
+			container windows-defender-exploit-guard
+				container attack-surface-reduction
+					leaf configure-attack-surface-reduction-rules
+					leaf configure-attack-surface-reduction-rules-asr-rule-state
+				container controlled-folder-access {}
+				container network-protection
+					leaf prevent-users-apps-accessing-dangerous-websites
+		container windows-defender-application-guard {}
+		container windows-defender-exploit-guard
+			container attack-surface-reduction {}
+			container controlled-folder-access {}
+			container network-protection
+				leaf prevent-users-apps-accessing-dangerous-websites
+		container windows-defender-security-center
+			container app-and-browser-protection
+				leaf prevent-users-modifying-settings
+		container windows-defender-smart-screen
+			container explorer
+				leaf configure-windows-defender-smart-screen
+		container windows-error-reporting
+			container advanced-error-reporting-settings {}
+			container consent
+				leaf configure-default-consent
+			leaf automatically-send-memory-dumps-os-generated-error-reports
+		container windows-game-recording-and-broadcasting {}
+		container windows-hello-for-business {}
+		container windows-ink-workspace
+			leaf allow-suggested-apps-windows-ink-workspace
+			leaf allow-windows-ink-workspace
+		container windows-installer
+			leaf allow-user-control-over-installs
+			leaf always-install-with-elevated-privileges
+			leaf prevent-internet-explorer-security-prompt-windows-installer-scripts
+		container windows-logon-options
+			leaf sign-in-last-interactive-user-automatically-after-system-initiated-restart
+		container windows-mail {}
+		container windows-media-center {}
+		container windows-media-digital-rights-management {}
+		container windows-media-player {}
+		container windows-meeting-space {}
+		container windows-messenger {}
+		container windows-mobility-center {}
+		container windows-movie-maker {}
+		container windows-powershell
+			leaf turn-on-powershell-script-block-logging
+			leaf turn-on-powershell-transcription
+		container windows-reliability-analysis {}
+		container windows-remote-management
+			container winrm-client
+				leaf allow-basic-authentication
+				leaf allow-unencrypted-traffic
+				leaf disallow-digest-authentication
+			container winrm-service
+				leaf allow-basic-authentication
+				leaf allow-remote-server-management-through-winrm
+				leaf allow-unencrypted-traffic
+				leaf disallow-winrm-storing-runas-credentials
+		container windows-remote-shell
+			leaf allow-remote-shell-access
+		container windows-side-show {}
+		container windows-system-resource-manager {}
+		container windows-update
+			container windows-update-for-business
+				leaf select-when-preview-builds-feature-updates-received
+				leaf select-when-quality-updates-received
+				leaf manage-preview-builds
+			leaf configure-automatic-updates
+			leaf configure-automatic-updates-scheduled-install-day
+			leaf do-not-adjust-default-install-updates-shutdown-option
+			leaf do-not-display-install-updates-shutdown-option
+			leaf no-auto-restart-with-logged-on-users-scheduled-automatic-updates-installations
+			leaf reschedule-automatic-updates-scheduled-installations
+container administrative-templates-user
+	container control-panel
+		container add-or-remove-programs {}
+		container display {}
+		container personalization
+			leaf enable-screen-saver
+			leaf force-specific-screen-saver
+			leaf password-protected-screen-saver
+			leaf screen-saver-timeout
+	container desktop {}
+	container network {}
+	container shared-folders {}
+	container start-menu-and-taskbar
+		container notifications
+			leaf turn-off-toast-notifications-on-lock-screen
+	container system
+		container ctrl-alt-del-options {}
+		container driver-installation {}
+		container folder-redirection {}
+		container group-policy {}
+		container internet-communication-management
+			container internet-communication-settings
+				leaf turn-off-help-experience-improvement-program
+	container windows-components
+		container add-features-to-windows-anytime-upgrade {}
+		container app-runtime {}
+		container application-compatibility {}
+		container attachment-manager
+			leaf do-not-preserve-zone-information-in-file-attachments
+			leaf notify-antivirus-programs-when-opening-attachments
+		container auto-play-policies {}
+		container backup {}
+		container cloud-content
+			leaf configure-windows-spotlight-on-lock-screen
+			leaf do-not-suggest-third-party-content-windows-spotlight
+			leaf do-not-use-diagnostic-data-for-tailored-experiences
+			leaf turn-off-windows-spotlight-features
+		container credential-user-interface {}
+		container data-collection-and-preview-builds {}
+		container desktop-gadgets {}
+		container desktop-window-manager {}
+		container digital-locker {}
+		container edge-ui {}
+		container file-explorer-windows-explorer {}
+		container file-revocation {}
+		container ime {}
+		container import-video {}
+		container instant-search {}
+		container internet-explorer {}
+		container location-and-sensors {}
+		container microsoft-edge {}
+		container microsoft-management-console {}
+		container microsoft-user-experience-virtualization {}
+		container net-meeting {}
+		container network-projector {}
+		container network-sharing
+			leaf prevent-users-from-sharing-within-their-profile
+		container presentation-settings {}
+		container remote-desktop-services-terminal-services {}
+		container rss-feeds {}
+		container search {}
+		container sound-recorder {}
+		container store {}
+		container tablet-pc {}
+		container task-scheduler {}
+		container windows-calendar {}
+		container windows-color-system {}
+		container windows-defender-smart-screen {}
+		container windows-error-reporting {}
+		container windows-hello-for-business {}
+		container windows-installer
+			leaf always-install-with-elevated-privileges
+		container windows-logon-options {}
+		container windows-mail {}
+		container windows-media-center {}
+		container windows-media-player {}
+			container networking {}
+			container playback
+				leaf prevent-codec-download
+}

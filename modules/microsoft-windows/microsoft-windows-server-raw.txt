@@ -1,0 +1,758 @@
+Microsoft Windows Server Security Baseline
+---------------------------------------------------------------------------
+
+account-policies
+	password-policy
+		- password-history-length (uint32)
+		- maximum-password-age (uint32)
+		- minimum-password-age (uint32)
+		- minimum-password-length (uint32)
+		- password-must-meet-complexity-requirements (boolean)
+		- store-passwords-using-reversible-encryption (boolean)
+	account-lockout-policy
+		- account-lockout-duration (uint32)
+		- account-lockout-threshold (uint32)
+		- reset-account-lockout-counter-after (uint32)
+local-policies
+	audit-policy
+	user-rights-assignment
+		- access-credential-manager-as-a-trusted-caller
+		- access-this-computer-from-the-network
+		- act-as-part-of-the-operating-system
+		- add-workstations-to-the-domain
+		- adjust-memory-quotas-for-a-process
+		- allow-log-on-locally
+		- allow-log-on-through-remote-desktop-services
+		- backup-files-and-directories
+		- change-the-system-time
+		- change-the-time-zone
+		- create-a-pagefile
+		- create-a-token-object
+		- create-global-objects
+		- create-permanent-shared-objects
+		- create-symbolic-links
+		- debug-programs
+		- deny-access-to-this-computer-from-the-network
+		- deny-log-on-as-a-batch-job
+		- deny-log-on-as-a-service
+		- deny-log-on-locally
+		- deny-log-on-through-remote-desktop-services
+		- enable-computer-and-user-accounts-trusted-for-delegation
+		- force-shutdown-from-a-remote-system
+		- generate-security-audits
+		- impersonate-a-client-after-authentication
+		- increase-scheduling-priority
+		- load-and-unload-device-drivers
+		- lock-pages-in-memory
+		- log-on-as-a-batch-job
+		- manage-auditing-and-security-log
+		- modify-an-object-label
+		- modify-firmware-environment-values
+		- perform-volume-maintenance-tasks
+		- profile-single-process
+		- profile-system-performance
+		- replace-a-process-level-token
+		- restore-files-and-directories
+		- shutdown-the-system
+		- synchronize-directory-service-data
+		- take-ownership-of-files-or-other-objects
+	security-options
+		accounts
+			- administrator-account-status
+			- block-microsoft-accounts
+			- guest-account-status
+			- limit-local-account-use-of-blank-passwords
+			- rename-administrator-account
+			- rename-guest-account
+		audit
+			- force-audit-policy-subcategory-settings-to-override-audit-policy-category-settings
+			- shutdown-system-immediately-if-unable-to-log-security-audits
+		dcom
+		devices
+			- allowed-to-format-and-eject-removable-media
+			- prevent-users-from-installing-printer-drivers
+		domain-controller
+			- allow-server-operators-to-schedule-tasks
+			- ldap-server-signing-requirements
+			- refuse-machine-account-password-changes
+		domain-member
+			- digitally-encrypt-or-sign-secure-channel-data-always
+			- digitally-encrypt-secure-channel-data-when-possible
+			- digitally-sign-secure-channel-data-when-possible
+			- disable-machine-account-password-changes
+			- maximum-machine-account-password-age
+			- require-strong-session-key
+		interactive-logon
+			- do-not-display-last-username
+			- do-not-require-ctrl-alt-del
+			- machine-inactivity-limit
+			- message-text-for-users-attempting-to-log-on
+			- message-title-for-users-attempting-to-log-on
+			- number-of-previous-logons-to-cache
+			- prompt-user-to-change-password-before-expiration
+			- require-domain-controller-authentication-to-unlock-workstation
+			- smart-card-removal-behavior
+		microsoft-network-client
+			- digitally-sign-communications-always
+			- digitally-sign-communications-if-server-agrees
+			- send-unencrypted-password-to-third-party-smb-servers
+		microsoft-network-server
+			- amount-of-idle-time-required-before-suspending-session
+			- digitally-sign-communications-always
+			- digitally-sign-communications-if-client-agrees
+			- disconnect-clients-when-logon-hours-expire
+			- server-spn-target-name-validation-level
+		network-access
+			- allow-anonymous-sid-name-translation
+			- do-not-allow-anonymous-enumeration-of-sam-accounts
+			- do-not-allow-anonymous-enumeration-of-sam-accounts-and-shares
+			- do-not-allow-storage-of-passwords-and-credentials-for-network-authentication
+			- let-everyone-permissions-apply-to-anonymous-users
+			- named-pipes-that-can-be-accessed-anonymously
+			- remotely-accessible-registry-paths
+			- remotely-accessible-registry-paths-and-subpaths
+			- restrict-anonymous-access-to-named-pipes-and-shares
+			- restrict-clients-allowed-to-make-remote-calls-to-sam
+			- shares-that-can-be-accessed-anonymously
+			- sharing-and-security-model-for-local-accounts
+		network-security
+			- allow-local-system-to-use-computer-identity-for-ntlm
+			- allow-local-system-null-session-fallback
+			- allow-pku2u-authentication-requests
+			- configure-encryption-types-allowed-for-kerberos
+			- do-not-store-lan-manager-hash-value-on-next-password-change
+			- force-logoff-when-logon-hours-expire
+			- lan-manager-authentication-level
+			- ldap-client-signing-requirements
+			- minimum-session-security-for-ntlm-ssp-based-clients
+			- minimum-session-security-for-ntlm-ssp-based-servers
+		recovery-console
+		shutdown
+			- allow-system-shutdown-without-having-to-log-on
+		system-cryptograhy
+		system-objects
+			- require-case-insensitivity-for-non-windows-subsystems
+			- strengthen-default-permissions-of-internal-system-objects
+		system-settings
+			- optional-subsystems
+		user-account-control
+			- admin-approval-mode-for-builtin-administrator-account
+			- allow-uiaccess-applications-to-prompt-for-elevation-without-secure-desktop
+			- elevation-prompt-behavior-for-administrators-admin-approval-mode
+			- elevation-prompt-behavior-for-standard-users
+			- only-elevate-uiaccess-applications-installed-in-secure-locations
+			- run-all-administrators-in-admin-approval-mode
+			- switch-to-secure-desktop-when-prompting-for-elevation
+			- virtualize-file-and-registry-write-failures-to-per-user-locations
+event-log
+restricted-groups
+system-services
+registry
+file-system
+wired-network-ieee-802-3-policies
+windows-firewall-with-advanced-security
+	domain-profile
+		- firewall-state
+		- inbound-connections
+		- outbound-connections
+		- display-a-notification
+		- logging-name
+		- logging-size-limit-kb
+		- logging-log-dropped-packets
+		- logging-log-successfull-connections
+	private-profile
+		- firewall-state
+		- inbound-connections
+		- outbound-connections
+		- display-a-notification
+		- logging-name
+		- logging-size-limit-kb
+		- logging-log-dropped-packets
+		- logging-log-successfull-connections
+	public-profile
+		- firewall-state
+		- inbound-connections
+		- outbound-connections
+		- display-a-notification
+		- apply-local-firewall-rules
+		- apply-local-connection-security-rules
+		- logging-name
+		- logging-size-limit-kb
+		- logging-log-dropped-packets
+		- logging-log-successfull-connections
+network-list-manager-policies
+wireless-network-ieee-802-11-policies
+public-key-policies
+software-restriction-policies
+network-access-protection-client-configuration
+application-control-policies
+ip-security-policies
+advanced-audit-policy-configuration
+	account-logon
+		- audit-credential-validation
+	account-management
+		- audit-application-group-management
+		- audit-computer-account-management
+		- audit-distribution-group-management
+		- audit-other-account-management-events
+		- audit-security-group-management
+		- audit-user-account-management
+	detailed-tracking
+		- audit-pnp-activity
+		- audit-process-creation
+	ds-access
+		- audit-directory-service-access
+		- audit-directory-service-changes
+	logon-logoff
+		- audit-account-lockout
+		- audit-group-membership
+		- audit-logoff
+		- audit-logon
+		- audit-other-logon-logoff-events
+		- audit-special-logon
+	object-access
+		- audit-other-object-access-events
+		- audit-removable-storage
+	policy-change
+		- audit-policy-change
+		- audit-authentication-policy-change
+		- audit-authorization-policy-change
+	privilege-use
+		- audit-sensitive-privilege-use
+	system
+		- audit-ipsec-driver
+		- audit-other-system-events
+		- audit-security-state-change
+		- audit-security-system-extension
+		- audit-system-integrity
+administrative-templates-computer
+	control-panel
+		personalization
+			- prevent-enabling-lock-screen-camera
+			- prevent-enabling-lock-screen-slideshow
+		regional-and-language-options
+			handwriting-personalization
+			- allow-input-personlization
+		- allow-online-tips
+	laps
+		- ensure-laps-admpwd-gpo-extension
+		- do-not-allow-password-expiration-time-longer-than-required-by-policy
+		- enable-local-admin-password-management
+		- password-complexity
+		- password-length
+		- password-age-days
+	ms-security-guide
+		- apply-uac-restrictions-to-local-accounts-on-network-logons
+		- configure-smb-v1-client
+		- configure-smb-v1-client-driver
+		- configure-smb-v1-server
+		- enable-structured-exception-handling-overwrite-protection-sehop
+		- turn-on-windows-defender-protection-against-potentially-unwanted-applications
+		- wdigest-authentication
+	mss-legacy
+		- mss-auto-admin-logon
+		- mss-disable-ip-source-routing-ipv6
+		- mss-disable-ip-source-routign
+		- mss-enable-icmp-redirect
+		- mss-keep-alive-time
+		- mss-non-name-release-on-demand
+		- mss-perform-router-discovery
+		- mss-safe-dll-search-mode
+		- mss-screen-saver-grace-period
+		- mss-tcp-max-data-retransmissions-ipv6
+		- mss-tcp-max-data-retransmissions
+		- mss-warning-level
+	network
+		background-intelligent-transfer-service
+		branch-cache
+		direct-access-client-experience-settings
+		dns-client
+			- set-netbios-node-type-to-p-node
+			- turn-off-multicast-name-resolution
+		fonts
+			- enable-font-providers
+		hostpot-authentication
+		lanman-server
+		lanman-workstation
+			- enable-insecure-guest-logons
+		link-layer-topology-discovery
+			- turn-on-mapper-io-lltdio-driver
+			- turn-on-responder-rspndr-driver
+		microsoft-peer-to-peer-networking-services
+			peer-name-resolution-protocol
+			- turn-off-microsoft-peer-to-peer-networking-services
+		network-connections
+			windows-defender-firewall
+			- prohibit-installation-and-configuration-of-network-bridge-on-dns-domain-network
+			- prohibit-use-of-internet-connection-sharing-on-dns-domain-network
+			- require-domain-users-to-elevate-when-setting-network-location
+		network-connectivity-status-indicator
+		network-isolation
+		network-provider
+			- hardened-unc-paths-netlogon-sysvol-shares
+		offline-files
+		qos-packet-scheduler
+		snmp
+		ssl-configuration-settings
+		tcpip-settings
+			ipv6-transition-technologies
+			parameters
+				- disable-ipv6
+		windows-connect-now
+			- configuration-of-wireless-settings-using-windows-connect-now
+			- prohibit-access-of-windows-connect-now-wizards
+		windows-connection-manager
+			- minimize-number-of-simultaneous-connections-to-internet-or-windows-domain
+			- prohibit-connection-to-non-domain-networks
+	printers
+	start-menu-and-taskbar
+	system
+		access-denied-assistance
+		app-v
+		audit-process-creation
+			- include-command-line-in-process-creation-events
+		credentials-delegation
+			- remote-host-allows-delegation-of-non-exportable-credentials
+		device-guard
+			- turn-on-virtualization-based-security
+			- vbs-platform-security-level
+			- vbs-virtualization-based-protection-of-code-integrity
+			- vbs-require-uefi-memory-attributes-table
+			- vbs-credential-guard-configuration
+		device-health-attestation-service
+		device-installation
+			device-installation-restrictions
+			- allow-remote-access-to-plug-and-play-interface
+		device-redirection
+		disk-nv-cache
+		disk-quotas
+		display
+		distributed-com
+		driver-instalation
+		early-launch-anti-malware
+			- boot-start-driver-initialization-policy
+		enhanced-storage-access
+		file-classification-infrastructure
+		file-share-shadow-copy-agent
+		file-share-shadow-copy-provider
+		filesystem
+		folder-redirection
+		group-policy
+			logging-and-tracing
+			- registry-policy-processing-do-not-apply-during-periodic-background-processing
+			- registry-policy-processing-process-even-if-gpos-have-not-changed
+			- continue-experiences-on-this-device
+			- turn-off-background-refresh-of-group-policy
+		internet-communication-management
+			internet-communication-settings
+				- turn-off-downloading-print-drivers-over-http
+				- turn-off-handwriting-personalization-data-sharing
+				- turn-off-handwriting-recognition-error-reporting
+				- turn-off-internet-connection-wizard-if-url-microsoft-dot-com
+				- turn-off-internet-download-for-web-publishing-online-ordering
+				- turn-off-internet-file-association-service
+				- turn-off-printing-over-http
+				- turn-off-registration-if-url-microsoft-dot-com
+				- turn-off-search-companion-content-file-updates
+				- turn-off-order-prints-picture-task
+				- turn-off-publish-to-web-task-files-folders
+				- turn-off-windows-messenger-customer-experience-improvement-program
+				- turn-off-windows-customer-experience-improvement-program
+				- turn-off-windows-error-reporting
+		iscsi
+		kdc
+		kerberos
+			- support-device-authentication-using-certificate
+		locale-services
+			- disallow-copying-user-input-methods-to-system-account-for-sign-in
+		logon
+			- always-use-classic-logon
+			- block-user-showing-account-details-on-sign-in
+			- do-not-display-network-selection-ui
+			- do-not-enumerate-connected-users-on-domain-joined-computers
+			- turn-off-app-notifications-on-lock-screen
+			- turn-off-picture-password-sign-in
+			- turn-on-convenience-pin-sign-in
+		mitigation-options
+			- untrusted-font-blocking
+		net-logon
+		os-policies
+		performance-control-panel
+		pin-complexity
+		power-management
+			button-settings
+			energy-saver-settings
+			hard-disk-settings
+			notification-settings
+			power-throttling-settings
+			sleep-settings
+				- allow-network-connectivity-connected-standby-battery
+				- allow-network-connectivity-connected-standby-plugged-in
+				- require-password-when-computer-wakes-battery
+				- require-password-when-computer-wakes-plugged-in
+		recovery
+		remote-assistance
+			- configure-offer-remote-assistance
+			- configure-solicited-remote-assistance
+		remote-procedure-call
+			- enable-rpc-endpoint-mapper-client-authentication
+			- restrict-unauthenticated-rpc-clients
+		removable-storage-access
+		scripts
+		server-maager
+		shutdown
+		storage-health
+		system-restore
+		troubleshooting-and-diagnostics
+			application-compatibility-diagnostics
+			corrupted-file-recovery
+			disk-diagnostic
+			fault-tolerant-heap
+			microsoft-support-diagnostic-tool
+				- turn-on-msdt-interactive-communication-with-support-provider
+			msi-corrupted-file-recovery
+			scheduled-maintenance
+			scripted-diagnostics
+			windows-boot-performance-diagnostics
+			windows-memory-leak-diagnosis
+			windows-performance-perf-track
+				- enable-disable-perf-track
+		trusted-platform-module-services
+		user-profiles
+			- turn-off-advertising-id
+		windows-file-protection
+		windows-hot-start
+		windows-time-service
+			time-providers
+				- enable-windows-ntp-client
+				- enable-windows-ntp-server
+	windows-components
+		active-directory-federation-services
+		activex-installer-service
+		add-features-to-windows-anytime-upgrade
+		app-package-deployment
+			- allow-windows-app-to-share-application-data-between-users
+		app-privacy
+		app-runtime
+			- allow-microsoft-accounts-to-be-optional
+		application-compatibility
+		auto-play-policies
+			- disallow-autoplay-for-non-volume-devices
+			- auto-run-default-behavior
+			- turn-off-auto-play
+		backup
+		biometrics
+			facial-features
+				- configure-enhanced-anti-spoofing
+		bitlocker-drive-encryption
+		camera
+			- allow-use-of-camera
+		cloud-content
+			- turn-off-microsoft-consumer-experiences
+		connect
+			- require-pin-for-pairing
+		credential-user-interface
+			- do-not-display-password-reveal-button
+			- enumerate-administrator-accounts-on-elevation
+		data-collection-and-preview-builds
+			- allow-telemetry
+			- configure-authenticated-proxy-connected-user-experience-telemetry
+			- disable-pre-release-features-settings
+			- do-not-show-feedback-notifications
+			- toggle-user-control-over-insider-builds
+		delivery-optimization
+		desktop-gadgets
+			- turn-off-desktop-gadgets
+			- turn-off-user-installed-desktop-gadgets
+		desktop-window-manager
+		device-and-driver-compatibility
+		device-registration-workplace-join
+		digital-locker
+		edge-ui
+		emet
+			- installed-emet-version
+			- default-action-mitigation-settings
+			- default-protections-internet-explorer
+			- default-protections-popular-software
+			- default-protections-recommended-software
+			- system-aslr
+			- system-dep
+			- system-sehop
+		event-forwarding
+		event-log-service
+			application
+				- control-event-log-behavior-maximum-log-size
+				- maximum-log-file-size-kb
+			security
+				- control-event-log-behavior-maximum-log-size
+				- maximum-log-file-size-kb
+			setup
+				- control-event-log-behavior-maximum-log-size
+				- maximum-log-file-size-kb
+			system
+				- control-event-log-behavior-maximum-log-size
+				- maximum-log-file-size-kb
+		event-logging
+		event-viewer
+		family-safety-parental-controls
+		file-explorer-windows-explorer
+			previous-versions
+			- turn-off-data-execution-prevention
+			- turn-off-heap-termination-on-corruption
+			- turn-off-shell-protocol-protected-mode
+		file-history
+		find-my-device
+		game-explorer
+		handwriting
+		home-group
+		import-video
+		internet-explorer
+		internet-information-services
+		location-and-sensors
+			windows-location-provider
+				- turn-off-windows-location-provider
+			- turn-off-location
+		maintenance-scheduler
+		maps
+		mdm
+		messaging
+			- allow-message-service-cloud-sync
+		microsoft-account
+			- block-all-consumer-microsoft-account-user-authentication
+		microsoft-edge
+		microsoft-fido-authentication
+		microsoft-secondary-authentication-factor
+		microsoft-user-experience-virtualization
+		net-meeting
+		network-access-protection
+		network-projector
+		one-drive
+			- prevent-usage-one-drive-file-storage
+			- prevent-usage-one-drive-file-storage-windows-8-1
+		online-assistance
+		password-syncronization
+		portable-operating-system
+		presentation-settings
+		push-to-install
+		remote-desktop-services
+			rd-licensing
+			remote-desktop-connection-client
+				remote-fx-usb-device-redirection
+				- do-not-allow-password-saving
+			remote-desktop-session-host
+				application-compatibility
+				connections
+					- restrict-remote-desktop-services-single-session
+				device-and-resource-redirection
+					- do-not-allow-com-port-redirection
+					- do-not-allow-drive-redirection
+					- do-not-allow-lpt-port-redirection
+					- do-not-allow-supported-plug-and-play-device-redirection
+				licensing
+				printer-redirection
+				profiles
+				rd-connection-broker
+				remote-session-environment
+				security
+					- always-prompt-for-password-upon-connection
+					- require-secure-rpc-communication
+					- set-client-connection-encryption-level
+				session-time-limits
+					- set-time-limit-active-idle-remote-desktop-services-sessions
+					- set-time-limit-disconnected-sessions
+				temporary-folders
+					- do-not-delete-temp-folders-upon-exit
+					- do-not-use-temporary-folders-per-session
+		rss-feeds
+			- prevent-downloading-of-enclosures
+		search
+			ocr
+			- allow-indexing-of-encrypted-files
+			- set-information-shared-in-search
+			- allow-cloud-search
+		security-center
+		server-for-nis
+		shutdown-options
+		smart-card
+		software-protection-platform
+			- turn-off-kms-client-online-avs-validation
+		sound-recorder
+		speech
+		store
+		sync-your-settings
+		tablet-pc
+		task-scheduler
+		text-input
+		windows-calendar
+		windows-color-system
+		windows-customer-experience-improvement-program
+		windows-defender-antivirus
+			client-interface
+			exclusions
+			maps
+				- configure-local-setting-override-for-maps-reporting
+				- join-microsoft-maps
+			mp-engine
+			network-inspection-system
+			quarantine
+			real-time-protection
+				- turn-on-behavior-monitoring
+			remediation
+			reporting
+				- configure-watson-events
+			scan
+				- scan-removable-drives
+				- turn-on-email-scanning
+			signature-updates
+			threats
+			windows-defender-exploit-guard
+				attack-surface-reduction
+					- configure-attack-surface-reduction-rules
+					- configure-attack-surface-reduction-rules-asr-rule-state
+				controlled-folder-access
+				network-protection
+					- prevent-users-apps-accessing-dangerous-websites
+		windows-defender-application-guard
+		windows-defender-exploit-guard
+			attack-surface-reduction
+			controlled-folder-access
+			network-protection
+				- prevent-users-apps-accessing-dangerous-websites
+		windows-defender-security-center
+			app-and-browser-protection
+				- prevent-users-modifying-settings
+		windows-defender-smart-screen
+			explorer
+				- configure-windows-defender-smart-screen
+		windows-error-reporting
+			advanced-error-reporting-settings
+			consent
+				- configure-default-consent
+			- automatically-send-memory-dumps-os-generated-error-reports
+		windows-game-recording-and-broadcasting
+		windows-hello-for-business
+		windows-ink-workspace
+			- allow-suggested-apps-windows-ink-workspace
+			- allow-windows-ink-workspace
+		windows-installer
+			- allow-user-control-over-installs
+			- always-install-with-elevated-privileges
+			- prevent-internet-explorer-security-prompt-windows-installer-scripts
+		windows-logon-options
+			- sign-in-last-interactive-user-automatically-after-system-initiated-restart
+		windows-mail
+		windows-media-center
+		windows-media-digital-rights-management
+		windows-media-player
+		windows-meeting-space
+		windows-messenger
+		windows-mobility-center
+		windows-movie-maker
+		windows-powershell
+			- turn-on-powershell-script-block-logging
+			- turn-on-powershell-transcription
+		windows-reliability-analysis
+		windows-remote-management
+			winrm-client
+				- allow-basic-authentication
+				- allow-unencrypted-traffic
+				- disallow-digest-authentication
+			winrm-service
+				- allow-basic-authentication
+				- allow-remote-server-management-through-winrm
+				- allow-unencrypted-traffic
+				- disallow-winrm-storing-runas-credentials
+		windows-remote-shell
+			- allow-remote-shell-access
+		windows-side-show
+		windows-system-resource-manager
+		windows-update
+			windows-update-for-business
+				- select-when-preview-builds-feature-updates-received
+				- select-when-quality-updates-received
+				- manage-preview-builds
+			- configure-automatic-updates
+			- configure-automatic-updates-scheduled-install-day
+			- do-not-adjust-default-install-updates-shutdown-option
+			- do-not-display-install-updates-shutdown-option
+			- no-auto-restart-with-logged-on-users-scheduled-automatic-updates-installations
+			- reschedule-automatic-updates-scheduled-installations
+administrative-templates-user
+	control-panel
+		add-or-remove-programs
+		display
+		personalization
+			- enable-screen-saver
+			- force-specific-screen-saver
+			- password-protected-screen-saver
+			- screen-saver-timeout
+	desktop
+	network
+	shared-folders
+	start-menu-and-taskbar
+		notifications
+			- turn-off-toast-notifications-on-lock-screen
+	system
+		ctrl-alt-del-options
+		driver-installation
+		folder-redirectio
+		group-policy
+		internet-communication-management
+			internet-communication-settings
+				- turn-off-help-experience-improvement-program
+	windows-components
+		add-features-to-windows-anytime-upgrade
+		app-runtime
+		application-compatibility
+		attachment-manager
+			- do-not-preserve-zone-information-in-file-attachments
+			- notify-antivirus-programs-when-opening-attachments
+		auto-play-policies
+		backup
+		cloud-content
+			- configure-windows-spotlight-on-lock-screen
+			- do-not-suggest-third-party-content-windows-spotlight
+			- do-not-use-diagnostic-data-for-tailored-experiences
+			- turn-off-windows-spotlight-features
+		credential-user-interface
+		data-collection-and-preview-builds
+		desktop-gadgets
+		desktop-window-manager
+		digital-locker
+		edge-ui
+		file-explorer-windows-explorer
+		file-revocation
+		ime
+		import-video
+		instant-search
+		internet-explorer
+		location-and-sensors
+		microsoft-edge
+		microsoft-management-console
+		microsoft-user-experience-virtualization
+		net-meeting
+		network-projector
+		network-sharing
+			- prevent-users-from-sharing-within-their-profile
+		presentation-settings
+		remote-desktop-services-terminal-services
+		rss-feeds
+		search
+		sound-recorder
+		store
+		tablet-pc
+		task-scheduler
+		windows-calendar
+		windows-color-system
+		windows-defender-smart-screen
+		windows-error-reporting
+		windows-hello-for-business
+		windows-installer
+			- always-install-with-elevated-privileges
+		windows-logon-options
+		windows-mail
+		windows-media-center
+		windows-media-player
+			networking
+			playback
+				- prevent-codec-download
