@@ -16,6 +16,27 @@ module sacm-microsoft-window-server-baseline {
 
 
 	// Types
+	typedef audit-policy-type {
+		type enumeration {
+			//description "Audit event policy values";
+			enum AUDIT_NONE {
+				description "The audit type AUDIT_NONE is used to cancel all auditing options for the specified events";
+			}
+			enum AUDIT_SUCCESS {
+				description "The audit type AUDIT_SUCCESS is used to perform audits on all successful occurrences of the 
+					specified events when auditing is enabled.";
+			}
+			enum AUDIT_FAILURE {
+				description "The audit type AUDIT_FAILURE is used to perform audits on all unsuccessful occurrences of 
+					specified events when auditing is enabled.";
+			}
+			enum AUDIT_SUCCESS_FAILURE {
+				description "The audit type AUDIT_SUCCESS_FAILURE is used to perform audits on all successful and unsuccessful 
+					occurrences of the specified events when auditing is enabled.";
+			}
+		}
+	}
+
 	// Groupings
 	grouping trustees {
 		description "The identification of a trustee on the sytem, uniquely identified by the SID.";
@@ -36,6 +57,76 @@ module sacm-microsoft-window-server-baseline {
 				description "The domain on which the SID is found";
 				type string;
 			}
+		}
+	}
+
+	grouping firewall-profile {
+		description "";
+		leaf enable-firewall {
+			description "Select On (recommended) to have Windows Firewall with Advanced Security use the settings for this profile to filter 
+				network traffic. If you select Off, Windows Firewall with Advanced Security will not use any of the firewall rules or connection 
+				security rules for this profile.";
+
+			type uint32;
+		}
+		leaf default-inbound-action {
+			description "This setting determines the behavior for inbound connections that do not match an inbound firewall rule.";
+
+			type uint32;
+		}
+		leaf default-outbound-action {
+			description "This setting determines the behavior for outbound connections that do not match an outbound firewall rule.  Note that if 
+				you set Outbound connections to Block and then deploy the firewall policy by using a GPO, computers that receive the GPO settings 
+				cannot receive subsequent Group Policy updates unless you create and deploy an outbound rule that enables Group Policy to work. 
+				Predefined rules for Core Networking include outbound rules that enable Group Policy to work. Ensure that these outbound rules are 
+				active, and thoroughly test firewall profiles before deploying.";
+
+			type uint32;
+		}
+		leaf disable-notifications {
+			description "Select this option to have Windows Firewall with Advanced Security display notifications to the user when a program is 
+			blocked from receiving inbound connections";
+
+			type uint32;
+		}
+		leaf log-file-path {
+			description "Use this option to specify the path and name of the file in which Windows Firewall will write its log information.";
+			type string;
+		}
+		leaf log-file-size-kb {
+			description "Use this option to specify the size limit of the file in which Windows Firewall will write its log information.";
+			type uint32;
+		}
+		leaf log-dropped-packets {
+			description "Use this option to log when Windows Firewall with Advanced Security discards an inbound packet for any reason. The log 
+			records why and when the packet was dropped. Look for entries with the word DROP in the action column of the log.";
+
+			type uint32;
+		}
+		leaf log-successfull-connections {
+			description "Use this option to log when Windows Firewall with Advanced Security allows an inbound connection. The log records why 
+			and when the connection was formed. Look for entries with the word ALLOW in the action column of the log.";
+
+			type uint32;
+		}
+	}
+
+	grouping firewall-public-profile {
+		uses firewall-profile;
+
+		leaf allow-local-policy-merge {
+			description "This setting controls whether local administrators are allowed to create local firewall rules that apply together with 
+				firewall rules configured by Group Policy. Note that when the Apply local firewall rules setting is configured to No, it's recommended 
+				to also configure the Display a notification setting to No. Otherwise, users will continue to receive messages that ask if they want 
+				to unblock a restricted inbound connection, but the user's response will be ignored.";
+
+			type uint32;
+		}
+		leaf allow-local-ipsec-policy-merge {
+			description "This setting controls whether local administrators are allowed to create connection security rules that apply together with 
+			connection security rules configured by Group Policy.";
+
+			type uint32;
 		}
 	}
 
@@ -76,8 +167,8 @@ module sacm-microsoft-window-server-baseline {
 			leaf minimum-password-length {
 				description "This policy setting determines the least number of characters that make up a password for a user account. 
 					There are many different theories about how to determine the best password length for an organization, but perhaps 
-					"pass phrase" is a better term than "password." In Microsoft Windows 2000 and newer, pass phrases can be quite long 
-					and can include spaces. Therefore, a phrase such as "I want to drink a $5 milkshake" is a valid pass phrase; it is a 
+					'pass phrase' is a better term than 'password.' In Microsoft Windows 2000 and newer, pass phrases can be quite long 
+					and can include spaces. Therefore, a phrase such as 'I want to drink a $5 milkshake' is a valid pass phrase; it is a 
 					considerably stronger password than an 8 or 10 character string of random numbers and letters, and yet is easier to 
 					remember. Users must be educated about the proper selection and maintenance of passwords, especially with regard to 
 					password length. In enterprise environments, the ideal value for the Minimum password length setting is 14 characters, 
@@ -103,7 +194,7 @@ module sacm-microsoft-window-server-baseline {
 					alphabetic password with case sensitivity has 527 combinations. A seven-character case-sensitive alphanumeric password without 
 					punctuation has 627 combinations. An eight-character password has 268 (or 2 x 1011) possible combinations. Although this might 
 					seem to be a large number, at 1,000,000 attempts per second it would take only 59 hours to try all possible passwords. Remember, 
-					these times will significantly increase for passwords that use ALT characters and other special keyboard characters such as "!" or "@".
+					these times will significantly increase for passwords that use ALT characters and other special keyboard characters such as '!' or '@'.
 					Proper use of the password settings can help make it difficult to mount a brute force attack.";
 				
 				type boolean;
@@ -320,121 +411,466 @@ module sacm-microsoft-window-server-baseline {
 		}
 
 		container security-options {
-			description "";
+			description "This section contains configuration items for security options.";
+			
 			container accounts {
-				description "";
-				leaf administrator-account-status
-				leaf block-microsoft-accounts
-				leaf guest-account-status
-				leaf limit-local-account-use-of-blank-passwords
-				leaf rename-administrator-account
-				leaf rename-guest-account
+				description "This section contains configuration items related to default accounts.";
+				leaf administrator-account-enabled {
+					description "This policy setting enables or disables the Administrator account during normal operation. When a computer is 
+						booted into safe mode, the Administrator account is always enabled, regardless of how this setting is configured. Note 
+						that this setting will have no impact when applied to the Domain Controllers organizational unit via group policy because 
+						Domain Controllers have no local account database. It can be configured at the domain level via group policy, similar to 
+						account lockout and password policy settings.
+
+						The Windows Administrator account SID matches the regular expression '^S\-1\-5\-21\-\d+\-\d+\-\d+\-500$'";
+
+					type boolean;
+				}
+				leaf block-microsoft-accounts {
+					description "This policy setting prevents users from adding new Microsoft accounts on this computer.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+						Registry Name: NoConnectedUser";
+
+					type uint32;
+				}
+				leaf guest-account-enabled {
+					description "This policy setting determines whether the Guest account is enabled or disabled. The Guest account allows unauthenticated 
+						network users to gain access to the system.  Note that this setting will have no impact when applied to the Domain Controllers 
+						organizational unit via group policy because Domain Controllers have no local account database. It can be configured at the domain 
+						level via group policy, similar to account lockout and password policy settings.
+
+						The Windows Guest account SID matches the regular expression '^S\-1\-5\-21\-\d+\-\d+\-\d+\-501$'";
+
+					type boolean;
+				}
+				leaf limit-local-account-use-of-blank-passwords {
+					description "This policy setting determines whether local accounts that are not password protected can be used to log on from locations 
+						other than the physical computer console. If you enable this policy setting, local accounts that have blank passwords will not be able 
+						to log on to the network from remote client computers. Such accounts will only be able to log on at the keyboard of the computer.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa
+						Registry Name: LimitBlankPasswordUse";
+
+					type uint32;
+				}
+				leaf administrator-account-name {
+					description "The built-in local administrator account is a well-known account name that attackers will target. It is recommended to choose 
+						another name for this account, and to avoid names that denote administrative or elevated access accounts. Be sure to also change the 
+						default description for the local administrator (through the Computer Management console). On Domain Controllers, since they do not have 
+						their own local accounts, this rule refers to the built-in Administrator account that was established when the domain was first created.";
+
+					type string;
+				}
+				leaf guest-account-name {
+					description "The built-in local guest account is another well-known name to attackers. It is recommended to rename this account to something 
+						that does not indicate its purpose. Even if you disable this account, which is recommended, ensure that you rename it for added security. 
+						On Domain Controllers, since they do not have their own local accounts, this rule refers to the built-in Guest account that was established 
+						when the domain was first created.";
+
+					type string;
+				}
 			}
 			container audit {
 				description "";
-				leaf force-audit-policy-subcategory-settings-to-override-audit-policy-category-settings
-				leaf shutdown-system-immediately-if-unable-to-log-security-audits
+				leaf sce-no-apply-legacy-audit-policy {
+					description "This policy setting allows administrators to enable the more precise auditing capabilities present in 
+						Windows Vista. The Audit Policy settings available in Windows Server 2003 Active Directory do not yet contain 
+						settings for managing the new auditing subcategories. To properly apply the auditing policies prescribed in this 
+						baseline, the Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy 
+						category settings setting needs to be configured to Enabled.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa
+						Registry Name: SCENoApplyLegacyAuditPolicy";
+
+					type uint32;
+				}
+				leaf crash-on-audit-fail {
+					description "This policy setting determines whether the system shuts down if it is unable to log Security events. It is 
+						a requirement for Trusted Computer System Evaluation Criteria (TCSEC)-C2 and Common Criteria certification to prevent 
+						auditable events from occurring if the audit system is unable to log them. Microsoft has chosen to meet this requirement 
+						by halting the system and displaying a stop message if the auditing system experiences a failure. When this policy setting 
+						is enabled, the system will be shut down if a security audit cannot be logged for any reason. If the Audit: Shut down system 
+						immediately if unable to log security audits setting is enabled, unplanned system failures can occur. The administrative 
+						burden can be significant, especially if you also configure the Retention method for the Security log to Do not overwrite 
+						events (clear log manually). This configuration causes a repudiation threat (a backup operator could deny that they backed 
+						up or restored data) to become a denial of service (DoS) vulnerability, because a server could be forced to shut down if it 
+						is overwhelmed with logon events and other security events that are written to the Security log. Also, because the shutdown 
+						is not graceful, it is possible that irreparable damage to the operating system, applications, or data could result. Although 
+						the NTFS file system guarantees its integrity when an ungraceful computer shutdown occurs, it cannot guarantee that every data 
+						file for every application will still be in a usable form when the computer restarts.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa
+						Registry Name: CrashOnAuditFail";
+
+					type uint32;
+				}
 			}
 			container dcom {}
 			container devices {
-				description "";
-				leaf allowed-to-format-and-eject-removable-media
-				leaf prevent-users-from-installing-printer-drivers
+				description "This section contains configuration items related to managing devices.";
+				leaf allocate-dasd {
+					description "This policy setting determines who is allowed to format and eject removable NTFS media. You can use this policy setting 
+						to prevent unauthorized users from removing data on one computer to access it on another computer on which they have local 
+						administrator privileges
+
+						Registry Key: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
+						Registry Name: AllocateDASD";
+
+					type uint32;
+				}
+				leaf add-printer-drivers {
+					description "For a computer to print to a shared printer, the driver for that shared printer must be installed on the local computer. 
+						This security setting determines who is allowed to install a printer driver as part of connecting to a shared printer.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers
+						Registry Name: AddPrinterDrivers";
+
+					type uint32;
+				}
 			}
 			container domain-controller {
-				description "";
-				leaf allow-server-operators-to-schedule-tasks
-				leaf ldap-server-signing-requirements
-				leaf refuse-machine-account-password-changes
+				description "This section contains configuration items related to Domain Controllers.";
+
+				leaf submit-control {
+					description "This policy setting determines whether members of the Server Operators group are allowed to submit jobs by means of 
+						the AT schedule facility. The impact of this policy setting configuration should be small for most organizations. Users, 
+						including those in the Server Operators group, will still be able to create jobs by means of the Task Scheduler Wizard, but 
+						those jobs will run in the context of the account with which the user authenticates when they set up the job.
+
+						Note: An AT Service Account can be modified to select a different account rather than the LOCAL SYSTEM account. To change the 
+						account, open System Tools, click Scheduled Tasks, and then click Accessories folder. Then click AT Service Account on the Advanced menu.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa
+						Registry Name: SubmitControl";
+
+					type uint32;
+				}
+				leaf ldap-server-integrity {
+					description "This policy setting determines whether the Lightweight Directory Access Protocol (LDAP) server requires LDAP 
+						clients to negotiate data signing.
+						
+						Note: Domain member computers must have Network security: LDAP signing requirements (Rule 2.3.11.8) set to Negotiate signing 
+						or higher. If not, they will fail to authenticate once the above Require signing value is configured on the Domain Controllers. 
+						Fortunately, Negotiate signing is the default in the client configuration.
+
+						Note #2: This policy setting does not have any impact on LDAP simple bind (ldap_simple_bind) or LDAP simple bind through SSL 
+						(ldap_simple_bind_s). No Microsoft LDAP clients that are shipped with Windows XP Professional use LDAP simple bind or LDAP 
+						simple bind through SSL to talk to a Domain Controller.
+
+						Note #3: Before enabling this setting, you should first ensure that there are no clients (including server-based applications) 
+						that are configured to authenticate with Active Directory via unsigned LDAP, because changing this setting will break those 
+						applications. Such applications should first be reconfigured to use signed LDAP, Secure LDAP (LDAPS), or IPsec-protected connections. 
+						For more information on how to identify whether your DCs are being accessed via unsigned LDAP (and where those accesses are 
+						coming from), see this Microsoft TechNet blog article: Identifying Clear Text LDAP binds to your DC’s – Practical Windows Security
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NTDS\Parameters
+						Registry Name: LDAPServerIntegrity";
+					
+					type uint32;
+				}
+				leaf refuse-password-change {
+					description "This security setting determines whether Domain Controllers will refuse requests from member computers to change 
+						computer account passwords.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: RefusePasswordChange";
+					type uint32;
+				}
 			}
 			container domain-member {
 				description "";
-				leaf digitally-encrypt-or-sign-secure-channel-data-always
-				leaf digitally-encrypt-secure-channel-data-when-possible
-				leaf digitally-sign-secure-channel-data-when-possible
-				leaf disable-machine-account-password-changes
-				leaf maximum-machine-account-password-age
-				leaf require-strong-session-key
+				leaf require-sign-or-seal {
+					description "This policy setting determines whether all secure channel traffic that is initiated by the domain member must 
+						be signed or encrypted.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: RequireSignOrSeal";
+					type uint32;
+				}
+				leaf seal-secure-channel {
+					description "This policy setting determines whether a domain member should attempt to negotiate encryption for all secure 
+						channel traffic that it initiates.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: SealSecureChannel";
+					type uint32;
+				}
+				leaf sign-secure-channel {
+					description "This policy setting determines whether a domain member should attempt to negotiate whether all secure channel 
+						traffic that it initiates must be digitally signed. Digital signatures protect the traffic from being modified by anyone 
+						who captures the data as it traverses the network.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: SignSecureChannel";
+					type uint32;
+				}
+				leaf disable-password-change {
+					description "This policy setting determines whether a domain member can periodically change its computer account password. 
+						Computers that cannot automatically change their account passwords are potentially vulnerable, because an attacker might 
+						be able to determine the password for the system's domain account.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: DisablePasswordChange";
+					type uint32;
+				}
+				leaf machine-account-maximum-password-age {
+					description "This policy setting determines the maximum allowable age for a computer account password. By default, domain 
+						members automatically change their domain passwords every 30 days.
+
+						Registry Key: HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: MaximumPasswordAge";
+					type uint32;
+				}
+				leaf require-strong-session-key {
+					description "When this policy setting is enabled, a secure channel can only be established with Domain Controllers that 
+						are capable of encrypting secure channel data with a strong (128-bit) session key. To enable this policy setting, all 
+						Domain Controllers in the domain must be able to encrypt secure channel data with a strong key, which means all Domain 
+						Controllers must be running Microsoft Windows 2000 or newer.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+						Registry Name: RequireStrongKey";
+					type uint32;
+				}
 			}
 			container interactive-logon {
-				description "";
-				leaf do-not-display-last-username
-				leaf do-not-require-ctrl-alt-del
-				leaf machine-inactivity-limit
-				leaf message-text-for-users-attempting-to-log-on
-				leaf message-title-for-users-attempting-to-log-on
-				leaf number-of-previous-logons-to-cache
-				leaf prompt-user-to-change-password-before-expiration
-				leaf require-domain-controller-authentication-to-unlock-workstation
-				leaf smart-card-removal-behavior
+				description "This section contains recommendations related to interactive logons.";
+				leaf do-not-display-last-username {
+					description "This policy setting determines whether the account name of the last user to log on to the client computers 
+						in your organization will be displayed in each computer's respective Windows logon screen. Enable this policy setting 
+						to prevent intruders from collecting account names visually from the screens of desktop or laptop computers in your 
+						organization.
+
+						Registry Key: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+						Registry Name: DontDisplayLastUserName";
+					type uint32;
+				}
+				leaf do-not-require-ctrl-alt-del {
+					description "";
+					type ;
+				}
+				leaf machine-inactivity-limit {
+					description "";
+					type ;
+				}
+				leaf message-text-for-users-attempting-to-log-on {
+					description "";
+					type ;
+				}
+				leaf message-title-for-users-attempting-to-log-on {
+					description "";
+					type ;
+				}
+				leaf number-of-previous-logons-to-cache {
+					description "";
+					type ;
+				}
+				leaf prompt-user-to-change-password-before-expiration {
+					description "";
+					type ;
+				}
+				leaf require-domain-controller-authentication-to-unlock-workstation {
+					description "";
+					type ;
+				}
+				leaf smart-card-removal-behavior {
+					description "";
+					type ;
+				}
 			}
 			container microsoft-network-client {
 				description "";
-				leaf digitally-sign-communications-always
-				leaf digitally-sign-communications-if-server-agrees
-				leaf send-unencrypted-password-to-third-party-smb-servers
+				leaf digitally-sign-communications-always {
+					description "";
+					type ;
+				}
+				leaf digitally-sign-communications-if-server-agrees {
+					description "";
+					type ;
+				}
+				leaf send-unencrypted-password-to-third-party-smb-servers {
+					description "";
+					type ;
+				}
 			}
 			container microsoft-network-server {
 				description "";
-				leaf amount-of-idle-time-required-before-suspending-session
-				leaf digitally-sign-communications-always
-				leaf digitally-sign-communications-if-client-agrees
-				leaf disconnect-clients-when-logon-hours-expire
-				leaf server-spn-target-name-validation-level
+				leaf amount-of-idle-time-required-before-suspending-session {
+					description "";
+					type ;
+				}
+				leaf digitally-sign-communications-always {
+					description "";
+					type ;
+				}
+				leaf digitally-sign-communications-if-client-agrees {
+					description "";
+					type ;
+				}
+				leaf disconnect-clients-when-logon-hours-expire {
+					description "";
+					type ;
+				}
+				leaf server-spn-target-name-validation-level {
+					description "";
+					type ;
+				}
 			}
 			container network-access {
 				description "";
-				leaf allow-anonymous-sid-name-translation
-				leaf do-not-allow-anonymous-enumeration-of-sam-accounts
-				leaf do-not-allow-anonymous-enumeration-of-sam-accounts-and-shares
-				leaf do-not-allow-storage-of-passwords-and-credentials-for-network-authentication
-				leaf let-everyone-permissions-apply-to-anonymous-users
-				leaf named-pipes-that-can-be-accessed-anonymously
-				leaf remotely-accessible-registry-paths
-				leaf remotely-accessible-registry-paths-and-subpaths
-				leaf restrict-anonymous-access-to-named-pipes-and-shares
-				leaf restrict-clients-allowed-to-make-remote-calls-to-sam
-				leaf shares-that-can-be-accessed-anonymously
-				leaf sharing-and-security-model-for-local-accounts
+				leaf allow-anonymous-sid-name-translation {
+					description "";
+					type ;
+				}
+				leaf do-not-allow-anonymous-enumeration-of-sam-accounts {
+					description "";
+					type ;
+				}
+				leaf do-not-allow-anonymous-enumeration-of-sam-accounts-and-shares {
+					description "";
+					type ;
+				}
+				leaf do-not-allow-storage-of-passwords-and-credentials-for-network-authentication {
+					description "";
+					type ;
+				}
+				leaf let-everyone-permissions-apply-to-anonymous-users {
+					description "";
+					type ;
+				}
+				leaf named-pipes-that-can-be-accessed-anonymously {
+					description "";
+					type ;
+				}
+				leaf remotely-accessible-registry-paths {
+					description "";
+					type ;
+				}
+				leaf remotely-accessible-registry-paths-and-subpaths {
+					description "";
+					type ;
+				}
+				leaf restrict-anonymous-access-to-named-pipes-and-shares {
+					description "";
+					type ;
+				}
+				leaf restrict-clients-allowed-to-make-remote-calls-to-sam {
+					description "";
+					type ;
+				}
+				leaf shares-that-can-be-accessed-anonymously {
+					description "";
+					type ;
+				}
+				leaf sharing-and-security-model-for-local-accounts {
+					description "";
+					type ;
+				}
 			}
 			container network-security {
 				description "";
-				leaf allow-local-system-to-use-computer-identity-for-ntlm
-				leaf allow-local-system-null-session-fallback
-				leaf allow-pku2u-authentication-requests
-				leaf configure-encryption-types-allowed-for-kerberos
-				leaf do-not-store-lan-manager-hash-value-on-next-password-change
-				leaf force-logoff-when-logon-hours-expire
-				leaf lan-manager-authentication-level
-				leaf ldap-client-signing-requirements
-				leaf minimum-session-security-for-ntlm-ssp-based-clients
-				leaf minimum-session-security-for-ntlm-ssp-based-servers
+				leaf allow-local-system-to-use-computer-identity-for-ntlm {
+					description "";
+					type ;
+				}
+				leaf allow-local-system-null-session-fallback {
+					description "";
+					type ;
+				}
+				leaf allow-pku2u-authentication-requests {
+					description "";
+					type ;
+				}
+				leaf configure-encryption-types-allowed-for-kerberos {
+					description "";
+					type ;
+				}
+				leaf do-not-store-lan-manager-hash-value-on-next-password-change {
+					description "";
+					type ;
+				}
+				leaf force-logoff-when-logon-hours-expire {
+					description "";
+					type ;
+				}
+				leaf lan-manager-authentication-level {
+					description "";
+					type ;
+				}
+				leaf ldap-client-signing-requirements {
+					description "";
+					type ;
+				}
+				leaf minimum-session-security-for-ntlm-ssp-based-clients {
+					description "";
+					type ;
+				}
+				leaf minimum-session-security-for-ntlm-ssp-based-servers {
+					description "";
+					type ;
+				}
 			}
 			container recovery-console {}
 			container shutdown {
 				description "";
-				leaf allow-system-shutdown-without-having-to-log-on
+				leaf allow-system-shutdown-without-having-to-log-on {
+					description "";
+					type ;
+				}
 			}
 			container system-cryptograhy {}
 			container system-objects {
 				description "";
-				leaf require-case-insensitivity-for-non-windows-subsystems
-				leaf strengthen-default-permissions-of-internal-system-objects
+				leaf require-case-insensitivity-for-non-windows-subsystems {
+					description "";
+					type ;
+				}
+				leaf strengthen-default-permissions-of-internal-system-objects {
+					description "";
+					type ;
+				}
 			}
 			container system-settings {
 				description "";
-				leaf optional-subsystems
+				leaf optional-subsystems {
+					description "";
+					type ;
+				}
 			}
 			container user-account-control {
 				description "";
-				leaf admin-approval-mode-for-builtin-administrator-account
-				leaf allow-uiaccess-applications-to-prompt-for-elevation-without-secure-desktop
-				leaf elevation-prompt-behavior-for-administrators-admin-approval-mode
-				leaf elevation-prompt-behavior-for-standard-users
-				leaf only-elevate-uiaccess-applications-installed-in-secure-locations
-				leaf run-all-administrators-in-admin-approval-mode
-				leaf switch-to-secure-desktop-when-prompting-for-elevation
-				leaf virtualize-file-and-registry-write-failures-to-per-user-locations
+				leaf admin-approval-mode-for-builtin-administrator-account {
+					description "";
+					type ;
+				}
+				leaf allow-uiaccess-applications-to-prompt-for-elevation-without-secure-desktop {
+					description "";
+					type ;
+				}
+				leaf elevation-prompt-behavior-for-administrators-admin-approval-mode {
+					description "";
+					type ;
+				}
+				leaf elevation-prompt-behavior-for-standard-users {
+					description "";
+					type ;
+				}
+				leaf only-elevate-uiaccess-applications-installed-in-secure-locations {
+					description "";
+					type ;
+				}
+				leaf run-all-administrators-in-admin-approval-mode {
+					description "";
+					type ;
+				}
+				leaf switch-to-secure-desktop-when-prompting-for-elevation {
+					description "";
+					type ;
+				}
+				leaf virtualize-file-and-registry-write-failures-to-per-user-locations {
+					description "";
+					type ;
+				}
 			}
 		}
 	}
@@ -448,39 +884,18 @@ module sacm-microsoft-window-server-baseline {
 	container windows-firewall-with-advanced-security {
 		description "";
 		container domain-profile {
-			description "";
-			leaf firewall-state
-			leaf inbound-connections
-			leaf outbound-connections
-			leaf display-a-notification
-			leaf logging-name
-			leaf logging-size-limit-kb
-			leaf logging-log-dropped-packets
-			leaf logging-log-successfull-connections
+			description "This section contains configuration items for the Domain Profile of the Windows Firewall.";
+			
+			uses firewall-profile;
 		}
 		container private-profile {
-			description "";
-			leaf firewall-state
-			leaf inbound-connections
-			leaf outbound-connections
-			leaf display-a-notification
-			leaf logging-name
-			leaf logging-size-limit-kb
-			leaf logging-log-dropped-packets
-			leaf logging-log-successfull-connections
+			description "This section contains configuration items for the Private Profile of the Windows Firewall.";
+			uses firewall-profile;
 		}
 		container public-profile {
-			description "";
-			leaf firewall-state
-			leaf inbound-connections
-			leaf outbound-connections
-			leaf display-a-notification
-			leaf apply-local-firewall-rules
-			leaf apply-local-connection-security-rules
-			leaf logging-name
-			leaf logging-size-limit-kb
-			leaf logging-log-dropped-packets
-			leaf logging-log-successfull-connections
+			description "This section contains configuration items for the Public Profile of the Windows Firewall.";
+
+			uses firewall-public-profile;
 		}
 	}
 	container network-list-manager-policies {}
@@ -495,58 +910,170 @@ container advanced-audit-policy-configuration {
 	description "";
 	container account-logon {
 		description "";
-		leaf audit-credential-validation
+		leaf audit-credential-validation {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container account-management {
 		description "";
-		leaf audit-application-group-management
-		leaf audit-computer-account-management
-		leaf audit-distribution-group-management
-		leaf audit-other-account-management-events
-		leaf audit-security-group-management
-		leaf audit-user-account-management
+		leaf audit-application-group-management {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-computer-account-management {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-distribution-group-management {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-other-account-management-events {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-security-group-management {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-user-account-management {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container detailed-tracking {
 		description "";
-		leaf audit-pnp-activity
-		leaf audit-process-creation
+		leaf audit-pnp-activity {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-process-creation {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container ds-access {
 		description "";
-		leaf audit-directory-service-access
-		leaf audit-directory-service-changes
+		leaf audit-directory-service-access {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-directory-service-changes {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container logon-logoff {
 		description "";
-		leaf audit-account-lockout
-		leaf audit-group-membership
-		leaf audit-logoff
-		leaf audit-logon
-		leaf audit-other-logon-logoff-events
-		leaf audit-special-logon
+		leaf audit-account-lockout {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-group-membership {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-logoff {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-logon {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-other-logon-logoff-events {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-special-logon {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container object-access {
 		description "";
-		leaf audit-other-object-access-events
-		leaf audit-removable-storage
+		leaf audit-other-object-access-events {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-removable-storage {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container policy-change {
 		description "";
-		leaf audit-policy-change
-		leaf audit-authentication-policy-change
-		leaf audit-authorization-policy-change
+		leaf audit-policy-change {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-authentication-policy-change {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-authorization-policy-change {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container privilege-use {
 		description "";
-		leaf audit-sensitive-privilege-use
+		leaf audit-sensitive-privilege-use {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 	container system {
 		description "";
-		leaf audit-ipsec-driver
-		leaf audit-other-system-events
-		leaf audit-security-state-change
-		leaf audit-security-system-extension
-		leaf audit-system-integrity
+		leaf audit-ipsec-driver {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-other-system-events {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-security-state-change {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-security-system-extension {
+			description "";
+
+			type audit-policy-type;
+		}
+		leaf audit-system-integrity {
+			description "";
+
+			type audit-policy-type;
+		}
 	}
 }
 
